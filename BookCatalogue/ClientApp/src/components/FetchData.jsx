@@ -1,5 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { sendGetRequest } from '../utils/sendGetRequest';
+import Table from 'react-bootstrap/Table';
 
 function FetchData() {
   const [forecasts, setForecasts] = useState([]);
@@ -10,16 +11,16 @@ function FetchData() {
   }, []);
 
   async function populateWeatherData() {
-    await sendGetRequest('weatherforecast').then((response) => {
-      console.log('response', response);
-      setForecasts(response);
+    await axios.get('weatherforecast').then((response) => {
+      console.log('response', response.data);
+      setForecasts(response.data);
       setLoading(false);
     });
   }
 
   function renderForecastsTable(forecasts) {
     return (
-      <table className="table table-striped" aria-labelledby="tabelLabel">
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Date</th>
@@ -38,7 +39,7 @@ function FetchData() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     );
   }
 
@@ -52,7 +53,7 @@ function FetchData() {
 
   return (
     <div>
-      <h1 id="tabelLabel">Weather forecast</h1>
+      <h1 id='tabelLabel'>Weather forecast</h1>
       <p>This component demonstrates fetching data from the server.</p>
       {contents}
     </div>

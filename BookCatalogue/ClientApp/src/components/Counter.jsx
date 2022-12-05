@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { Button, Container } from 'react-bootstrap';
 
 function Counter() {
   const [currentCount, setCurrentCount] = useState(0);
@@ -8,19 +9,19 @@ function Counter() {
   }
 
   return (
-    <div>
+    <Container>
       <h1>Counter</h1>
 
       <p>This is a simple example of a React component.</p>
 
-      <p aria-live="polite">
+      <p aria-live='polite'>
         Current count: <strong>{currentCount}</strong>
       </p>
 
-      <button className="btn btn-primary" onClick={incrementCounter}>
+      <Button variant='primary' onClick={incrementCounter}>
         Increment
-      </button>
-    </div>
+      </Button>
+    </Container>
   );
 }
 
