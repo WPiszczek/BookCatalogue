@@ -1,4 +1,4 @@
-namespace PiszczekSzpotek.BookCatalogue.Models
+namespace API
 {
     public class WeatherForecast
     {

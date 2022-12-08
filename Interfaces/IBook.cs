@@ -4,7 +4,7 @@ namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
     public interface IBook
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public IAuthor Author { get; set; }
         public DateTime ReleaseDate { get; set; }

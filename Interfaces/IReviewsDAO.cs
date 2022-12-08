@@ -1,10 +1,10 @@
 ﻿namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IReviewsDAO
+    public interface IReviewsDAO<Review> where Review : IReview
     {
-        public IEnumerable<IReview> GetAllBookReviews(int bookId);
-        public IReview GetReview(int id);
-        public void UpdateReview(IReview author);
-        public void DeleteReview(IReview author);
+        public Task<IEnumerable<Review>> GetAllBookReviews(int bookId); 
+        public Task<Review> GetReview(int id);
+        public void UpdateReview(Review author);
+        public void DeleteReview(Review author);
     }
 }

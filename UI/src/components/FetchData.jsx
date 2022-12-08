@@ -1,6 +1,6 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Table, Spinner } from "react-bootstrap";
 
 function FetchData() {
   const [forecasts, setForecasts] = useState([]);
@@ -11,8 +11,8 @@ function FetchData() {
   }, []);
 
   async function populateWeatherData() {
-    await axios.get('weatherforecast').then((response) => {
-      console.log('response', response.data);
+    await axios.get("weatherforecast").then((response) => {
+      console.log("response", response.data);
       setForecasts(response.data);
       setLoading(false);
     });
@@ -44,16 +44,16 @@ function FetchData() {
   }
 
   const contents = loading ? (
-    <p>
-      <em>Loading...</em>
-    </p>
+    <div className="center">
+      <Spinner animation="border" role="status" />
+    </div>
   ) : (
     renderForecastsTable(forecasts)
   );
 
   return (
     <div>
-      <h1 id='tabelLabel'>Weather forecast</h1>
+      <h1 id="tabelLabel">Weather forecast</h1>
       <p>This component demonstrates fetching data from the server.</p>
       {contents}
     </div>

@@ -1,14 +1,11 @@
 ﻿using PiszczekSzpotek.BookCatalogue.Interfaces;
+using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Exceptions;
 using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
-    public class SQLiteDAO : IBooksDAO
+    public class SQLiteDAO : IBooksDAO<Book>
     {
         SQLiteDatabaseContext _context;
 
@@ -17,23 +14,36 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             _context = context;
         }
 
-        public IEnumerable<IBook> GetAllBooks()
+        public async Task<IEnumerable<Book>> GetAllBooks()
         {
-            return _context.Books.ToList<Book>();
+            return await _context.Books.ToListAsync<Book>();
+        }
+
+        public async Task<Book> GetBook(int id)
+        {
+            if (_context.Books == null)
+            {
+                throw new ContextIsNullException();
+            }
+
+            var book = await _context.Books
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+
+            return book;
         }
         // TODO
-        public IBook GetBook(int id)
+        public void UpdateBook(Book book)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateBook(IBook book)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void DeleteBook(IBook book)
+        // TODO
+        public void DeleteBook(Book book)
         {
             throw new NotImplementedException();
         }

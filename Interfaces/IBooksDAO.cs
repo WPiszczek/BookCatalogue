@@ -1,10 +1,10 @@
 ﻿namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IBooksDAO
+    public interface IBooksDAO<Book> where Book : IBook
     {
-        public IEnumerable<IBook> GetAllBooks();
-        public IBook GetBook(int id);
-        public void UpdateBook(IBook book);
-        public void DeleteBook(IBook book);
+        public Task<IEnumerable<Book>> GetAllBooks();
+        public Task<Book> GetBook(int id);
+        public void UpdateBook(Book book);
+        public void DeleteBook(Book book);
     }
 }
