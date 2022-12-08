@@ -9,11 +9,13 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
 {
     public class Review : IReview
     {
-        public int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Content { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Author { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime DateAdded { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IBook Book { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string Author { get; set; }
+        public DateTime DateAdded { get; set; }
+        public IBook Book { get; set; }
+        public int Rating { get; set; }
+        public string Reviewer { get; set; }
     }
 }
