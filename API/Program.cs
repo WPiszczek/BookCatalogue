@@ -1,3 +1,7 @@
+using PiszczekSzpotek.BookCatalogue.Interfaces;
+using PiszczekSzpotek.BookCatalogue.SQLiteDatabase;
+using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
+
 namespace API
 {
     public class Program
@@ -12,6 +16,7 @@ namespace API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<IDAO, SQLiteDAO>();
 
             var app = builder.Build();
 

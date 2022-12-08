@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PiszczekSzpotek.BookCatalogue.Interfaces;
 using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
@@ -7,6 +8,8 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
     public class SQLiteDatabaseContext : DbContext
     {
         private IConfiguration _configuration;
+
+        public SQLiteDatabaseContext() : base() { }
 
         public SQLiteDatabaseContext(IConfiguration configuration)
         {

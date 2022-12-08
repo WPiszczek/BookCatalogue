@@ -8,10 +8,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{7DD25E6F-C975-41D9-84B3-FA7B13AA5DF1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteDatabase", "SQLiteDatabase\SQLiteDatabase.csproj", "{CB1C2AEF-47F1-4129-A5E0-7FA9AE3E7A2A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7DD25E6F-C975-41D9-84B3-FA7B13AA5DF1} = {7DD25E6F-C975-41D9-84B3-FA7B13AA5DF1}
+	EndProjectSection
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "UI", "UI\UI.esproj", "{65525178-C5BA-4EC9-8B2F-6E8291BB9DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{02A511A7-C5DA-41A6-A353-D1911AAE069F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{02A511A7-C5DA-41A6-A353-D1911AAE069F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,16 +2,16 @@
 
 namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IBooksDAO<Book> where Book : IBook
+    public interface IBooksDAO
     {
-        public Task<IEnumerable<Book>> GetAllBooks();
-        public Task<IEnumerable<Book>> GetBooksByAuthor(int authorId);
-        public Task<IEnumerable<Book>> GetBooksByCategory(BookCategory category);
-        public Task<IEnumerable<Book>> GetBooksByLanguage(string language);
-        public Task<IEnumerable<Book>> SearchBooksByTitle(string title);
-        public Task<Book> GetBookById(int id);
-        public void CreateBook(Book book);
-        public void UpdateBook(Book book);
-        public void DeleteBook(Book book);
+        public Task<IEnumerable<IBook>> GetAllBooks();
+        public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId);
+        public Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category);
+        public Task<IEnumerable<IBook>> GetBooksByLanguage(string language);
+        public Task<IEnumerable<IBook>> SearchBooksByTitle(string title);
+        public Task<IBook> GetBookById(int id);
+        public void CreateBook(IBook book);
+        public void UpdateBook(IBook book);
+        public void DeleteBook(IBook book);
     }
 }

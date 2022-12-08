@@ -1,12 +1,12 @@
 ﻿namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IAuthorsDAO<Author> where Author : IAuthor
+    public interface IAuthorsDAO
     {
-        public Task<IEnumerable<Author>> GetAllAuthors();
-        public Task<IEnumerable<Author>> SearchAuthorsByName(string name);
-        public Task<Author> GetAuthorById(int id);
-        public void AddAuthor(Author author);
-        public void UpdateAuthor(Author author);
-        public void DeleteAuthor(Author author);
+        public Task<IEnumerable<IAuthor>> GetAllAuthors();
+        public Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name);
+        public Task<IAuthor> GetAuthorById(int id);
+        public void AddAuthor(IAuthor author);
+        public void UpdateAuthor(IAuthor author);
+        public void DeleteAuthor(IAuthor author);
     }
 }

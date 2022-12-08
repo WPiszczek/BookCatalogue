@@ -11,7 +11,7 @@ function FetchData() {
   }, []);
 
   async function populateWeatherData() {
-    await axios.get("weatherforecast").then((response) => {
+    await axios.get("api/books").then((response) => {
       console.log("response", response.data);
       setForecasts(response.data);
       setLoading(false);
