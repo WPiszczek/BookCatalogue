@@ -3,39 +3,44 @@ import React, { useEffect, useState } from "react";
 import { Table, Spinner } from "react-bootstrap";
 
 function FetchData() {
-  const [forecasts, setForecasts] = useState([]);
+  const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    populateWeatherData();
+    populateBooksData();
   }, []);
 
-  async function populateWeatherData() {
-    await axios.get("api/books").then((response) => {
-      console.log("response", response.data);
-      setForecasts(response.data);
-      setLoading(false);
-    });
+  async function populateBooksData() {
+    try {
+      await axios.get("/api/books").then((response) => {
+        console.log("response", response.data);
+        setBooks(response.data);
+        setLoading(false);
+      });
+    } catch (err) {
+      console.log("ERROR");
+      console.log(err.message);
+    }
   }
 
-  function renderForecastsTable(forecasts) {
+  function renderBooksTable(books) {
     return (
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>Title</th>
+            <th>Release year</th>
+            <th>Description</th>
+            <th>Category</th>
           </tr>
         </thead>
         <tbody>
-          {forecasts.map((forecast) => (
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
+          {books.map((book) => (
+            <tr key={book.id}>
+              <td>{book.title}</td>
+              <td>{book.releaseYear}</td>
+              <td>{book.description}</td>
+              <td>{book.category}</td>
             </tr>
           ))}
         </tbody>
@@ -48,12 +53,12 @@ function FetchData() {
       <Spinner animation="border" role="status" />
     </div>
   ) : (
-    renderForecastsTable(forecasts)
+    renderBooksTable(books)
   );
 
   return (
     <div>
-      <h1 id="tabelLabel">Weather forecast</h1>
+      <h1 id="tabelLabel">Books</h1>
       <p>This component demonstrates fetching data from the server.</p>
       {contents}
     </div>

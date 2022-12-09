@@ -5,7 +5,7 @@ using PiszczekSzpotek.BookCatalogue.Interfaces;
 
 namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/books")]
     [ApiController]
     public class BooksController : ControllerBase
     {
