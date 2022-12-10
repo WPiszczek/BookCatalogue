@@ -100,17 +100,17 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public void DeleteAuthor(IAuthor author)
+        public void DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteBook(IBook book)
+        public void DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteReview(IReview review)
+        public void DeleteReview(int id)
         {
             throw new NotImplementedException();
         }

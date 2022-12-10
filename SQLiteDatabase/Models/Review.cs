@@ -1,7 +1,10 @@
-﻿using PiszczekSzpotek.BookCatalogue.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PiszczekSzpotek.BookCatalogue.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
 {
+    [Table("Reviews")]
     public class Review : IReview
     {
         public int Id { get; set; }
@@ -9,8 +12,9 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
         public string Content { get; set; }
         public string Author { get; set; }
         public DateTime DateAdded { get; set; }
-        public IBook Book { get; set; }
-        //public Book  Book { get; set; }
+        //public IBook Book { get; set; }
+        public Book Book { get; set; }
+        public int BookId { get; set; }
         public int Rating { get; set; }
         public string Reviewer { get; set; }
     }

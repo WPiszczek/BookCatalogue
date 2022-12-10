@@ -10,6 +10,11 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
     {
         private readonly SQLiteDatabaseContext _context;
 
+        public SQLiteDAO()
+        {
+            _context = new SQLiteDatabaseContext();
+        }
+
         public SQLiteDAO(SQLiteDatabaseContext context)
         {
             _context = context;
@@ -78,14 +83,9 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             await _context.SaveChangesAsync();
         }
 
-        public async void DeleteBook(IBook book)
+        public void DeleteBook(int id)
         {
-            if (!BookExists(book.Id))
-            {
-                throw new ObjectNotFoundException();
-            }
-            _context.Books.Remove((Book) book);
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public Task<IEnumerable<IAuthor>> GetAllAuthors()
@@ -113,7 +113,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             throw new NotImplementedException();
         }
 
-        public void DeleteAuthor(IAuthor author)
+        public void DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
@@ -143,7 +143,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             throw new NotImplementedException();
         }
 
-        public void DeleteReview(IReview review)
+        public void DeleteReview(int id)
         {
             throw new NotImplementedException();
         }

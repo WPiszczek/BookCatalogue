@@ -7,6 +7,6 @@
         public Task<IAuthor> GetAuthorById(int id);
         public void AddAuthor(IAuthor author);
         public void UpdateAuthor(IAuthor author);
-        public void DeleteAuthor(IAuthor author);
+        public void DeleteAuthor(int id);
     }
 }
