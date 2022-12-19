@@ -23,8 +23,8 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         public async Task<IEnumerable<IBook>> GetAllBooks()
         {
             return await _context.Books.ToListAsync();
-        }
 
+        }
 
         public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
         {

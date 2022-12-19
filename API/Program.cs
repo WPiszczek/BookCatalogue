@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using PiszczekSzpotek.BookCatalogue.API.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using System.Reflection;
+using System.Configuration;
 
 namespace API
 {
     public class Program
     {
+        private static IDAO? dao = null;
 
         public static void Main(string[] args)
         {
@@ -15,7 +18,9 @@ namespace API
                 return;
             }
             string assemblyPath = args[0];
-            Type daoObjectType = loadAssembly(assemblyPath) ?? throw new InvalidAssemblyException();
+            //Type daoObjectType = LoadAssembly(assemblyPath) ?? throw new InvalidAssemblyException();
+            //dao = Activator.CreateInstance(daoObjectType) as IDAO;
+
             //Type DaoObjectType = loadAssembly("bin/Debug/net6.0/MockDatabase.dll") ?? throw new InvalidAssemblyException();
             //Type DaoObjectType = loadAssembly("bin/Debug/net6.0/SQLiteDatabase.dll") ?? throw new InvalidAssemblyException();
 
@@ -27,7 +32,7 @@ namespace API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton(typeof(IDAO), daoObjectType);
+            //builder.Services.AddSingleton(typeof(IDAO), daoObjectType);
 
             var app = builder.Build();
             
@@ -48,9 +53,22 @@ namespace API
             app.Run();
         }
 
-        private static Type loadAssembly(string assemblyName)
+        public static IDAO GetDAO()
         {
-            Assembly assembly = Assembly.LoadFrom(assemblyName);
+            if (dao == null)
+            {
+                string assemblyPath = System.Configuration.ConfigurationManager.AppSettings["dbName"];
+
+                Type daoObjectType = LoadAssembly(assemblyPath) ?? throw new InvalidAssemblyException();
+                //Console.WriteLine(daoObjectType);
+                dao = Activator.CreateInstance(daoObjectType) as IDAO;
+            }
+            return dao;
+        }
+
+        private static Type LoadAssembly(string assemblyName)
+        {
+            Assembly assembly = Assembly.UnsafeLoadFrom(assemblyName);
             var types = assembly.GetTypes();
             foreach (var type in types.Where(t => t.GetInterfaces().Contains(typeof(IDAO))))
             {

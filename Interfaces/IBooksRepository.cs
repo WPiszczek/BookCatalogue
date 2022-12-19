@@ -2,7 +2,7 @@
 
 namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IBooksDAO
+    public interface IBooksRepository
     {
         public Task<IEnumerable<IBook>> GetAllBooks();
         public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId);

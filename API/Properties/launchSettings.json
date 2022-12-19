@@ -2,7 +2,7 @@
   "profiles": {
     "API": {
       "commandName": "Project",
-      "commandLineArgs": "bin/Debug/net6.0/MockDatabase.dll",
+      "commandLineArgs": "bin/Debug/net6.0/SQLiteDatabase.dll",
       "launchUrl": "https://localhost:3000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

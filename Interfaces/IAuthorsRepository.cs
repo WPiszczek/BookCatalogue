@@ -1,6 +1,6 @@
 ﻿namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
-    public interface IAuthorsDAO
+    public interface IAuthorsRepository
     {
         public Task<IEnumerable<IAuthor>> GetAllAuthors();
         public Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name);

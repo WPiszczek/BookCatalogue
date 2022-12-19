@@ -10,5 +10,13 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public IEnumerable<Book> Books { get; set; }
+        IEnumerable<IBook> IAuthor.Books
+        {
+            get => Books;
+            set
+            {
+                Books = value as IEnumerable<Book>; 
+            }
+        }
     }
 }

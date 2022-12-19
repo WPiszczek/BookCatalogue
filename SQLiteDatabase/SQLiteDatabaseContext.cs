@@ -7,20 +7,14 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
     public class SQLiteDatabaseContext : DbContext
     {
-        private IConfiguration _configuration;
-
         public SQLiteDatabaseContext() : base()
         {
             Database.EnsureCreated();
         }
-        public SQLiteDatabaseContext(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_configuration.GetConnectionString("SqliteConnectionString"));
+
+            optionsBuilder.UseSqlite("Data source=book-catalogue.db");
         }
 
         public DbSet<Book> Books { get; set; }

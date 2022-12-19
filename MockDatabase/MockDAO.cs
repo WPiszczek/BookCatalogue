@@ -10,8 +10,26 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
         private IEnumerable<IAuthor> _authors;
         private IEnumerable<IReview> _reviews;
 
-        public MockDAO() 
+        public MockDAO()
         {
+            _authors = new List<IAuthor>()
+            {
+                new Author()
+                {
+                    Id = 1,
+                    Name = "Andrzej Sapkowski",
+                    BirthDate = new DateTime(1948, 6, 21),
+                    Books = new List<Book>() {}
+                },
+                new Author()
+                {
+                    Id = 2,
+                    Name = "Jo Nesbo",
+                    BirthDate = new DateTime(1960, 3, 29),
+                    Books = new List<Book>() {}
+                }
+            };
+
             _books = new List<IBook>()
             {
                 new Book()
@@ -21,7 +39,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 1,
                     ReleaseYear = 1993,
                     Category = BookCategory.Fantastyka,
-                    Reviews = new List<IReview>()
+                    Reviews = new List<Review>()
                 },
                 new Book()
                 {
@@ -30,7 +48,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 1,
                     ReleaseYear = 2002,
                     Category = BookCategory.Historia,
-                    Reviews = new List<IReview>()
+                    Reviews = new List<Review>()
                 },
                 new Book()
                 {
@@ -39,28 +57,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 2,
                     ReleaseYear = 2000,
                     Category= BookCategory.Kryminal_Sensacja,
-                    Reviews = new List<IReview>()
+                    Reviews = new List<Review>()
                 }
             };
 
-            _authors = new List<IAuthor>()
-            {
-                new Author()
-                {
-                    Id = 1,
-                    Name = "Andrzej Sapkowski",
-                    BirthDate = new DateTime(1948, 6, 21),
-                    Books = new List<IBook>() {}
-                },
-                new Author()
-                {
-                    Id = 2,
-                    Name = "Jo Nesbo",
-                    BirthDate = new DateTime(1960, 3, 29),
-                    Books = new List<IBook>() {}
-                }
-            };
-            _reviews = new List<IReview>()
+            _reviews = new List<Review>()
             {
                 new Review()
                 {
@@ -122,6 +123,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
         public Task<IEnumerable<IBook>> GetAllBooks()
         {
+            foreach (Book book in _books)
+            {
+                book.Author = _authors.FirstOrDefault(a => a.Id == 1) as Author;
+                //Console.WriteLine(book.Author.Name);
+            }
             return Task.FromResult(_books);
         }
 

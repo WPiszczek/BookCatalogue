@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API;
+using Microsoft.AspNetCore.Mvc;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,12 +10,9 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IDAO _service;
+        private readonly IDAO _service = Program.GetDAO();
 
-        public BooksController(IDAO service)
-        {
-            _service = service;
-        }
+        public BooksController() {}
 
         // GET: api/<BooksController>
         [HttpGet]
