@@ -11,6 +11,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         {
             Database.EnsureCreated();
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 

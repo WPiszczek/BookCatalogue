@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PiszczekSzpotek.BookCatalogue.MockDatabase.Exceptions
+namespace PiszczekSzpotek.BookCatalogue.Core.Exceptions
 {
     public class ObjectIdAlreadyExistsException : Exception
     {

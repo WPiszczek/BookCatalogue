@@ -1,8 +1,8 @@
-﻿using PiszczekSzpotek.BookCatalogue.Interfaces;
-using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Exceptions;
-using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PiszczekSzpotek.BookCatalogue.Interfaces;
+using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Core.Enums;
+using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
