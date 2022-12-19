@@ -6,41 +6,46 @@ using PiszczekSzpotek.BookCatalogue.Core.Enums;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
-    public class SQLiteDAO : IDAO<Book, Author, Review>
+    public class SQLiteDAO : IDAO
     {
-        SQLiteDatabaseContext _context;
+        private readonly SQLiteDatabaseContext _context;
+
+        public SQLiteDAO()
+        {
+            _context = new SQLiteDatabaseContext();
+        }
 
         public SQLiteDAO(SQLiteDatabaseContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Book>> GetAllBooks()
+        public async Task<IEnumerable<IBook>> GetAllBooks()
         {
             return await _context.Books.ToListAsync();
+
         }
 
-
-        public Task<IEnumerable<Book>> GetBooksByAuthor(int authorId)
+        public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Book>> GetBooksByCategory(BookCategory category)
+        public Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Book>> GetBooksByLanguage(string language)
+        public Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Book>> SearchBooksByTitle(string title)
+        public Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
         {
             throw new NotImplementedException();
         }
-        public async Task<Book> GetBookById(int id)
+        public async Task<IBook> GetBookById(int id)
         {
             if (_context.Books == null)
             {
@@ -58,81 +63,94 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return book;
         }
 
-        public void CreateBook(Book book)
+        public async void CreateBook(IBook book)
+        {
+            if (BookExists(book.Id))
+            {
+                throw new ObjectIdAlreadyExistsException();
+            }
+            _context.Books.Add((Book) book);
+            await _context.SaveChangesAsync();
+        }
+
+        public async void UpdateBook(IBook book)
+        {
+            if (!BookExists(book.Id))
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Update(book);
+            await _context.SaveChangesAsync();
+        }
+
+        public void DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        // TODO
-        public void UpdateBook(Book book)
+        public Task<IEnumerable<IAuthor>> GetAllAuthors()
         {
             throw new NotImplementedException();
         }
 
-        // TODO
-        public void DeleteBook(Book book)
+        public Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Author>> GetAllAuthors()
+        public Task<IAuthor> GetAuthorById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Author>> SearchAuthorsByName(string name)
+        public void AddAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Author> GetAuthorById(int id)
+        public void UpdateAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public void AddAuthor(Author author)
+        public void DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateAuthor(Author author)
+        public Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteAuthor(Author author)
+        public Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Review>> GetReviewsByBook(int bookId)
+        public Task<IReview> GetReviewById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Review>> GetReviewsByRating(int rating)
+        public void AddReview(IReview review)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Review> GetReviewById(int id)
+        public void UpdateReview(IReview review)
         {
             throw new NotImplementedException();
         }
 
-        public void AddReview(Review review)
+        public void DeleteReview(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateReview(Review review)
+        private bool BookExists(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteReview(Review review)
-        {
-            throw new NotImplementedException();
+            return _context.Books.Any(e => e.Id == id);
         }
     }
 }

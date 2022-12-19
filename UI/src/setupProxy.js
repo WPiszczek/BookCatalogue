@@ -8,6 +8,7 @@ const target = 'https://localhost:7031';
 
 const context =  [
   "/weatherforecast",
+  "/api/books"
 ];
 
 module.exports = function(app) {

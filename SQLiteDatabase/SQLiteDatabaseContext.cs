@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
 
@@ -6,16 +7,14 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
     public class SQLiteDatabaseContext : DbContext
     {
-        private IConfiguration _configuration;
-
-        public SQLiteDatabaseContext(IConfiguration configuration)
+        public SQLiteDatabaseContext() : base()
         {
-            _configuration = configuration;
+            Database.EnsureCreated();
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_configuration.GetConnectionString("SqliteConnectionString"));
+
+            optionsBuilder.UseSqlite("Data source=book-catalogue.db");
         }
 
         public DbSet<Book> Books { get; set; }
