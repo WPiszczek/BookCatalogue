@@ -31,6 +31,7 @@
 
 ### 2.3 ReviewDAO
 
+- getAllReviews()
 - getReviewsByBook(bookId)
 - getReviewsByRating(rating)
 - getReviewById(id)

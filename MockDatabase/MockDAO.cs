@@ -156,6 +156,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<IReview>> GetAllReviews()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IReview> GetReviewById(int id)
         {
             throw new NotImplementedException();

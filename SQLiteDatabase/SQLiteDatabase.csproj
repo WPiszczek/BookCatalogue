@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y /d &quot;$(OutDir)\SQLiteDatabase.dll&quot; &quot;$(SolutionDir)API&quot;" />
+  </Target>
+
 </Project>

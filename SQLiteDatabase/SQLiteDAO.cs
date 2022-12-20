@@ -26,25 +26,26 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 
         }
 
-        public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
+        public async Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
         {
-            throw new NotImplementedException();
+            return await _context.Books.Where(e => e.Author.Id == authorId).ToListAsync();
         }
 
-        public Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
+        public async Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
         {
-            throw new NotImplementedException();
+            return await _context.Books.Where(e => e.Category == category).ToListAsync();
         }
 
-        public Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
+        public async Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
         {
-            throw new NotImplementedException();
+            return await _context.Books.Where(e => e.Language == language).ToListAsync();
         }
 
-        public Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
+        public async Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
         {
-            throw new NotImplementedException();
+            return await _context.Books.Where(e => e.Title.Contains(title)).ToListAsync();
         }
+
         public async Task<IBook> GetBookById(int id)
         {
             if (_context.Books == null)
@@ -53,7 +54,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
 
             var book = await _context.Books
-                .FirstOrDefaultAsync(b => b.Id == id);
+                .FirstOrDefaultAsync(e => e.Id == id);
 
             if (book == null)
             {
@@ -83,74 +84,137 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             await _context.SaveChangesAsync();
         }
 
-        public void DeleteBook(int id)
+        public async void DeleteBook(int id)
         {
-            throw new NotImplementedException();
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<IAuthor>> GetAllAuthors()
+        public async Task<IEnumerable<IAuthor>> GetAllAuthors()
         {
-            throw new NotImplementedException();
+            return await _context.Authors.ToListAsync();
         }
 
-        public Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
+        public async Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Authors.Where(e => e.Name.Contains(name)).ToListAsync();
         }
 
-        public Task<IAuthor> GetAuthorById(int id)
+        public async Task<IAuthor> GetAuthorById(int id)
         {
-            throw new NotImplementedException();
+            var author = await _context.Authors.FirstOrDefaultAsync(e => e.Id == id);
+            if (author == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            return author;
         }
 
-        public void AddAuthor(IAuthor author)
+        public async void AddAuthor(IAuthor author)
         {
-            throw new NotImplementedException();
+            if (AuthorExists(author.Id))
+            {
+                throw new ObjectIdAlreadyExistsException();
+            }
+            _context.Authors.Add((Author)author);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateAuthor(IAuthor author)
+        public async void UpdateAuthor(IAuthor author)
         {
-            throw new NotImplementedException();
+            if (!AuthorExists(author.Id))
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Update(author);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteAuthor(int id)
+        public async void DeleteAuthor(int id)
         {
-            throw new NotImplementedException();
+            var author = await _context.Authors.FindAsync(id);
+            if (author == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Authors.Remove(author);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
+        public async Task<IEnumerable<IReview>> GetAllReviews()
         {
-            throw new NotImplementedException();
+            return await _context.Reviews.ToListAsync();
         }
 
-        public Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
+        public async Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
         {
-            throw new NotImplementedException();
+            return await _context.Reviews.Where(e => e.Book.Id == bookId).ToListAsync();
         }
 
-        public Task<IReview> GetReviewById(int id)
+        public async Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
         {
-            throw new NotImplementedException();
+            return await _context.Reviews.Where(e => e.Rating == rating).ToListAsync();
         }
 
-        public void AddReview(IReview review)
+        public async Task<IReview> GetReviewById(int id)
         {
-            throw new NotImplementedException();
+            var review = await _context.Reviews.FirstOrDefaultAsync(e => e.Id == id);
+            if (review == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            return review;
         }
 
-        public void UpdateReview(IReview review)
+        public async void AddReview(IReview review)
         {
-            throw new NotImplementedException();
+            if (ReviewExists(review.Id))
+            {
+                throw new ObjectIdAlreadyExistsException();
+            }
+            _context.Reviews.Add((Review)review);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteReview(int id)
+        public async void UpdateReview(IReview review)
         {
-            throw new NotImplementedException();
+            if (!ReviewExists(review.Id))
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Update(review);
+            await _context.SaveChangesAsync();
+        }
+
+        public async void DeleteReview(int id)
+        {
+            var review = await _context.Reviews.FindAsync(id);
+            if (review == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
         }
 
         private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
+        }
+
+        private bool AuthorExists(int id)
+        {
+            return _context.Authors.Any(e => e.Id == id);
+        }
+
+        private bool ReviewExists(int id)
+        {
+            return _context.Reviews.Any(e => e.Id == id);
         }
     }
 }
