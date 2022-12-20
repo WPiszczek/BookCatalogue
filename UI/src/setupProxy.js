@@ -1,23 +1,20 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const { env } = require('process');
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const { env } = require("process");
 
 //const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
-  //env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:30326';
+//env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:30326';
 
-const target = 'https://localhost:7031';
+const target = "https://localhost:7031";
 
-const context =  [
-  "/weatherforecast",
-  "/api/books"
-];
+const context = ["/api/books", "/api/authors"];
 
-module.exports = function(app) {
+module.exports = function (app) {
   const appProxy = createProxyMiddleware(context, {
     target: target,
     secure: false,
     headers: {
-      Connection: 'Keep-Alive'
-    }
+      Connection: "Keep-Alive",
+    },
   });
 
   app.use(appProxy);

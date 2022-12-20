@@ -86,32 +86,32 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             };
         }
 
-        public void AddAuthor(IAuthor author)
+        public Task<bool> AddAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public void AddReview(IReview review)
+        public Task<bool> AddReview(IReview review)
         {
             throw new NotImplementedException();
         }
 
-        public void AddBook(IBook book)
+        public Task<bool> AddBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteAuthor(int id)
+        public Task<bool> DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteBook(int id)
+        public Task<bool> DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteReview(int id)
+        public Task<bool> DeleteReview(int id)
         {
             throw new NotImplementedException();
         }
@@ -186,17 +186,17 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public void UpdateAuthor(IAuthor author)
+        public Task<bool> UpdateAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateBook(IBook book)
+        public Task<bool> UpdateBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateReview(IReview review)
+        public Task<bool> UpdateReview(IReview review)
         {
             throw new NotImplementedException();
         }

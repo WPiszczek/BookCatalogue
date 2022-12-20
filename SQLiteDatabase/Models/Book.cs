@@ -29,6 +29,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
             set 
             {
                 Reviews = value as IEnumerable<Review>;
-            } }
+            } 
+        }
     }
 }

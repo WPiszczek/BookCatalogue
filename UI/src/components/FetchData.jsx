@@ -12,9 +12,9 @@ function FetchData() {
 
   async function populateBooksData() {
     try {
-      await axios.get("/api/books").then((response) => {
-        console.log("response", response.data);
-        setBooks(response.data);
+      await axios.get("/api/authors").then((response) => {
+        console.log("response", response.data.Data);
+        setBooks(response.data.Data);
         setLoading(false);
       });
     } catch (err) {
@@ -36,11 +36,11 @@ function FetchData() {
         </thead>
         <tbody>
           {books.map((book) => (
-            <tr key={book.id}>
-              <td>{book.title}</td>
-              <td>{book.releaseYear}</td>
-              <td>{book.description}</td>
-              <td>{book.category}</td>
+            <tr key={book.Id}>
+              <td>{book.Name}</td>
+              <td>{book.BirthDate}</td>
+              <td>{book.Name}</td>
+              <td>{book.BirthDate}</td>
             </tr>
           ))}
         </tbody>

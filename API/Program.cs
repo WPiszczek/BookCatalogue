@@ -46,18 +46,24 @@ namespace API
             {
                 string assemblyPath = System.Configuration.ConfigurationManager.AppSettings["dbName"];
 
-                Type daoObjectType = LoadAssembly(assemblyPath) ?? throw new InvalidAssemblyException();
+                Type daoObjectType = LoadAssembly(assemblyPath, typeof(IDAO)) ?? throw new InvalidAssemblyException();
                 //Console.WriteLine(daoObjectType);
                 dao = Activator.CreateInstance(daoObjectType) as IDAO;
             }
             return dao;
         }
 
-        private static Type LoadAssembly(string assemblyName)
+        public static Type GetTypeFromAssembly(Type interfaceType)
+        {
+            string assemblyPath = System.Configuration.ConfigurationManager.AppSettings["dbName"];
+            return LoadAssembly(assemblyPath, interfaceType);
+        }
+
+        private static Type LoadAssembly(string assemblyName, Type typeName)
         {
             Assembly assembly = Assembly.UnsafeLoadFrom(assemblyName);
             var types = assembly.GetTypes();
-            foreach (var type in types.Where(t => t.GetInterfaces().Contains(typeof(IDAO))))
+            foreach (var type in types.Where(t => t.GetInterfaces().Contains(typeName)))
             {
                 return type;
             }

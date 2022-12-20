@@ -64,7 +64,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return book;
         }
 
-        public async void AddBook(IBook book)
+        public async Task<bool> AddBook(IBook book)
         {
             if (BookExists(book.Id))
             {
@@ -72,9 +72,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Books.Add((Book) book);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void UpdateBook(IBook book)
+        public async Task<bool> UpdateBook(IBook book)
         {
             if (!BookExists(book.Id))
             {
@@ -82,9 +83,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Update(book);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void DeleteBook(int id)
+        public async Task<bool> DeleteBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
@@ -93,6 +95,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<IAuthor>> GetAllAuthors()
@@ -115,7 +118,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return author;
         }
 
-        public async void AddAuthor(IAuthor author)
+        public async Task<bool> AddAuthor(IAuthor author)
         {
             if (AuthorExists(author.Id))
             {
@@ -123,9 +126,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Authors.Add((Author)author);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void UpdateAuthor(IAuthor author)
+        public async Task<bool> UpdateAuthor(IAuthor author)
         {
             if (!AuthorExists(author.Id))
             {
@@ -133,9 +137,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Update(author);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void DeleteAuthor(int id)
+        public async Task<bool> DeleteAuthor(int id)
         {
             var author = await _context.Authors.FindAsync(id);
             if (author == null)
@@ -144,6 +149,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<IReview>> GetAllReviews()
@@ -171,7 +177,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return review;
         }
 
-        public async void AddReview(IReview review)
+        public async Task<bool> AddReview(IReview review)
         {
             if (ReviewExists(review.Id))
             {
@@ -179,9 +185,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Reviews.Add((Review)review);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void UpdateReview(IReview review)
+        public async Task<bool> UpdateReview(IReview review)
         {
             if (!ReviewExists(review.Id))
             {
@@ -189,9 +196,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Update(review);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async void DeleteReview(int id)
+        public async Task<bool> DeleteReview(int id)
         {
             var review = await _context.Reviews.FindAsync(id);
             if (review == null)
@@ -200,6 +208,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
             _context.Reviews.Remove(review);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         private bool BookExists(int id)
