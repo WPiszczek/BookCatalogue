@@ -9,7 +9,7 @@ namespace PiszczekSzpotek.BookCatalogue.Interfaces
         public Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category);
         public Task<IEnumerable<IBook>> SearchBooksByTitle(string title);
         public Task<IBook> GetBookById(int id);
-        public void CreateBook(IBook book);
+        public void AddBook(IBook book);
         public void UpdateBook(IBook book);
         public void DeleteBook(int id);
     }

@@ -9,6 +9,6 @@
         public string Reviewer { get; set; }
         public DateTime DateAdded { get; set; }
         public IBook Book { get; set; }
-        public int BookId { get; set; }
+        //public int BookId { get; set; }
     }
 }

@@ -96,7 +96,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public void CreateBook(IBook book)
+        public void AddBook(IBook book)
         {
             throw new NotImplementedException();
         }

@@ -64,7 +64,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return book;
         }
 
-        public async void CreateBook(IBook book)
+        public async void AddBook(IBook book)
         {
             if (BookExists(book.Id))
             {

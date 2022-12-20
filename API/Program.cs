@@ -12,18 +12,6 @@ namespace API
 
         public static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Specify DAO assembly path as parameter");
-                return;
-            }
-            string assemblyPath = args[0];
-            //Type daoObjectType = LoadAssembly(assemblyPath) ?? throw new InvalidAssemblyException();
-            //dao = Activator.CreateInstance(daoObjectType) as IDAO;
-
-            //Type DaoObjectType = loadAssembly("bin/Debug/net6.0/MockDatabase.dll") ?? throw new InvalidAssemblyException();
-            //Type DaoObjectType = loadAssembly("bin/Debug/net6.0/SQLiteDatabase.dll") ?? throw new InvalidAssemblyException();
-
             var builder = WebApplication.CreateBuilder(args);
             
             // Add services to the container.
@@ -32,7 +20,6 @@ namespace API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddSingleton(typeof(IDAO), daoObjectType);
 
             var app = builder.Build();
             
