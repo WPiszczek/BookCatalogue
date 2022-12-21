@@ -133,8 +133,8 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             try
             {
                 bool success = await _service.DeleteAuthor(id);
-                if (success) return ResponseHelper.Success("Author updated successfully.");
-                else return ResponseHelper.Error("Error while updating author. Try again.");
+                if (success) return ResponseHelper.Success("Author deleted successfully.");
+                else return ResponseHelper.Error("Error while deleting author. Try again.");
             }
             catch (ObjectNotFoundException ex)
             {

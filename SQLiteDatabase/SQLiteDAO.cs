@@ -8,222 +8,274 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
     public class SQLiteDAO : IDAO
     {
-        private readonly SQLiteDatabaseContext _context;
+        //private readonly SQLiteDatabaseContext _context;
+        private readonly IDbContextFactory<SQLiteDatabaseContext> _contextFactory;
 
         public SQLiteDAO()
         {
-            _context = new SQLiteDatabaseContext();
+            _contextFactory = new SQLiteDatabaseContextFactory();
         }
 
-        public SQLiteDAO(SQLiteDatabaseContext context)
-        {
-            _context = context;
-        }
+        //public SQLiteDAO(SQLiteDatabaseContext context)
+        //{
+        //    _context = context;
+        //}
 
         public async Task<IEnumerable<IBook>> GetAllBooks()
         {
-            return await _context.Books.ToListAsync();
-
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Books.ToListAsync();
         }
 
         public async Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
         {
-            return await _context.Books.Where(e => e.Author.Id == authorId).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Books.Where(e => e.Author.Id == authorId).ToListAsync();
         }
 
         public async Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
         {
-            return await _context.Books.Where(e => e.Category == category).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Books.Where(e => e.Category == category).ToListAsync();
         }
 
         public async Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
         {
-            return await _context.Books.Where(e => e.Language == language).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Books.Where(e => e.Language == language).ToListAsync();
         }
 
         public async Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
         {
-            return await _context.Books.Where(e => e.Title.Contains(title)).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Books.Where(e => e.Title.Contains(title)).ToListAsync();
         }
 
         public async Task<IBook> GetBookById(int id)
         {
-            if (_context.Books == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ContextIsNullException();
+
+                if (_context.Books == null)
+                {
+                    throw new ContextIsNullException();
+                }
+
+                var book = await _context.Books
+                    .FirstOrDefaultAsync(e => e.Id == id);
+
+                if (book == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+
+                return book;
             }
-
-            var book = await _context.Books
-                .FirstOrDefaultAsync(e => e.Id == id);
-
-            if (book == null)
-            {
-                throw new ObjectNotFoundException();
-            }
-
-            return book;
         }
 
         public async Task<bool> AddBook(IBook book)
         {
-            if (BookExists(book.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectIdAlreadyExistsException();
+                if (BookExists(book.Id))
+                {
+                    throw new ObjectIdAlreadyExistsException();
+                }
+                await _context.Books.AddAsync((Book) book);
+                await _context.SaveChangesAsync();
+                return true;
+
             }
-            _context.Books.Add((Book) book);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> UpdateBook(IBook book)
         {
-            if (!BookExists(book.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                if (!BookExists(book.Id))
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Update(book);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Update(book);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                var book = await _context.Books.FindAsync(id);
+                if (book == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Books.Remove(book);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<IEnumerable<IAuthor>> GetAllAuthors()
         {
-            return await _context.Authors.ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Authors.ToListAsync();
         }
 
         public async Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
         {
-            return await _context.Authors.Where(e => e.Name.Contains(name)).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Authors.Where(e => e.Name.Contains(name)).ToListAsync();
         }
 
         public async Task<IAuthor> GetAuthorById(int id)
         {
-            var author = await _context.Authors.FirstOrDefaultAsync(e => e.Id == id);
-            if (author == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                var author = await _context.Authors.FirstOrDefaultAsync(e => e.Id == id);
+                if (author == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+                return author;
             }
-            return author;
         }
 
         public async Task<bool> AddAuthor(IAuthor author)
         {
-            if (AuthorExists(author.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectIdAlreadyExistsException();
+                if (AuthorExists(author.Id))
+                {
+                    throw new ObjectIdAlreadyExistsException();
+                }
+                await _context.Authors.AddAsync((Author)author);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Authors.Add((Author)author);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> UpdateAuthor(IAuthor author)
         {
-            if (!AuthorExists(author.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                if (!AuthorExists(author.Id))
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Authors.Update((Author)author);
+                _context.SaveChanges();
+                return true;
             }
-            _context.Update(author);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> DeleteAuthor(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                var author = await _context.Authors.FindAsync(id);
+                if (author == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Authors.Remove(author);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<IEnumerable<IReview>> GetAllReviews()
         {
-            return await _context.Reviews.ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Reviews.ToListAsync();
         }
 
         public async Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
         {
-            return await _context.Reviews.Where(e => e.Book.Id == bookId).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Reviews.Where(e => e.Book.Id == bookId).ToListAsync();
         }
 
         public async Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
         {
-            return await _context.Reviews.Where(e => e.Rating == rating).ToListAsync();
+            using (var _context = _contextFactory.CreateDbContext())
+                return await _context.Reviews.Where(e => e.Rating == rating).ToListAsync();
         }
 
         public async Task<IReview> GetReviewById(int id)
         {
-            var review = await _context.Reviews.FirstOrDefaultAsync(e => e.Id == id);
-            if (review == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                var review = await _context.Reviews.FirstOrDefaultAsync(e => e.Id == id);
+                if (review == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+                return review;
+
             }
-            return review;
         }
 
         public async Task<bool> AddReview(IReview review)
         {
-            if (ReviewExists(review.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectIdAlreadyExistsException();
+                if (ReviewExists(review.Id))
+                {
+                    throw new ObjectIdAlreadyExistsException();
+                }
+                _context.Reviews.Add((Review)review);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Reviews.Add((Review)review);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> UpdateReview(IReview review)
         {
-            if (!ReviewExists(review.Id))
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                if (!ReviewExists(review.Id))
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Update(review);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Update(review);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         public async Task<bool> DeleteReview(int id)
         {
-            var review = await _context.Reviews.FindAsync(id);
-            if (review == null)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                throw new ObjectNotFoundException();
+                var review = await _context.Reviews.FindAsync(id);
+                if (review == null)
+                {
+                    throw new ObjectNotFoundException();
+                }
+                _context.Reviews.Remove(review);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
-            return true;
         }
 
         private bool BookExists(int id)
         {
-            return _context.Books.Any(e => e.Id == id);
+            using (var _context = _contextFactory.CreateDbContext())
+                return _context.Books.Any(e => e.Id == id);
         }
 
         private bool AuthorExists(int id)
         {
-            return _context.Authors.Any(e => e.Id == id);
+            using (var _context = _contextFactory.CreateDbContext()) 
+                return _context.Authors.Any(e => e.Id == id);
         }
 
         private bool ReviewExists(int id)
         {
-            return _context.Reviews.Any(e => e.Id == id);
+            using (var _context = _contextFactory.CreateDbContext())
+                return _context.Reviews.Any(e => e.Id == id);
         }
     }
 }
