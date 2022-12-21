@@ -16,11 +16,6 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             _contextFactory = new SQLiteDatabaseContextFactory();
         }
 
-        //public SQLiteDAO(SQLiteDatabaseContext context)
-        //{
-        //    _context = context;
-        //}
-
         public async Task<IEnumerable<IBook>> GetAllBooks()
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -48,7 +43,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         public async Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
         {
             using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.Where(e => e.Title.Contains(title)).ToListAsync();
+                return await _context.Books.Where(e => e.Title.ToLower().Contains(title.ToLower())).ToListAsync();
         }
 
         public async Task<IBook> GetBookById(int id)
@@ -126,7 +121,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         public async Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
         {
             using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Authors.Where(e => e.Name.Contains(name)).ToListAsync();
+                return await _context.Authors.Where(e => e.Name.ToLower().Contains(name.ToLower())).ToListAsync();
         }
 
         public async Task<IAuthor> GetAuthorById(int id)

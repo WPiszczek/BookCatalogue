@@ -25,13 +25,13 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
         // GET: api/<AuthorsController>
         [HttpGet]
-        public async Task<string> Get()
+        public async Task<string> Get(string? name=null)
         {
             _logger.LogInformation("GET: api/authors");
 
             try
             {
-                var authors = await _service.GetAllAuthors();
+                var authors = name == null ? await _service.GetAllAuthors() : await _service.SearchAuthorsByName(name);
 
                 return ResponseHelper.Data(authors);
             } catch (Exception ex)
