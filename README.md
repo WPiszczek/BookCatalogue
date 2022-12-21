@@ -10,11 +10,7 @@
 
 ### 2.1 BookDAO
 
-- getAllBooks()
-- getBooksByAuthor(author)
-- getBooksByCategory(category)
-- getBooksByLanguage(language)
-- searchBooksByTitle(title)
+- getBooks(title, authorId, category)
 - getBookById(id)
 - addBook(book)
 - updateBook(book)
@@ -22,8 +18,7 @@
 
 ### 2.2 AuthorDAO
 
-- getAllAuthors()
-- searchAuthorsByName(name)
+- getAuthors(name)
 - getAuthorById(id)
 - addAuthor(author)
 - updateAuthor(author)
@@ -31,9 +26,7 @@
 
 ### 2.3 ReviewDAO
 
-- getAllReviews()
-- getReviewsByBook(bookId)
-- getReviewsByRating(rating)
+- getReviews(bookId, rating)
 - getReviewById(id)
 - addReview(review)
 - updateReview(review)

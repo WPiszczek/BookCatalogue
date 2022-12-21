@@ -8,7 +8,11 @@ namespace API
 {
     public class Program
     {
+        private static Assembly? assembly = null;
         private static IDAO? dao = null;
+        private static Type? authorType = null;
+        private static Type? bookType = null;
+        private static Type? reviewType = null;
 
         public static void Main(string[] args)
         {
@@ -44,30 +48,60 @@ namespace API
         {
             if (dao == null)
             {
-                string assemblyPath = System.Configuration.ConfigurationManager.AppSettings["dbName"];
-
-                Type daoObjectType = LoadAssembly(assemblyPath, typeof(IDAO)) ?? throw new InvalidAssemblyException();
-                //Console.WriteLine(daoObjectType);
-                dao = Activator.CreateInstance(daoObjectType) as IDAO;
+                Type daoObjectType = GetTypeFromAssembly(typeof(IDAO));
+                dao = Activator.CreateInstance(daoObjectType) as IDAO ?? throw new InvalidAssemblyException();
             }
             return dao;
         }
 
-        public static Type GetTypeFromAssembly(Type interfaceType)
+        public static Type GetAuthorType()
         {
-            string assemblyPath = System.Configuration.ConfigurationManager.AppSettings["dbName"];
-            return LoadAssembly(assemblyPath, interfaceType);
+            if (authorType == null)
+            {
+                authorType = GetTypeFromAssembly(typeof(IAuthor));
+            }
+            return authorType;
         }
 
-        private static Type LoadAssembly(string assemblyName, Type typeName)
+        public static Type GetBookType()
         {
-            Assembly assembly = Assembly.UnsafeLoadFrom(assemblyName);
+            if (bookType == null)
+            {
+                bookType = GetTypeFromAssembly(typeof(IBook));
+            }
+            return bookType;
+        }
+
+        public static Type GetReviewType()
+        {
+            if (reviewType == null)
+            {
+                reviewType = GetTypeFromAssembly(typeof(IReview));
+            }
+            return reviewType;
+        }
+
+        public static Type GetTypeFromAssembly(Type typeName)
+        {
+            if (assembly == null)
+            {
+                LoadAssembly();
+            }
             var types = assembly.GetTypes();
             foreach (var type in types.Where(t => t.GetInterfaces().Contains(typeName)))
             {
                 return type;
             }
             throw new InvalidAssemblyException();
+        }
+
+        private static void LoadAssembly()
+        {
+            if (assembly == null)
+            {
+                string assemblyName = System.Configuration.ConfigurationManager.AppSettings["dbName"] ?? throw new AssemblyNameNotSetException("Set dbName property in app.config file.");
+                assembly = Assembly.UnsafeLoadFrom(assemblyName) ?? throw new InvalidAssemblyException();
+            }
         }
     }
 }

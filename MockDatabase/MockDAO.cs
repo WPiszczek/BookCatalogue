@@ -86,117 +86,77 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             };
         }
 
-        public Task<bool> AddAuthor(IAuthor author)
+        Task<bool> IAuthorsRepository.AddAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddReview(IReview review)
+        Task<bool> IBooksRepository.AddBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddBook(IBook book)
+        Task<bool> IReviewsRepository.AddReview(IReview review)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAuthor(int id)
+        Task<bool> IAuthorsRepository.DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteBook(int id)
+        Task<bool> IBooksRepository.DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteReview(int id)
+        Task<bool> IReviewsRepository.DeleteReview(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IAuthor>> GetAllAuthors()
+        Task<IAuthor> IAuthorsRepository.GetAuthorById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IBook>> GetAllBooks()
-        {
-            foreach (Book book in _books)
-            {
-                book.Author = _authors.FirstOrDefault(a => a.Id == 1) as Author;
-                //Console.WriteLine(book.Author.Name);
-            }
-            return Task.FromResult(_books);
-        }
-
-        public Task<IAuthor> GetAuthorById(int id)
+        Task<IEnumerable<IAuthor>> IAuthorsRepository.GetAuthors(string? name)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IBook> GetBookById(int id)
-        {
-            return Task.FromResult(_books.FirstOrDefault(book => book.Id == id));
-        }
-
-        public Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
+        Task<IBook> IBooksRepository.GetBookById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
+        Task<IEnumerable<IBook>> IBooksRepository.GetBooks(string? title, int? authorId, BookCategory? category)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
+        Task<IReview> IReviewsRepository.GetReviewById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IReview>> GetAllReviews()
+        Task<IEnumerable<IReview>> IReviewsRepository.GetReviews(int? bookId, int? rating)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReview> GetReviewById(int id)
+        Task<bool> IAuthorsRepository.UpdateAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
+        Task<bool> IBooksRepository.UpdateBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateAuthor(IAuthor author)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateBook(IBook book)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateReview(IReview review)
+        Task<bool> IReviewsRepository.UpdateReview(IReview review)
         {
             throw new NotImplementedException();
         }

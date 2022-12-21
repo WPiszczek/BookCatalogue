@@ -3,12 +3,13 @@ using PiszczekSzpotek.BookCatalogue.Interfaces;
 using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Core.Enums;
 using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
+using System.Xml.Linq;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
     public class SQLiteDAO : IDAO
     {
-        //private readonly SQLiteDatabaseContext _context;
+
         private readonly IDbContextFactory<SQLiteDatabaseContext> _contextFactory;
 
         public SQLiteDAO()
@@ -16,34 +17,20 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             _contextFactory = new SQLiteDatabaseContextFactory();
         }
 
-        public async Task<IEnumerable<IBook>> GetAllBooks()
+        public async Task<IEnumerable<IBook>> GetBooks(
+            string? title = null,
+            int? authorId = null,
+            BookCategory? category = null)
         {
             using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.ToListAsync();
-        }
-
-        public async Task<IEnumerable<IBook>> GetBooksByAuthor(int authorId)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.Where(e => e.Author.Id == authorId).ToListAsync();
-        }
-
-        public async Task<IEnumerable<IBook>> GetBooksByCategory(BookCategory category)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.Where(e => e.Category == category).ToListAsync();
-        }
-
-        public async Task<IEnumerable<IBook>> GetBooksByLanguage(string language)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.Where(e => e.Language == language).ToListAsync();
-        }
-
-        public async Task<IEnumerable<IBook>> SearchBooksByTitle(string title)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Books.Where(e => e.Title.ToLower().Contains(title.ToLower())).ToListAsync();
+            {
+                return await _context.Books
+                    .Where(e =>
+                        (title == null || e.Title.ToLower().Contains(title.ToLower()))
+                        && (authorId == null || e.Author.Id == authorId)
+                        && (category == null || e.Category == category)
+                    ).ToListAsync();                
+            }
         }
 
         public async Task<IBook> GetBookById(int id)
@@ -112,16 +99,14 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
-        public async Task<IEnumerable<IAuthor>> GetAllAuthors()
+        public async Task<IEnumerable<IAuthor>> GetAuthors(string? name=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Authors.ToListAsync();
-        }
-
-        public async Task<IEnumerable<IAuthor>> SearchAuthorsByName(string name)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Authors.Where(e => e.Name.ToLower().Contains(name.ToLower())).ToListAsync();
+                return await _context.Authors
+                    .Where(e =>
+                        name == null || e.Name.ToLower().Contains(name.ToLower())
+                    )
+                    .ToListAsync();
         }
 
         public async Task<IAuthor> GetAuthorById(int id)
@@ -180,22 +165,14 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
-        public async Task<IEnumerable<IReview>> GetAllReviews()
+        public async Task<IEnumerable<IReview>> GetReviews(int? bookId=null, int? rating=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Reviews.ToListAsync();
-        }
-
-        public async Task<IEnumerable<IReview>> GetReviewsByBook(int bookId)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Reviews.Where(e => e.Book.Id == bookId).ToListAsync();
-        }
-
-        public async Task<IEnumerable<IReview>> GetReviewsByRating(int rating)
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-                return await _context.Reviews.Where(e => e.Rating == rating).ToListAsync();
+                return await _context.Reviews
+                .Where(e =>
+                    (bookId == null || e.Book.Id == bookId)
+                    && (rating == null || e.Rating == rating)
+                ).ToListAsync();
         }
 
         public async Task<IReview> GetReviewById(int id)

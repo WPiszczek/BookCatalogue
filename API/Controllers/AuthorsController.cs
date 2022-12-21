@@ -14,7 +14,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IDAO _service = Program.GetDAO();
-        private readonly Type _authorType = Program.GetTypeFromAssembly(typeof(IAuthor));
+        private readonly Type _authorType = Program.GetAuthorType();
         private readonly ILogger<AuthorsController> _logger;
 
             
@@ -31,7 +31,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
             try
             {
-                var authors = name == null ? await _service.GetAllAuthors() : await _service.SearchAuthorsByName(name);
+                var authors = await _service.GetAuthors(name);
 
                 return ResponseHelper.Data(authors);
             } catch (Exception ex)
