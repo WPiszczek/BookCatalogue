@@ -29,7 +29,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                         (title == null || e.Title.ToLower().Contains(title.ToLower()))
                         && (authorId == null || e.Author.Id == authorId)
                         && (category == null || e.Category == category)
-                    ).ToListAsync();                
+                    )
+                    .Include(e => e.Author)
+                    .Include(e => e.Reviews)
+                    .ToListAsync();                
             }
         }
 
@@ -44,6 +47,8 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 }
 
                 var book = await _context.Books
+                    .Include(e => e.Author)
+                    .Include(e => e.Reviews)
                     .FirstOrDefaultAsync(e => e.Id == id);
 
                 if (book == null)
@@ -63,7 +68,8 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 {
                     throw new ObjectIdAlreadyExistsException();
                 }
-                await _context.Books.AddAsync((Book) book);
+                //await _context.Authors.FirstOrDefault(e => e.Id == book.Author.Id).Books.Add(book);
+                await _context.Books.AddAsync((Book)book);
                 await _context.SaveChangesAsync();
                 return true;
 
@@ -106,6 +112,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                     .Where(e =>
                         name == null || e.Name.ToLower().Contains(name.ToLower())
                     )
+                    .Include(e => e.Books)
                     .ToListAsync();
         }
 
@@ -113,7 +120,9 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var author = await _context.Authors.FirstOrDefaultAsync(e => e.Id == id);
+                var author = await _context.Authors
+                    .Include(e => e.Books)
+                    .FirstOrDefaultAsync(e => e.Id == id);
                 if (author == null)
                 {
                     throw new ObjectNotFoundException();
@@ -169,17 +178,21 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         {
             using (var _context = _contextFactory.CreateDbContext())
                 return await _context.Reviews
-                .Where(e =>
-                    (bookId == null || e.Book.Id == bookId)
-                    && (rating == null || e.Rating == rating)
-                ).ToListAsync();
+                    .Where(e =>
+                        (bookId == null || e.Book.Id == bookId)
+                        && (rating == null || e.Rating == rating)
+                    )
+                    .Include(e => e.Book)
+                    .ToListAsync();
         }
 
         public async Task<IReview> GetReviewById(int id)
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var review = await _context.Reviews.FirstOrDefaultAsync(e => e.Id == id);
+                var review = await _context.Reviews
+                    .Include(e => e.Book)
+                    .FirstOrDefaultAsync(e => e.Id == id);
                 if (review == null)
                 {
                     throw new ObjectNotFoundException();

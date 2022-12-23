@@ -6,6 +6,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
     [Table("Authors")]
     public class Author : IAuthor
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }

@@ -10,6 +10,8 @@ namespace PiszczekSzpotek.BookCatalogue.Core.Enums
             {
                 case BookCategory.Fantastyka:
                     return "Fantastyka";
+                case BookCategory.Horror:
+                    return "Horror";
                 case BookCategory.Kryminal_Sensacja:
                     return "Kryminał/Sensacja";
                 case BookCategory.Literatura_Piekna:
@@ -33,6 +35,8 @@ namespace PiszczekSzpotek.BookCatalogue.Core.Enums
             {
                 case "Fantastyka":
                     return BookCategory.Fantastyka;
+                case "Horror":
+                    return BookCategory.Horror;
                 case "Kryminał/Sensacja":
                     return BookCategory.Kryminal_Sensacja; 
                 case "Literatura piękna":

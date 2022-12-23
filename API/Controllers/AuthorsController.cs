@@ -72,7 +72,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             {
                 var author = Activator.CreateInstance(_authorType) as IAuthor;
 
-                author.Id = json.GetProperty("Id").GetInt32();
                 author.Name = json.GetProperty("Name").GetString();
                 author.BirthDate = Convert.ToDateTime(json.GetProperty("BirthDate").GetString());
 

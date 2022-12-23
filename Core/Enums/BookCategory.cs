@@ -3,6 +3,7 @@
     public enum BookCategory
     {
         Fantastyka,
+        Horror,
         Kryminal_Sensacja,
         Literatura_Piekna,
         Literatura_Faktu,

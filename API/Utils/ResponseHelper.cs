@@ -12,7 +12,13 @@ namespace PiszczekSzpotek.BookCatalogue.API.Utils
                 Status = "Success",
                 Data = obj
             };
-            return JsonConvert.SerializeObject(responseObj, Formatting.Indented);
+            return JsonConvert.SerializeObject(
+                responseObj, 
+                Formatting.Indented, 
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
         }
 
         public static string Success(string message)

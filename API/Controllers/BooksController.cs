@@ -16,7 +16,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
     {
         private readonly IDAO _service = Program.GetDAO(); 
         private readonly Type _bookType = Program.GetBookType();
-        private readonly Type _authorType = Program.GetAuthorType();
         private readonly ILogger<BooksController> _logger;
 
 
@@ -41,6 +40,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             } catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 return ResponseHelper.Error("Error while fetching books. Try again.");
             }
         }
@@ -76,23 +76,15 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
             try
             {
-
-                _logger.LogInformation($"{json}");
                 var book = Activator.CreateInstance(_bookType) as IBook;
 
-                book.Id = json.GetProperty("Id").GetInt32();
+                //book.Id = json.GetProperty("Id").GetInt32();
                 book.Title = json.GetProperty("Title").GetString();
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
-                //book.PhotoUrl = json.GetProperty("")
+                book.PhotoUrl = json.GetProperty("PhotoUrl").GetString();
                 book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
-
-                var authorFromJson = json.GetProperty("Author");
-                var author = Activator.CreateInstance(_authorType) as IAuthor;
-                author.Id = authorFromJson.GetProperty("Id").GetInt32();
-                author.Name = authorFromJson.GetProperty("Name").GetString();
-                author.BirthDate = Convert.ToDateTime(authorFromJson.GetProperty("BirthDate"));
-                book.Author = author;
+                book.AuthorId = json.GetProperty("AuthorId").GetInt32();
 
                 bool success = await _service.AddBook(book);
                 if (success) return ResponseHelper.Success("Book added successfully.");
@@ -103,28 +95,78 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
                 _logger.LogError(ex.Message);
                 return ResponseHelper.Error("Book with given Id already exists.");
             }
+            catch (InvalidBookCategoryException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Invalid book category.");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                //_logger.LogError(ex.InnerException.Message);
                 return ResponseHelper.Error("Error while adding book. Try again.");
             }
         }
 
         // PUT api/<BooksController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] IBook book)
+        public async Task<string> Put(int id, [FromBody] JsonElement json)
         {
             _logger.LogInformation($"PUT: api/books/{id}");
-            _service.UpdateBook(book);
+            try
+            {
+                var book = Activator.CreateInstance(_bookType) as IBook;
+
+                book.Id = id;
+                book.Title = json.GetProperty("Title").GetString();
+                book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
+                book.Description = json.GetProperty("Description").GetString();
+                book.PhotoUrl = json.GetProperty("PhotoUrl").GetString();
+                book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
+                book.AuthorId = json.GetProperty("AuthorId").GetInt32();
+
+                bool success = await _service.UpdateBook(book);
+                if (success) return ResponseHelper.Success("Book updated successfully.");
+                else return ResponseHelper.Error("Error while updating book. Try again.");
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Book with given Id not found.");
+            }
+            catch (InvalidBookCategoryException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Invalid book category.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Error while updating book. Try again.");
+            }
         }
 
         // DELETE api/<BooksController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<string> Delete(int id)
         {
             _logger.LogInformation($"DELETE: api/books/{id}");
-            _service.DeleteBook(id);
+
+            try
+            {
+                bool success = await _service.DeleteBook(id);
+                if (success) return ResponseHelper.Success("Book deleted successfully.");
+                else return ResponseHelper.Error("Error while deleting book. Try again.");
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Book with given Id not found.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Error while deleting book. Try again.");
+            }
         }
     }
 }
