@@ -3,6 +3,7 @@ using PiszczekSzpotek.BookCatalogue.API.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using System.Reflection;
 using System.Configuration;
+using System.Text.Json;
 
 namespace API
 {
@@ -17,7 +18,7 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             // Add services to the container.
 
             builder.Services.AddControllers();

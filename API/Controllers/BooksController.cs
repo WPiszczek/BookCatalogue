@@ -24,7 +24,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             _logger = logger;
         }
 
-        // GET: api/<BooksController>
+        // GET: api/books
         [HttpGet]
         public async Task<string> Get(
             string? title=null, 
@@ -78,7 +78,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             {
                 var book = Activator.CreateInstance(_bookType) as IBook;
 
-                //book.Id = json.GetProperty("Id").GetInt32();
                 book.Title = json.GetProperty("Title").GetString();
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
