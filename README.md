@@ -71,4 +71,4 @@
 
 ### 3.4 ImageController
 
-- Get /api/image/{directory}/{name}
+- GET /api/image/{directory}/{name}
