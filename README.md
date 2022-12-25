@@ -8,47 +8,57 @@
 
 ## 2. Metody:
 
-### 2.1 BookDAO
+### 2.1 BooksRepository
 
-- getBooks(title, authorId, category)
-- getBookById(id)
-- addBook(book)
-- updateBook(book)
-- deleteBook(book)
+- GetBooks(title, authorId, category)
+- GetBookById(id)
+- AddBook(book)
+- UpdateBookImageUrl(bookId, imageUrl)
+- UpdateBook(book)
+- DeleteBook(book)
 
-### 2.2 AuthorDAO
+### 2.2 AuthorsRepository
 
-- getAuthors(name)
-- getAuthorById(id)
-- addAuthor(author)
-- updateAuthor(author)
-- deleteAuthor(author)
+- GetAuthors(name)
+- GetAuthorById(id)
+- AddAuthor(author)
+- UpdateAuthorImageUrl(authorId, imageUrl)
+- UpdateAuthor(author)
+- DeleteAuthor(author)
 
-### 2.3 ReviewDAO
+### 2.3 ReviewsRepository
 
-- getReviews(bookId, rating)
-- getReviewById(id)
-- addReview(review)
-- updateReview(review)
-- deleteReview(review)
+- GetReviews(bookId, rating)
+- GetReviewById(id)
+- AddReview(review)
+- UpdateReview(review)
+- DeleteReview(review)
+
+### 2.4 ImageRepository
+
+- GetImage(name, directory)
+- PostImage(file, directory)
+- PutImage(file, directory, currentName)
+- DeleteImage(directory, name)
 
 ## 3. API:
 
 - GET /books?author=&category=&language=&title=
 - GET /books/id
-- POST /books/id
+- POST /books
+- PATCH /books/id
 - PUT /books/id
 - DELETE /books/id
 
 - GET /authors?name=
 - GET /authors/id
-- POST /authors/id
+- POST /authors
+- PATCH /authors/id
 - PUT /authors/id
 - DELETE /authors/id
 
-- GET /reviews?rating=
-- GET /books/id/reviews?rating=
-- GET /books/id/reviews/id
-- POST /books/id/reviews/id
-- PUT /books/id/reviews/id
-- DELETE /books/id/reviews/id
+- GET /reviews?book=&rating=
+- GET /reviews/id
+- POST /reviews
+- PUT /reviews/id
+- DELETE /reviews/id
