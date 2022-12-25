@@ -1,4 +1,6 @@
-﻿using PiszczekSzpotek.BookCatalogue.Core.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PiszczekSzpotek.BookCatalogue.Core.Enums;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using PiszczekSzpotek.BookCatalogue.MockDatabase.Models;
 
@@ -111,6 +113,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
+        bool IImageRepository.DeleteImage(string directory, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<bool> IReviewsRepository.DeleteReview(int id)
         {
             throw new NotImplementedException();
@@ -136,6 +143,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
+        FileStreamResult IImageRepository.GetImage(string name, string directory)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<IReview> IReviewsRepository.GetReviewById(int id)
         {
             throw new NotImplementedException();
@@ -146,12 +158,27 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
+        Task<string> IImageRepository.PostImage(IFormFile file, string directory)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<string> IImageRepository.PutImage(IFormFile file, string directory, string currentName)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<bool> IAuthorsRepository.UpdateAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
         Task<bool> IBooksRepository.UpdateBook(IBook book)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IBooksRepository.UpdateBookImageUrl(int bookId, string imageUrl)
         {
             throw new NotImplementedException();
         }

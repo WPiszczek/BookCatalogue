@@ -1,6 +1,7 @@
 ﻿using API;
 using Microsoft.AspNetCore.Mvc;
-using PiszczekSzpotek.BookCatalogue.API.Exceptions;
+using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
+using PiszczekSzpotek.BookCatalogue.Interfaces;
 
 namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 {
@@ -9,6 +10,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
     public class ImageController : Controller
     {
         private readonly ILogger<ImageController> _logger;
+        private readonly IDAO _service = Program.GetDAO();
 
         public ImageController(ILogger<ImageController> logger)
         {
@@ -16,35 +18,37 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
         }
 
         // GET: api/image/1.png
-        [HttpGet("{imageName}")]
-        public IActionResult Get(string imageName)
+        [HttpGet("{directory}/{imageName}")]
+        public IActionResult Get(string directory, string imageName)
         {
             try
             {
-                string imageExtension;
-                if (imageName.ToLower().EndsWith(".jpg")) imageExtension = "image/jpg";
-                else if (imageName.ToLower().EndsWith(".jpeg")) imageExtension = "image/jpeg";
-                else if (imageName.ToLower().EndsWith(".png")) imageExtension = "image/png";
-                else if (imageName.ToLower().EndsWith(".bmp")) imageExtension = "image/bmp";
-                else throw new InvalidImageExtensionException();
+                _logger.LogInformation($"GET: api/{directory}/{imageName}");
+                return _service.GetImage(imageName, directory);
 
-                var image = System.IO.File.OpenRead(Path.Combine("..", "Images", imageName));
-
-                return File(image, imageExtension);
-
-            } catch (InvalidImageExtensionException ex) 
+            } 
+            catch (InvalidImageExtensionException ex) 
             {
                 _logger.LogError(ex.Message);
-                return Json(new
+                return new JsonResult(new
                 {
                     Status = "Fail",
                     Message = "Invalid file extension."
                 });
             }
+            catch (InvalidImageDirectoryException ex)
+            {
+                _logger.LogError(ex.Message);
+                return new JsonResult(new
+                {
+                    Status = "Fail",
+                    Message = "Invalid directory."
+                });
+            }
             catch (FileNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
-                return Json(new
+                return new JsonResult(new
                 {
                     Status = "Fail",
                     Message = "File not found."
@@ -53,7 +57,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Json(new
+                return new JsonResult(new
                 {
                     Status = "Fail",
                     Message = "Error while getting file."

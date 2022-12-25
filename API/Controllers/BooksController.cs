@@ -45,7 +45,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // GET api/<BooksController>/5
+        // GET api/books/5
         [HttpGet("{id}")]
         public async Task<string> GetById(int id)
         {
@@ -68,22 +68,27 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // POST api/<BooksController>
+        // POST api/books
         [HttpPost]
-        public async Task<string> Post([FromBody] JsonElement json)
+        public async Task<string> Post([FromForm] FormModel formModel)
         {
             _logger.LogInformation("POST: api/books");
 
             try
             {
+                JsonElement json = JsonDocument.Parse(formModel.Json).RootElement;
+                var image = formModel.Image;
+                _logger.LogInformation($"json - {json}");
+                _logger.LogInformation($"{image.FileName}");
                 var book = Activator.CreateInstance(_bookType) as IBook;
 
                 book.Title = json.GetProperty("Title").GetString();
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
-                book.PhotoUrl = json.GetProperty("PhotoUrl").GetString();
                 book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
                 book.AuthorId = json.GetProperty("AuthorId").GetInt32();
+
+                book.ImageUrl = await _service.PostImage(image, "books");
 
                 bool success = await _service.AddBook(book);
                 if (success) return ResponseHelper.Success("Book added successfully.");
@@ -106,7 +111,36 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // PUT api/<BooksController>/5
+        // PATCH api/books/5
+        [HttpPatch("{id}")]
+        public async Task<string> UpdateBookImage(int id, [FromForm] FormModel formModel)
+        {
+            _logger.LogInformation($"PATCH: api/books/{id}");
+
+            try
+            {
+                var book = await _service.GetBookById(id);
+                string imageUrl = book.ImageUrl;
+                string newImageUrl = await _service.PutImage(formModel.Image, "books", imageUrl);
+                bool success = await _service.UpdateBookImageUrl(id, newImageUrl);
+
+                if (success) return ResponseHelper.Success("Book image updated successfully.");
+                else return ResponseHelper.Error("Error while updating book image. Try again.");
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Book not found.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
+                return ResponseHelper.Error("Error while updating book image. Try again.");
+            }
+        }
+
+        // PUT api/books/5
         [HttpPut("{id}")]
         public async Task<string> Put(int id, [FromBody] JsonElement json)
         {
@@ -119,7 +153,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
                 book.Title = json.GetProperty("Title").GetString();
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
-                book.PhotoUrl = json.GetProperty("PhotoUrl").GetString();
+                book.ImageUrl = json.GetProperty("ImageUrl").GetString();
                 book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
                 book.AuthorId = json.GetProperty("AuthorId").GetInt32();
 
@@ -144,7 +178,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // DELETE api/<BooksController>/5
+        // DELETE api/books/5
         [HttpDelete("{id}")]
         public async Task<string> Delete(int id)
         {

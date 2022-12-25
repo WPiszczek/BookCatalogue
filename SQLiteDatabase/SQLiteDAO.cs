@@ -4,6 +4,9 @@ using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Core.Enums;
 using PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 {
@@ -73,6 +76,26 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 await _context.SaveChangesAsync();
                 return true;
 
+            }
+        }
+
+        public async Task<bool> UpdateBookImageUrl(int id, string imageUrl)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                if (!BookExists(id))
+                {
+                    throw new ObjectNotFoundException();
+                }
+
+                var book = await _context.Books
+                    .FirstOrDefaultAsync(e => e.Id == id);
+                _context.Books.Attach(book);
+                book.ImageUrl = imageUrl;
+                _context.Entry(book).Property(x => x.ImageUrl).IsModified = true;
+
+                await _context.SaveChangesAsync();
+                return true;
             }
         }
 
@@ -245,6 +268,50 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
+        public FileStreamResult GetImage(string name, string directory)
+        {
+            string imageExtension = GetImageExtension(name);
+
+            string path = GetPath(directory, name);
+            var image = File.OpenRead(path);
+
+            return new FileStreamResult(image, imageExtension);
+        }
+
+        public async Task<string> PostImage(IFormFile file, string directory)
+        {
+            string newFilename = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetFileName(file.FileName);
+            
+            string path = GetPath(directory, newFilename);
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return newFilename;
+        }
+
+        public async Task<string> PutImage(IFormFile file, string directory, string currentName)
+        {
+            try
+            {
+                DeleteImage(directory, currentName);
+            } catch (FileNotFoundException) { }
+            return await PostImage(file, directory);
+        }
+
+        public bool DeleteImage(string directory, string name)
+        {
+            string path = GetPath(directory, name);
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+            File.Delete(path);
+            return true;
+        }
+
         private bool BookExists(int id)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -261,6 +328,28 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         {
             using (var _context = _contextFactory.CreateDbContext())
                 return _context.Reviews.Any(e => e.Id == id);
+        }
+
+        private string GetPath(string directory, string name)
+        {
+            directory = GetImageDirectory(directory);
+            return Path.Combine("..", "Images", directory, name);
+        }
+
+        private string GetImageExtension(string name)
+        {
+            if (name.ToLower().EndsWith(".jpg")) return "image/jpg";
+            else if (name.ToLower().EndsWith(".jpeg")) return "image/jpeg";
+            else if (name.ToLower().EndsWith(".png")) return "image/png";
+            else if (name.ToLower().EndsWith(".bmp")) return "image/bmp";
+            else throw new InvalidImageExtensionException();
+        }
+
+        private string GetImageDirectory(string directory)
+        {
+            if (directory.ToLower() == "authors") return "Authors";
+            else if (directory.ToLower() == "books") return "Books";
+            else throw new InvalidImageDirectoryException();
         }
     }
 }

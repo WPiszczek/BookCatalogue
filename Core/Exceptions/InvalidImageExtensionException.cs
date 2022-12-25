@@ -1,4 +1,4 @@
-﻿namespace PiszczekSzpotek.BookCatalogue.API.Exceptions
+﻿namespace PiszczekSzpotek.BookCatalogue.Core.Exceptions
 {
     public class InvalidImageExtensionException : Exception
     {
