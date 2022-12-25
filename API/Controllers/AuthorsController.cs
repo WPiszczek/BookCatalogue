@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PiszczekSzpotek.BookCatalogue.API.Utils;
+using PiszczekSzpotek.BookCatalogue.Core.Enums;
 using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using System.Text.Json;
@@ -23,7 +24,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             _logger = logger;
         }
 
-        // GET: api/<AuthorsController>
+        // GET: api/authors
         [HttpGet]
         public async Task<string> Get(string? name=null)
         {
@@ -41,7 +42,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // GET api/<AuthorsController>/5
+        // GET api/authors/5
         [HttpGet("{id}")]
         public async Task<string> GetById(int id)
         {
@@ -62,18 +63,27 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // POST api/<AuthorsController>
+        // POST api/authors
         [HttpPost]
-        public async Task<string> Post([FromBody] JsonElement json)
+        public async Task<string> Post([FromForm] FormModel formModel)
         {
             _logger.LogInformation("POST: api/authors");
 
             try
             {
+                JsonElement json = JsonDocument.Parse(formModel.Json).RootElement;
+                var image = formModel.Image;
+                _logger.LogInformation($"json - {json}");
+                _logger.LogInformation($"{image.FileName}");
                 var author = Activator.CreateInstance(_authorType) as IAuthor;
 
                 author.Name = json.GetProperty("Name").GetString();
+                author.Country = json.GetProperty("Country").GetString();
                 author.BirthDate = Convert.ToDateTime(json.GetProperty("BirthDate").GetString());
+                var jsonDate = json.GetProperty("DeathDate").GetString();
+                author.DeathDate = jsonDate != "" ? Convert.ToDateTime(jsonDate) : null;
+                author.Status = (AuthorStatus)json.GetProperty("Status").GetInt32();
+                author.ImageUrl = await _service.PostImage(image, "authors");
 
                 bool success = await _service.AddAuthor(author);
                 if (success) return ResponseHelper.Success("Author added successfully.");
@@ -89,13 +99,41 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // TODO
+        // PATCH api/authors/5
+        [HttpPatch("{id}")]
+        public async Task<string> UpdateAuthorImage(int id, [FromForm] FormModel formModel)
+        {
+            _logger.LogInformation($"PATCH: api/authors/{id}");
 
-        // PUT api/<AuthorsController>/5
+            try
+            {
+                var author = await _service.GetAuthorById(id);
+                string imageUrl = author.ImageUrl;
+                string newImageUrl = await _service.PutImage(formModel.Image, "authors", imageUrl);
+                bool success = await _service.UpdateAuthorImageUrl(id, newImageUrl);
+
+                if (success) return ResponseHelper.Success("Author image updated successfully.");
+                else return ResponseHelper.Error("Error while updating author image. Try again.");
+            }
+            catch (ObjectNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return ResponseHelper.Error("Author not found.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
+                return ResponseHelper.Error("Error while updating author image. Try again.");
+            }
+        }
+
+        // PUT api/authors/5
         [HttpPut("{id}")]
         public async Task<string> Put(int id, [FromBody] JsonElement json)
         {
             _logger.LogInformation($"PUT: api/authors/{id}");
+            _logger.LogInformation($"{json}");
 
             try
             {
@@ -103,7 +141,13 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
                 author.Id = id;
                 author.Name = json.GetProperty("Name").GetString();
+                author.Country = json.GetProperty("Country").GetString();
                 author.BirthDate = Convert.ToDateTime(json.GetProperty("BirthDate").GetString());
+                var jsonDate = json.GetProperty("DeathDate").GetString();
+                author.DeathDate = jsonDate != "" ? Convert.ToDateTime(jsonDate) : null;
+                
+                author.Status = (AuthorStatus)json.GetProperty("Status").GetInt32();
+                author.ImageUrl = json.GetProperty("ImageUrl").GetString();
 
                 bool success = await _service.UpdateAuthor(author);
                 if (success) return ResponseHelper.Success("Author updated successfully.");
@@ -123,7 +167,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
         // TODO
 
-        // DELETE api/<AuthorsController>/5
+        // DELETE api/authors/5
         [HttpDelete("{id}")]
         public async Task<string> Delete(int id)
         {
@@ -143,6 +187,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 return ResponseHelper.Error("Error while deleting author. Try again.");
             }
         }

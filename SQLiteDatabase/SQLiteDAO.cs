@@ -118,11 +118,11 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             using (var _context = _contextFactory.CreateDbContext())
             {
                 var book = await _context.Books.FindAsync(id);
-                DeleteImage("books", book.ImageUrl);
                 if (book == null)
                 {
                     throw new ObjectNotFoundException();
                 }
+                DeleteImage("books", book.ImageUrl);
                 _context.Books.Remove(book);
                 await _context.SaveChangesAsync();
                 return true;
@@ -169,6 +169,26 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
+        public async Task<bool> UpdateAuthorImageUrl(int id, string imageUrl)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                if (!AuthorExists(id))
+                {
+                    throw new ObjectNotFoundException();
+                }
+
+                var author = await _context.Authors
+                    .FirstOrDefaultAsync(e => e.Id == id);
+                _context.Authors.Attach(author);
+                author.ImageUrl = imageUrl;
+                _context.Entry(author).Property(x => x.ImageUrl).IsModified = true;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+        }
+
         public async Task<bool> UpdateAuthor(IAuthor author)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -192,6 +212,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 {
                     throw new ObjectNotFoundException();
                 }
+                DeleteImage("authors", author.ImageUrl);
                 _context.Authors.Remove(author);
                 await _context.SaveChangesAsync();
                 return true;

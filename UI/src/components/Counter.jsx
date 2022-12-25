@@ -19,22 +19,25 @@ function Counter() {
     formData.append(
       "Json",
       JSON.stringify({
-        Title: "Chrzest ognia",
-        AuthorId: 3,
-        ReleaseYear: 1996,
-        Description: "Wiedźmin - tom 5",
-        ImageUrl: "",
-        Category: "Fantastyka",
+        Name: "Albert Rampampam",
+        BirthDate: "1948-06-21T00:00:00",
+        DeathDate: "1953-01-01",
+        Status: 1,
       })
     );
-    // formData.append("Title", "Chrzest ognia");
-    // formData.append("AuthorId", 1);
-    // formData.append("ReleaseYear", 1996);
-    // formData.append("Description", "Wiedźmin - tom 5");
-    // formData.append("ImageUrl", "");
-    // formData.append("Category", "Fantastyka");
+
+    //   "Json",
+    //   JSON.stringify({
+    //     Title: "Chrzest ognia",
+    //     AuthorId: 3,
+    //     ReleaseYear: 1996,
+    //     Description: "Wiedźmin - tom 5",
+    //     ImageUrl: "",
+    //     Category: "Fantastyka",
+    //   })
+    // );
     console.log(formData);
-    fetch(`/api/books/`, {
+    fetch(`/api/authors`, {
       method: "POST",
       body: formData,
     })

@@ -88,102 +88,107 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             };
         }
 
-        Task<bool> IAuthorsRepository.AddAuthor(IAuthor author)
+        public Task<bool> AddAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IBooksRepository.AddBook(IBook book)
+        public Task<bool> AddBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IReviewsRepository.AddReview(IReview review)
+        public Task<bool> AddReview(IReview review)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IAuthorsRepository.DeleteAuthor(int id)
+        public Task<bool> DeleteAuthor(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IBooksRepository.DeleteBook(int id)
+        public Task<bool> DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        bool IImageRepository.DeleteImage(string directory, string name)
+        public bool DeleteImage(string directory, string name)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IReviewsRepository.DeleteReview(int id)
+        public Task<bool> DeleteReview(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<IAuthor> IAuthorsRepository.GetAuthorById(int id)
+        public Task<IAuthor> GetAuthorById(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<IAuthor>> IAuthorsRepository.GetAuthors(string? name)
+        public Task<IEnumerable<IAuthor>> GetAuthors(string? name)
         {
             throw new NotImplementedException();
         }
 
-        Task<IBook> IBooksRepository.GetBookById(int id)
+        public Task<IBook> GetBookById(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<IBook>> IBooksRepository.GetBooks(string? title, int? authorId, BookCategory? category)
+        public Task<IEnumerable<IBook>> GetBooks(string? title, int? authorId, BookCategory? category)
         {
             throw new NotImplementedException();
         }
 
-        FileStreamResult IImageRepository.GetImage(string name, string directory)
+        public FileStreamResult GetImage(string name, string directory)
         {
             throw new NotImplementedException();
         }
 
-        Task<IReview> IReviewsRepository.GetReviewById(int id)
+        public Task<IReview> GetReviewById(int id)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<IReview>> IReviewsRepository.GetReviews(int? bookId, int? rating)
+        public Task<IEnumerable<IReview>> GetReviews(int? bookId, int? rating)
         {
             throw new NotImplementedException();
         }
 
-        Task<string> IImageRepository.PostImage(IFormFile file, string directory)
+        public Task<string> PostImage(IFormFile file, string directory)
         {
             throw new NotImplementedException();
         }
 
-        Task<string> IImageRepository.PutImage(IFormFile file, string directory, string currentName)
+        public Task<string> PutImage(IFormFile file, string directory, string currentName)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IAuthorsRepository.UpdateAuthor(IAuthor author)
+        public Task<bool> UpdateAuthor(IAuthor author)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IBooksRepository.UpdateBook(IBook book)
+        public Task<bool> UpdateAuthorImageUrl(int authorId, string imageUrl)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IBooksRepository.UpdateBookImageUrl(int bookId, string imageUrl)
+        public Task<bool> UpdateBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        Task<bool> IReviewsRepository.UpdateReview(IReview review)
+        public Task<bool> UpdateBookImageUrl(int bookId, string imageUrl)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateReview(IReview review)
         {
             throw new NotImplementedException();
         }
