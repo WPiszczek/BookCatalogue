@@ -15,18 +15,18 @@ function Counter() {
     const id = number.value;
     const formData = new FormData();
     formData.append("Image", file.files[0]);
-    formData.append("Json", "{}");
-    // formData.append(
-    //   "Json",
-    //   JSON.stringify({
-    //     Title: "Chrzest ognia",
-    //     AuthorId: 1,
-    //     ReleaseYear: 1996,
-    //     Description: "Wiedźmin - tom 5",
-    //     ImageUrl: "",
-    //     Category: "Fantastyka",
-    //   })
-    // );
+    // formData.append("Json", "{}");
+    formData.append(
+      "Json",
+      JSON.stringify({
+        Title: "Chrzest ognia",
+        AuthorId: 3,
+        ReleaseYear: 1996,
+        Description: "Wiedźmin - tom 5",
+        ImageUrl: "",
+        Category: "Fantastyka",
+      })
+    );
     // formData.append("Title", "Chrzest ognia");
     // formData.append("AuthorId", 1);
     // formData.append("ReleaseYear", 1996);
@@ -34,8 +34,8 @@ function Counter() {
     // formData.append("ImageUrl", "");
     // formData.append("Category", "Fantastyka");
     console.log(formData);
-    fetch(`/api/books/${id}`, {
-      method: "PATCH",
+    fetch(`/api/books/`, {
+      method: "POST",
       body: formData,
     })
       .then((res) => console.log(res))

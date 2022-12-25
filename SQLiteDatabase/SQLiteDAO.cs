@@ -118,6 +118,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             using (var _context = _contextFactory.CreateDbContext())
             {
                 var book = await _context.Books.FindAsync(id);
+                DeleteImage("books", book.ImageUrl);
                 if (book == null)
                 {
                     throw new ObjectNotFoundException();
