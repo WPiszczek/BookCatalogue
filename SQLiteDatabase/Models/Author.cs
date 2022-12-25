@@ -20,7 +20,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
             set { _DeathDate = value == DateTime.MinValue ? null : value; } 
         }
         public AuthorStatus Status { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public IEnumerable<Book> Books { get; set; }
         IEnumerable<IBook> IAuthor.Books
         {
