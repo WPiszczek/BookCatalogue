@@ -43,22 +43,32 @@
 
 ## 3. API:
 
-- GET /books?author=&category=&language=&title=
-- GET /books/id
-- POST /books
-- PATCH /books/id
-- PUT /books/id
-- DELETE /books/id
+### 3.1 BooksController
 
-- GET /authors?name=
-- GET /authors/id
-- POST /authors
-- PATCH /authors/id
-- PUT /authors/id
-- DELETE /authors/id
+- GET /api/books?author=&category=&language=&title=
+- GET /api/books/{id}
+- POST /api/books
+- PATCH /api/books/{id}
+- PUT /api/books/{id}
+- DELETE /api/books/{id}
 
-- GET /reviews?book=&rating=
-- GET /reviews/id
-- POST /reviews
-- PUT /reviews/id
-- DELETE /reviews/id
+### 3.2 AuthorsController
+
+- GET /api/authors?name=
+- GET /api/authors/{id}
+- POST /api/authors
+- PATCH /api/authors/{id}
+- PUT /api/authors/{id}
+- DELETE /api/authors/{id}
+
+### 3.3 ReviewsController
+
+- GET /api/reviews?book=&rating=
+- GET /api/reviews/{id}
+- POST /api/reviews
+- PUT /api/reviews/{id}
+- DELETE /api/reviews/{id}
+
+### 3.4 ImageController
+
+- Get /api/image/{directory}/{name}
