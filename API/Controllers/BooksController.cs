@@ -18,7 +18,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
         private readonly Type _bookType = Program.GetBookType();
         private readonly ILogger<BooksController> _logger;
 
-
         public BooksController(ILogger<BooksController> logger) 
         {
             _logger = logger;
@@ -78,8 +77,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             {
                 JsonElement json = JsonDocument.Parse(formModel.Json).RootElement;
                 var image = formModel.Image;
-                _logger.LogInformation($"json - {json}");
-                _logger.LogInformation($"{image.FileName}");
                 var book = Activator.CreateInstance(_bookType) as IBook;
 
                 book.Title = json.GetProperty("Title").GetString();

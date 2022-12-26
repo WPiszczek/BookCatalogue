@@ -13,6 +13,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase.Models
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public BookCategory Category { get; set; }
+        public double? AverageRating { get; set; }
         public IEnumerable<IReview> Reviews { get; set; }
     }
 }

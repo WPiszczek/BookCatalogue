@@ -73,8 +73,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             {
                 JsonElement json = JsonDocument.Parse(formModel.Json).RootElement;
                 var image = formModel.Image;
-                _logger.LogInformation($"json - {json}");
-                _logger.LogInformation($"{image.FileName}");
                 var author = Activator.CreateInstance(_authorType) as IAuthor;
 
                 author.Name = json.GetProperty("Name").GetString();
@@ -133,7 +131,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
         public async Task<string> Put(int id, [FromBody] JsonElement json)
         {
             _logger.LogInformation($"PUT: api/authors/{id}");
-            _logger.LogInformation($"{json}");
 
             try
             {

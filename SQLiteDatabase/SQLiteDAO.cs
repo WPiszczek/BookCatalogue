@@ -34,6 +34,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                         && (category == null || e.Category == category)
                     )
                     .Include(e => e.Author)
+                    .Include(e => e.Author.Books)
                     .Include(e => e.Reviews)
                     .ToListAsync();                
             }
@@ -51,6 +52,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
 
                 var book = await _context.Books
                     .Include(e => e.Author)
+                    .Include(e => e.Author.Books)
                     .Include(e => e.Reviews)
                     .FirstOrDefaultAsync(e => e.Id == id);
 
@@ -71,7 +73,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 {
                     throw new ObjectIdAlreadyExistsException();
                 }
-                //await _context.Authors.FirstOrDefault(e => e.Id == book.Author.Id).Books.Add(book);
+
                 await _context.Books.AddAsync((Book)book);
                 await _context.SaveChangesAsync();
                 return true;
@@ -108,6 +110,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                     throw new ObjectNotFoundException();
                 }
                 _context.Update(book);
+                _context.Entry(book).Property(x => x.AverageRating).IsModified = false;
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -198,6 +201,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                     throw new ObjectNotFoundException();
                 }
                 _context.Authors.Update((Author)author);
+                _context.Entry(author).Property(x => x.AverageRating).IsModified = false;
                 _context.SaveChanges();
                 return true;
             }
@@ -228,6 +232,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                         && (rating == null || e.Rating == rating)
                     )
                     .Include(e => e.Book)
+                    .Include(e => e.Book.Author)
                     .ToListAsync();
         }
 
@@ -237,6 +242,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             {
                 var review = await _context.Reviews
                     .Include(e => e.Book)
+                    .Include(e => e.Book.Author)
                     .FirstOrDefaultAsync(e => e.Id == id);
                 if (review == null)
                 {
@@ -257,6 +263,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 }
                 _context.Reviews.Add((Review)review);
                 await _context.SaveChangesAsync();
+
+                UpdateBookAverageRating(review.BookId);
+                UpdateAuthorAverageRating(review.BookId);
+
                 return true;
             }
         }
@@ -270,7 +280,12 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                     throw new ObjectNotFoundException();
                 }
                 _context.Update(review);
+                _context.Entry(review).Property(x => x.DateAdded).IsModified = false;
                 await _context.SaveChangesAsync();
+
+                UpdateBookAverageRating(review.BookId);
+                UpdateAuthorAverageRating(review.BookId);
+
                 return true;
             }
         }
@@ -286,6 +301,10 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 }
                 _context.Reviews.Remove(review);
                 await _context.SaveChangesAsync();
+
+                UpdateBookAverageRating(review.BookId);
+                UpdateAuthorAverageRating(review.BookId);
+
                 return true;
             }
         }
@@ -350,6 +369,38 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         {
             using (var _context = _contextFactory.CreateDbContext())
                 return _context.Reviews.Any(e => e.Id == id);
+        }
+
+        private async void UpdateBookAverageRating(int bookId)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var book = await _context.Books
+                    .FirstOrDefaultAsync(e => e.Id == bookId);
+                _context.Books.Attach(book);
+                book.AverageRating = _context.Reviews
+                    .Where(e => e.BookId == bookId)
+                    .Average(e => e.Rating);
+                _context.Entry(book).Property(x => x.AverageRating).IsModified = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async void UpdateAuthorAverageRating(int bookId)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var book = await _context.Books
+                    .FirstOrDefaultAsync(e => e.Id == bookId);
+                var author = await _context.Authors
+                    .FirstOrDefaultAsync(e => e.Id == book.AuthorId);
+                _context.Authors.Attach(author);
+                author.AverageRating = _context.Books
+                    .Where(e => e.AuthorId == author.Id)
+                    .Average(e => e.AverageRating);
+                _context.Entry(author).Property(x => x.AverageRating).IsModified = true;
+                await _context.SaveChangesAsync();
+            }
         }
 
         private string GetPath(string directory, string name)

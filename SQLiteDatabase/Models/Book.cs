@@ -24,6 +24,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
         public string? Description { get; set; }
         public string ImageUrl { get; set; }
         public BookCategory Category { get; set; }
+        public double? AverageRating { get; set; }
         public virtual IEnumerable<Review> Reviews { get; set; }
         IEnumerable<IReview> IBook.Reviews { 
             get => Reviews;

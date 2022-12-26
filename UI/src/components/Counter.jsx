@@ -19,25 +19,25 @@ function Counter() {
     formData.append(
       "Json",
       JSON.stringify({
-        Name: "Albert Rampampam",
-        BirthDate: "1948-06-21T00:00:00",
-        DeathDate: "1953-01-01",
-        Status: 1,
+        Title: "Człowiek Nietoperz",
+        AuthorId: 3,
+        ReleaseYear: 1997,
+        Description: "Pierwszy tom serii o Harrym Hole",
+        Category: "Kryminał/Sensacja",
       })
     );
 
     //   "Json",
     //   JSON.stringify({
-    //     Title: "Chrzest ognia",
-    //     AuthorId: 3,
-    //     ReleaseYear: 1996,
-    //     Description: "Wiedźmin - tom 5",
-    //     ImageUrl: "",
-    //     Category: "Fantastyka",
+    //     Name: "Albert Rampampam",
+    //     BirthDate: "1948-06-21T00:00:00",
+    //     DeathDate: "1953-01-01",
+    //     Status: 1,
     //   })
     // );
+
     console.log(formData);
-    fetch(`/api/authors`, {
+    fetch(`/api/books`, {
       method: "POST",
       body: formData,
     })

@@ -106,11 +106,11 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             {
                 var review = Activator.CreateInstance(_reviewType) as IReview;
 
+                review.Id = id;
                 review.Title = json.GetProperty("Title").GetString();
                 review.Rating = json.GetProperty("Rating").GetInt32();
                 review.Content = json.GetProperty("Content").GetString();
                 review.Reviewer = json.GetProperty("Reviewer").GetString();
-                review.DateAdded = Convert.ToDateTime(json.GetProperty("DateAdded").GetString());
                 review.BookId = json.GetProperty("BookId").GetInt32();
 
                 bool success = await _service.UpdateReview(review);
