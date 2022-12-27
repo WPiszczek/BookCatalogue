@@ -1,8 +1,6 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import AppRoutes from "../AppRoutes";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import AppRoutes from "../utils/AppRoutes";
 
 function NavMenu() {
   const expand = "md";

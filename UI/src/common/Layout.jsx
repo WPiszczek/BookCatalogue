@@ -1,6 +1,6 @@
-import React from 'react';
-import { Container } from 'reactstrap';
-import NavMenu from './NavMenu';
+import React from "react";
+import { Container } from "react-bootstrap";
+import NavMenu from "./NavMenu";
 
 function Layout(props) {
   return (

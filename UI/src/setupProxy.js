@@ -6,7 +6,7 @@ const { env } = require("process");
 
 const target = "https://localhost:7031";
 
-const context = ["/api/books", "/api/authors"];
+const context = ["/api/books", "/api/authors", "/api/reviews", "/api/image"];
 
 module.exports = function (app) {
   const appProxy = createProxyMiddleware(context, {
