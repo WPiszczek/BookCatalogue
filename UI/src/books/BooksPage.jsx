@@ -49,6 +49,7 @@ function BooksPage(props) {
             <AddBookDialog
               show={true}
               close={() => setShowAddBookDialog(false)}
+              fetchBooksData={fetchBooksData}
             />
           ) : (
             <></>

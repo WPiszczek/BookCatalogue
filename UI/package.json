@@ -13,6 +13,7 @@
     "jquery": "^3.6.0",
     "merge": "^2.1.1",
     "oidc-client": "^1.11.5",
+    "prettier": "^2.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",

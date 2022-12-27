@@ -12,7 +12,6 @@ function Counter() {
     e.preventDefault();
     const file = document.getElementById("file");
     const number = document.getElementById("number");
-    const id = number.value;
     const formData = new FormData();
     formData.append("Image", file.files[0]);
     // formData.append("Json", "{}");
