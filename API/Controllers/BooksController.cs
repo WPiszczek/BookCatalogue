@@ -82,7 +82,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
                 book.Title = json.GetProperty("Title").GetString();
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
-                book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
+                book.Category = (BookCategory)json.GetProperty("Category").GetInt32();
                 book.AuthorId = json.GetProperty("AuthorId").GetInt32();
 
                 book.ImageUrl = await _service.PostImage(image, "books");
@@ -151,7 +151,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
                 book.ReleaseYear = json.GetProperty("ReleaseYear").GetInt32();
                 book.Description = json.GetProperty("Description").GetString();
                 book.ImageUrl = json.GetProperty("ImageUrl").GetString();
-                book.Category = BookCategoryExtensions.SetFromString(json.GetProperty("Category").GetString());
+                book.Category = (BookCategory)json.GetProperty("Category").GetInt32();
                 book.AuthorId = json.GetProperty("AuthorId").GetInt32();
 
                 bool success = await _service.UpdateBook(book);

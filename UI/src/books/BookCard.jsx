@@ -1,7 +1,8 @@
 import { React } from "react";
 import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BookCategoryMap } from "../utils/MapBookCategory";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { BookCategoryMap } from "../utils/EnumMaps";
 import "./BookCard.css";
 
 function BookCard(props) {
@@ -13,6 +14,13 @@ function BookCard(props) {
       style={{ width: "19rem" }}
       className="book-card-container">
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
+      <Card.Body>
+        <Card.Title className="book-card-rating">
+          <FontAwesomeIcon icon={faStar} className="icon-star" />
+          {book.AverageRating ?? "?"}
+          /10
+        </Card.Title>
+      </Card.Body>
       <Card.Img
         as={Image}
         variant="top"

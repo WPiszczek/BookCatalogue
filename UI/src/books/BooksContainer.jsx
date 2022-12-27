@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
 import BookCard from "./BookCard";
+import "./BooksContainer.css";
+import PlaceholderBookCard from "./AddBookCard";
 
 function BooksContainer(props) {
   const books = props.books.map((book) => {
@@ -8,9 +10,10 @@ function BooksContainer(props) {
   });
 
   return (
-    <Container fluid="md">
-      <Row md={4} className="center">
+    <Container fluid="md" className="books-container">
+      <Row md={4} className="center books-container-row">
         {books}
+        <PlaceholderBookCard addBook={props.addBook} />
       </Row>
     </Container>
   );

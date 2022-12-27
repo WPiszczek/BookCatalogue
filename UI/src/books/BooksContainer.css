@@ -1,0 +1,9 @@
+.books-container {
+  margin: 20px;
+}
+
+.books-container-row {
+  padding: 10px;
+  display: flex;
+  align-items: stretch;
+}

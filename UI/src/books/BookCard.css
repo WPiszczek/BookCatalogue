@@ -5,3 +5,13 @@
 .book-card-img {
   padding: 10px;
 }
+
+.book-card-rating {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.icon-star {
+  color: gold;
+  margin-right: 5px;
+}

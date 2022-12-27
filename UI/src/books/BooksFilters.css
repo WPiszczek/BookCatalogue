@@ -1,0 +1,13 @@
+.floating-label {
+  padding: 5px;
+}
+
+.books-filters-button {
+  padding: 10px;
+  margin: 10px;
+}
+
+.books-filters-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+}
