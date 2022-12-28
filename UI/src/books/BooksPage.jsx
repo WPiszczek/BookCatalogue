@@ -31,6 +31,28 @@ function BooksPage(props) {
     }
   }
 
+  function sortBooks(column, ascending) {
+    console.log("Sort books from page", column, ascending);
+    const booksCopy = [...books];
+    if (column == "Title") {
+      booksCopy.sort((a, b) => {
+        if (a.Title > b.Title) return ascending ? 1 : -1;
+        if (a.Title < b.Title) return ascending ? -1 : 1;
+        return 0;
+      });
+    } else if (column == "AverageRating") {
+      booksCopy.sort((a, b) => {
+        if (a.AverageRating === null) return 1;
+        if (b.AverageRating === null) return -1;
+        if (a.AverageRating > b.AverageRating) return ascending ? 1 : -1;
+        if (a.AverageRating < b.AverageRating) return ascending ? -1 : 1;
+        return 0;
+      });
+    }
+    console.log(booksCopy);
+    setBooks(booksCopy);
+  }
+
   function addBook() {
     console.log("Add book from books page");
     setShowAddBookDialog(true);
@@ -54,7 +76,11 @@ function BooksPage(props) {
           ) : (
             <></>
           )}
-          <BooksFilters fetchBooksData={fetchBooksData} addBook={addBook} />
+          <BooksFilters
+            fetchBooksData={fetchBooksData}
+            addBook={addBook}
+            sortBooks={sortBooks}
+          />
           {books.length > 0 ? (
             <BooksContainer books={books} addBook={addBook} />
           ) : (

@@ -58,7 +58,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Title = "Czerwone Gardło",
                     AuthorId = 2,
                     ReleaseYear = 2000,
-                    Category= BookCategory.Kryminal_Sensacja,
+                    Category= BookCategory.KryminalSensacja,
                     Reviews = new List<Review>()
                 }
             };

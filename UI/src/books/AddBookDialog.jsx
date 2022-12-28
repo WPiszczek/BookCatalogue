@@ -64,7 +64,7 @@ function AddBookDialog(props) {
       })
       .then((response) => {
         console.log(response);
-        if (response.data.Status == "Success") {
+        if (response.data.Status === "Success") {
           console.log("Success");
           setResponseMessage(
             <Alert variant="success">{response.data.Message}</Alert>

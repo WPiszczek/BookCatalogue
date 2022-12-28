@@ -1,5 +1,13 @@
 import { React, useState, useEffect } from "react";
-import { Row, Col, Form, FloatingLabel, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Form,
+  FloatingLabel,
+  Button,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import axios from "axios";
 import "./BooksFilters.css";
@@ -55,10 +63,16 @@ function BooksFilters(props) {
     props.addBook();
   };
 
+  const sortBooks = (event, column = "Title", ascending = true) => {
+    event.preventDefault();
+    console.log("Sort books ", column, ascending);
+    props.sortBooks(column, ascending);
+  };
+
   return (
     <Form>
       <Row>
-        <Col md={9}>
+        <Col md={6}>
           <Row md={1}>
             <FloatingLabel label="Title" className="floating-label">
               <Form.Control
@@ -88,7 +102,7 @@ function BooksFilters(props) {
             </FloatingLabel>
           </Row>
         </Col>
-        <Col className="books-filters-buttons-container">
+        <Col md={3}>
           <Row>
             <Button
               variant="primary"
@@ -102,6 +116,34 @@ function BooksFilters(props) {
               onClick={addBook}>
               Add new book
             </Button>
+          </Row>
+        </Col>
+        <Col md={3}>
+          <Row>
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="success"
+                className="books-filters-button">
+                Sort books
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={(e) => sortBooks(e, "Title", true)}>
+                  Sort by title ascending
+                </Dropdown.Item>
+                <Dropdown.Item onClick={(e) => sortBooks(e, "Title", false)}>
+                  Sort by title descending
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={(e) => sortBooks(e, "AverageRating", true)}>
+                  Sort by rating ascending
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={(e) => sortBooks(e, "AverageRating", false)}>
+                  Sort by rating descending
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Row>
         </Col>
       </Row>
