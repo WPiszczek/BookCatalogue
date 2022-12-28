@@ -1,5 +1,10 @@
 .book-card-container {
   padding: 10px;
+  display: flow-root;
+}
+
+.book-card-container:hover {
+  cursor: pointer;
 }
 
 .book-card-img {

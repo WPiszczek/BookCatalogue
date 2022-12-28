@@ -5,8 +5,7 @@ import {
   Form,
   FloatingLabel,
   Button,
-  Dropdown,
-  DropdownButton,
+  Dropdown
 } from "react-bootstrap";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import axios from "axios";
@@ -126,7 +125,6 @@ function BooksFilters(props) {
                 className="books-filters-button">
                 Sort books
               </Dropdown.Toggle>
-
               <Dropdown.Menu>
                 <Dropdown.Item onClick={(e) => sortBooks(e, "Title", true)}>
                   Sort by title ascending
@@ -141,6 +139,14 @@ function BooksFilters(props) {
                 <Dropdown.Item
                   onClick={(e) => sortBooks(e, "AverageRating", false)}>
                   Sort by rating descending
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={(e) => sortBooks(e, "ReleaseYear", true)}>
+                  Sort by release year ascending
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={(e) => sortBooks(e, "ReleaseYear", false)}>
+                  Sort by release year descending
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

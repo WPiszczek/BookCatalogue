@@ -1,21 +1,20 @@
 import { React } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { BookCategoryMap } from "../utils/EnumMaps";
-import "./BookCard.css";
+import "./SeeAlsoBookCard.css";
+import { useNavigate } from "react-router-dom";
 
-function BookCard(props) {
+function SeeAlsoBookCard(props) {
   const book = props.book;
-
   const navigate = useNavigate();
 
   return (
     <Card
       border="light"
-      style={{ width: "19rem" }}
-      className="book-card-container"
+      style={{ width: "12rem" }}
+      className="see-also-book-card-container"
       onClick={() => navigate(`/books/${book.Id}`)}>
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
       <Card.Body>
@@ -35,13 +34,10 @@ function BookCard(props) {
       />
       <Card.Body>
         <Card.Title>{book.Title}</Card.Title>
-        <Card.Subtitle>
-          {book.Author.Name}, {book.ReleaseYear}
-        </Card.Subtitle>
-        <Card.Text>{book.Description}</Card.Text>
+        <Card.Subtitle>{book.ReleaseYear}</Card.Subtitle>
       </Card.Body>
     </Card>
   );
 }
 
-export default BookCard;
+export default SeeAlsoBookCard;

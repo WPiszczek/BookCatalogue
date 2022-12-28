@@ -1,0 +1,36 @@
+.single-book-card {
+  font-size: larger;
+}
+
+.single-book-card-header {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.single-book-card-title {
+  font-size: xx-large;
+}
+
+.single-book-card-rating {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.icon-link {
+  margin-left: 5px;
+}
+
+.icon-link:hover {
+  cursor: pointer;
+}
+
+.single-book-button {
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+}
+
+.single-book-button-container {
+  display: flex;
+  align-items: flex-end;
+}

@@ -16,7 +16,6 @@
     "prettier": "^2.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
-    "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",
     "react-dom": "^18.2.0",
     "react-router-bootstrap": "^0.26.1",
     "react-router-dom": "^6.3.0",

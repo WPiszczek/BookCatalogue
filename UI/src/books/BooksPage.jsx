@@ -4,8 +4,9 @@ import axios from "axios";
 import BooksFilters from "./BooksFilters";
 import BooksContainer from "./BooksContainer";
 import AddBookDialog from "./AddBookDialog";
+import { sortBooks } from "../utils/sortBooks";
 
-function BooksPage(props) {
+function BooksPage() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddBookDialog, setShowAddBookDialog] = useState(false);
@@ -31,26 +32,9 @@ function BooksPage(props) {
     }
   }
 
-  function sortBooks(column, ascending) {
+  function callSortBooks(column, ascending) {
     console.log("Sort books from page", column, ascending);
-    const booksCopy = [...books];
-    if (column == "Title") {
-      booksCopy.sort((a, b) => {
-        if (a.Title > b.Title) return ascending ? 1 : -1;
-        if (a.Title < b.Title) return ascending ? -1 : 1;
-        return 0;
-      });
-    } else if (column == "AverageRating") {
-      booksCopy.sort((a, b) => {
-        if (a.AverageRating === null) return 1;
-        if (b.AverageRating === null) return -1;
-        if (a.AverageRating > b.AverageRating) return ascending ? 1 : -1;
-        if (a.AverageRating < b.AverageRating) return ascending ? -1 : 1;
-        return 0;
-      });
-    }
-    console.log(booksCopy);
-    setBooks(booksCopy);
+    setBooks(sortBooks(books, column, ascending));
   }
 
   function addBook() {
@@ -79,7 +63,7 @@ function BooksPage(props) {
           <BooksFilters
             fetchBooksData={fetchBooksData}
             addBook={addBook}
-            sortBooks={sortBooks}
+            sortBooks={callSortBooks}
           />
           {books.length > 0 ? (
             <BooksContainer books={books} addBook={addBook} />
