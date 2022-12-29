@@ -12,7 +12,7 @@ function AddBookCard(props) {
     <Card
       border="light"
       style={{ width: "19rem" }}
-      className="book-card-container center">
+      className="center">
       <Button
         variant="secondary"
         className="center add-book-card-button"

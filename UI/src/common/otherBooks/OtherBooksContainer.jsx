@@ -6,13 +6,13 @@ import {
   Row,
   Tooltip
 } from "react-bootstrap";
-import SeeAlsoBookCard from "./SeeAlsoBookCard";
+import OtherBooksBookCard from "./OtherBooksBookCard";
 
-function SeeAlsoContainer(props) {
+function OtherBooksContainer(props) {
   const [collapse, setCollapse] = useState(false);
 
   const booksView = props.books.map((book) => {
-    return <SeeAlsoBookCard key={book.Id} book={book} />;
+    return <OtherBooksBookCard key={book.Id} book={book} />;
   });
 
   return (
@@ -28,7 +28,7 @@ function SeeAlsoContainer(props) {
           <h4
             className="pointer-on-hover"
             onClick={() => setCollapse(!collapse)}>
-            See also from {props.author.Name}:
+            {props.headerString}
           </h4>
         </OverlayTrigger>
       </Row>
@@ -39,4 +39,4 @@ function SeeAlsoContainer(props) {
   );
 }
 
-export default SeeAlsoContainer;
+export default OtherBooksContainer;

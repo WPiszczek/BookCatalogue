@@ -1,8 +1,0 @@
-.see-also-book-card-container {
-  padding: 10px;
-  display: flow-root;
-}
-
-.see-also-book-card-container:hover {
-  cursor: pointer;
-}

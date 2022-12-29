@@ -111,6 +111,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 }
                 _context.Update(book);
                 _context.Entry(book).Property(x => x.AverageRating).IsModified = false;
+                _context.Entry(book).Property(x => x.ImageUrl).IsModified = false;
                 await _context.SaveChangesAsync();
                 return true;
             }

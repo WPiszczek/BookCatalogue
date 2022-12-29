@@ -2,11 +2,11 @@ import { React } from "react";
 import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BookCategoryMap } from "../utils/EnumMaps";
-import "./SeeAlsoBookCard.css";
+import { BookCategoryMap } from "../../utils/EnumMaps";
+import "./OtherBooksBookCard.css";
 import { useNavigate } from "react-router-dom";
 
-function SeeAlsoBookCard(props) {
+function OtherBooksBookCard(props) {
   const book = props.book;
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ function SeeAlsoBookCard(props) {
     <Card
       border="light"
       style={{ width: "12rem" }}
-      className="see-also-book-card-container"
+      className="other-books-book-card-container"
       onClick={() => navigate(`/books/${book.Id}`)}>
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
       <Card.Body>
@@ -40,4 +40,4 @@ function SeeAlsoBookCard(props) {
   );
 }
 
-export default SeeAlsoBookCard;
+export default OtherBooksBookCard;

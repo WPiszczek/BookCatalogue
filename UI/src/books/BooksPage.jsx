@@ -51,14 +51,12 @@ function BooksPage() {
         </>
       ) : (
         <>
-          {showAddBookDialog ? (
+          {showAddBookDialog && (
             <AddBookDialog
               show={true}
               close={() => setShowAddBookDialog(false)}
               fetchBooksData={fetchBooksData}
             />
-          ) : (
-            <></>
           )}
           <BooksFilters
             fetchBooksData={fetchBooksData}

@@ -1,13 +1,5 @@
-import { React, useState, useEffect } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Col,
-  Container,
-  Image,
-  Row
-} from "react-bootstrap";
+import { React } from "react";
+import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +14,12 @@ function SingleBookCard(props) {
     event.preventDefault();
     console.log("Edit book", book.Id);
     props.editBook();
+  };
+
+  const editBookImage = (event) => {
+    event.preventDefault();
+    console.log("Edit book image", book.Id);
+    props.editBookImage();
   };
 
   const deleteBook = (event) => {
@@ -87,6 +85,12 @@ function SingleBookCard(props) {
                     className="single-book-button"
                     onClick={(e) => editBook(e)}>
                     Edit book
+                  </Button>
+                  <Button
+                    variant="success"
+                    className="single-book-button"
+                    onClick={(e) => editBookImage(e)}>
+                    Edit book picture
                   </Button>
                   <Button
                     variant="secondary"
