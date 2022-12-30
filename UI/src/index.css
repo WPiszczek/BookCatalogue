@@ -11,3 +11,15 @@
 .pointer-on-hover:hover {
   cursor: pointer;
 }
+
+.italic {
+  font-style: italic;
+}
+
+.container-header-string {
+  margin: 30px;
+}
+
+.text-linebreak {
+  white-space: pre-line;
+}

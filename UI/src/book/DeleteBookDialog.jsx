@@ -51,13 +51,15 @@ function DeleteBookDialog(props) {
       </Modal.Header>
       <Modal.Body>
         <Row md={1}>{responseMessage ?? <></>}</Row>
-        <Row md={1} style={{padding: 10}}>Are you sure you want to delete "{props.bookTitle}"?</Row>
+        <Row md={1} style={{ padding: 10 }}>
+          Are you sure you want to delete "{props.bookTitle}"?
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={deleteBook}>
+        <Button variant="danger" onClick={deleteBook}>
           Delete
         </Button>
       </Modal.Footer>

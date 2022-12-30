@@ -10,6 +10,12 @@ function SingleBookCard(props) {
   const book = props.book;
   const navigate = useNavigate();
 
+  const addReview = (event) => {
+    event.preventDefault();
+    console.log("Add review");
+    props.addReview();
+  };
+
   const editBook = (event) => {
     event.preventDefault();
     console.log("Edit book", book.Id);
@@ -87,13 +93,19 @@ function SingleBookCard(props) {
                     Edit book
                   </Button>
                   <Button
-                    variant="success"
+                    variant="secondary"
                     className="single-book-button"
                     onClick={(e) => editBookImage(e)}>
                     Edit book picture
                   </Button>
                   <Button
-                    variant="secondary"
+                    variant="success"
+                    className="single-book-button"
+                    onClick={(e) => addReview(e)}>
+                    Add review
+                  </Button>
+                  <Button
+                    variant="danger"
                     className="single-book-button"
                     onClick={(e) => deleteBook(e)}>
                     Delete book

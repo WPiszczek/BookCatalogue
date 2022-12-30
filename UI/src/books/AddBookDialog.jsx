@@ -5,7 +5,7 @@ import {
   Row,
   FloatingLabel,
   Form,
-  Alert,
+  Alert
 } from "react-bootstrap";
 import axios from "axios";
 import { BookCategoryMap } from "../utils/EnumMaps";
@@ -49,7 +49,7 @@ function AddBookDialog(props) {
       AuthorId: parseInt(authorId),
       ReleaseYear: parseInt(releaseYear),
       Description: description,
-      Category: parseInt(category),
+      Category: parseInt(category)
     };
     console.log("Book ", book);
     console.log("Image ", image);
@@ -60,7 +60,7 @@ function AddBookDialog(props) {
 
     await axios
       .post("/api/books", formData, {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data"
       })
       .then((response) => {
         console.log(response);
@@ -157,7 +157,8 @@ function AddBookDialog(props) {
         <Row md={1}>
           <FloatingLabel label="Description" className="floating-label">
             <Form.Control
-              type="text"
+              as="textarea"
+              style={{ height: "100px" }}
               value={description}
               placeholder="Enter book description"
               name="Description"
@@ -180,7 +181,7 @@ function AddBookDialog(props) {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={addBook}>
+        <Button variant="success" onClick={addBook}>
           Add book
         </Button>
       </Modal.Footer>

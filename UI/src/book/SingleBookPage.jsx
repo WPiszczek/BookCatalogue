@@ -3,19 +3,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import SingleBookCard from "./SingleBookCard";
+import AddReviewDialog from "../common/reviews/AddReviewDialog";
+import EditReviewDialog from "../common/reviews/EditReviewDialog";
+import DeleteReviewDialog from "../common/reviews/DeleteReviewDialog";
 import EditBookDialog from "./EditBookDialog";
 import EditBookImageDialog from "./EditBookImageDialog";
 import DeleteBookDialog from "./DeleteBookDialog";
 import OtherBooksContainer from "../common/otherBooks/OtherBooksContainer";
+import BookReviewsContainer from "./BookReviewsContainer";
 
 function SingleBookPage() {
   const { id } = useParams();
   const [book, setBook] = useState({});
   const [loading, setLoading] = useState(true);
+  const [review, setReview] = useState("");
+  const [reviewId, setReviewId] = useState("");
 
   const [showEditBookDialog, setShowEditBookDialog] = useState(false);
   const [showEditBookImageDialog, setShowEditBookImageDialog] = useState(false);
   const [showDeleteBookDialog, setShowDeleteBookDialog] = useState(false);
+  const [showAddReviewDialog, setShowAddReviewDialog] = useState(false);
+  const [showEditReviewDialog, setShowEditReviewDialog] = useState(false);
+  const [showDeleteReviewDialog, setShowDeleteReviewDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,6 +45,26 @@ function SingleBookPage() {
     fetchSingleBookData();
   }, [id]);
 
+  const addReview = () => {
+    console.log("Add review from page");
+    setShowAddReviewDialog(true);
+  };
+
+  const editReview = (reviewId) => {
+    console.log("Edit review from page", reviewId);
+    const _review = book.Reviews.find((review) => {
+      return review.Id === reviewId;
+    });
+    setReview(_review);
+    setShowEditReviewDialog(true);
+  };
+
+  const deleteReview = (reviewId) => {
+    console.log("Delete review from page", reviewId);
+    setReviewId(reviewId);
+    setShowDeleteReviewDialog(true);
+  };
+
   const editBook = () => {
     console.log("Edit book from page", book.Id);
     setShowEditBookDialog(true);
@@ -51,11 +80,40 @@ function SingleBookPage() {
     setShowDeleteBookDialog(true);
   };
 
+  const hideDeleteReviewDialog = () => {
+    setShowDeleteReviewDialog(false);
+  };
+
   return (
     <Container>
       <h1 className="pointer-on-hover" onClick={() => navigate("/books")}>
         Books
       </h1>
+      {showAddReviewDialog && (
+        <AddReviewDialog
+          show={true}
+          close={() => setShowAddReviewDialog(false)}
+          bookId={book.Id}
+          fetchData={fetchSingleBookData}
+        />
+      )}
+      {showEditReviewDialog && (
+        <EditReviewDialog
+          show={true}
+          close={() => setShowEditReviewDialog(false)}
+          review={review}
+          fetchData={fetchSingleBookData}
+        />
+      )}
+      {showDeleteReviewDialog && (
+        <DeleteReviewDialog
+          show={true}
+          close={() => setShowDeleteReviewDialog(false)}
+          reviewId={reviewId}
+          fetchData={fetchSingleBookData}
+          hideDeleteReviewDialog={hideDeleteReviewDialog}
+        />
+      )}
       {showEditBookDialog && (
         <EditBookDialog
           show={true}
@@ -89,6 +147,7 @@ function SingleBookPage() {
         <>
           <SingleBookCard
             book={book}
+            addReview={addReview}
             editBook={editBook}
             editBookImage={editBookImage}
             deleteBook={deleteBook}
@@ -98,6 +157,15 @@ function SingleBookPage() {
               books={book.Author.Books}
               author={book.Author}
               headerString={`See also from ${book.Author.Name}:`}
+            />
+          )}
+          {book.Reviews.length > 0 && (
+            <BookReviewsContainer
+              reviews={book.Reviews}
+              headerString={`Reviews of "${book.Title}":`}
+              addReview={addReview}
+              editReview={editReview}
+              deleteReview={deleteReview}
             />
           )}
         </>

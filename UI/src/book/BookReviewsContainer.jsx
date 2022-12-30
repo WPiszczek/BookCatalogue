@@ -8,14 +8,27 @@ import {
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import OtherBooksBookCard from "./OtherBooksBookCard";
+import BookReviewCard from "./BookReviewCard";
+import AddReviewCard from "../common/reviews/AddReviewCard";
 
-function OtherBooksContainer(props) {
+function BookReviewsContainer(props) {
   const [collapse, setCollapse] = useState(false);
 
-  const booksView = props.books.map((book) => {
-    return <OtherBooksBookCard key={book.Id} book={book} />;
+  const bookReviewsView = props.reviews.map((review) => {
+    return (
+      <BookReviewCard
+        key={review.Id}
+        review={review}
+        editReview={props.editReview}
+        deleteReview={props.deleteReview}
+      />
+    );
   });
+
+  const addReview = () => {
+    console.log("Add review");
+    props.addReview();
+  };
 
   return (
     <Container fluid="md">
@@ -36,10 +49,13 @@ function OtherBooksContainer(props) {
         </OverlayTrigger>
       </Row>
       <Collapse in={!collapse}>
-        <Row>{booksView}</Row>
+        <Container>
+          {bookReviewsView}
+          <AddReviewCard addReview={addReview} />
+        </Container>
       </Collapse>
     </Container>
   );
 }
 
-export default OtherBooksContainer;
+export default BookReviewsContainer;

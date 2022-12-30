@@ -1,37 +1,26 @@
 import { React, useState } from "react";
-import {
-  Button,
-  Modal,
-  Row,
-  FloatingLabel,
-  Form,
-  Alert
-} from "react-bootstrap";
+import { Button, Modal, Row, Alert } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function EditBookImageDialog(props) {
-  const bookId = props.bookId;
+function DeleteReviewDialog(props) {
+  const reviewId = props.reviewId;
   const [show, setShow] = useState(props.show);
-  const [image, setImage] = useState();
   const [responseMessage, setResponseMessage] = useState();
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setShow(false);
     props.close();
   };
 
-  const editBookImage = async (event) => {
+  const deleteReview = async (event) => {
     event.preventDefault();
-    console.log("Image ", image);
-
-    const formData = new FormData();
-    formData.append("Image", image);
-    formData.append("Json", {});
+    console.log("Review ", reviewId);
 
     await axios
-      .patch(`/api/books/${bookId}`, formData, {
-        "Content-Type": "multipart/form-data"
-      })
+      .delete(`/api/reviews/${reviewId}`)
       .then((response) => {
         console.log(response);
         if (response.data.Status === "Success") {
@@ -39,7 +28,9 @@ function EditBookImageDialog(props) {
           setResponseMessage(
             <Alert variant="success">{response.data.Message}</Alert>
           );
-          props.fetchSingleBookData();
+          props.hideDeleteReviewDialog();
+          props.fetchData();
+          // navigate(`/books/${props.bookId}`);
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(
@@ -58,31 +49,24 @@ function EditBookImageDialog(props) {
   return (
     <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Edit book image - {props.bookTitle}</Modal.Title>
+        <Modal.Title>Delete review</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row md={1}>{responseMessage ?? <></>}</Row>
-        <Row md={1}>
-          <FloatingLabel label="Image" className="floating-label">
-            <Form.Control
-              required
-              type="file"
-              name="Image"
-              onChange={(e) => setImage(e.target.files[0])}
-            />
-          </FloatingLabel>
+        <Row md={1} style={{ padding: 10 }}>
+          Are you sure you want to delete this review?
         </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={editBookImage}>
-          Update book image
+        <Button variant="danger" onClick={deleteReview}>
+          Delete
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default EditBookImageDialog;
+export default DeleteReviewDialog;

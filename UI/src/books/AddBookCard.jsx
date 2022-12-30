@@ -9,12 +9,9 @@ function AddBookCard(props) {
   };
 
   return (
-    <Card
-      border="light"
-      style={{ width: "19rem" }}
-      className="center">
+    <Card border="light" style={{ width: "19rem" }} className="center">
       <Button
-        variant="secondary"
+        variant="success"
         className="center add-book-card-button"
         onClick={addBook}>
         Add new book

@@ -379,9 +379,16 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 var book = await _context.Books
                     .FirstOrDefaultAsync(e => e.Id == bookId);
                 _context.Books.Attach(book);
-                book.AverageRating = _context.Reviews
-                    .Where(e => e.BookId == bookId)
-                    .Average(e => e.Rating);
+                try
+                {
+                    book.AverageRating = _context.Reviews
+                        .Where(e => e.BookId == bookId)
+                        .Average(e => e.Rating);
+
+                } catch (Exception ex)
+                {
+                    book.AverageRating = null;
+                }
                 _context.Entry(book).Property(x => x.AverageRating).IsModified = true;
                 await _context.SaveChangesAsync();
             }
@@ -396,9 +403,16 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
                 var author = await _context.Authors
                     .FirstOrDefaultAsync(e => e.Id == book.AuthorId);
                 _context.Authors.Attach(author);
-                author.AverageRating = _context.Books
-                    .Where(e => e.AuthorId == author.Id)
-                    .Average(e => e.AverageRating);
+                try
+                {
+                    author.AverageRating = _context.Books
+                        .Where(e => e.AuthorId == author.Id)
+                        .Average(e => e.AverageRating);
+                }
+                catch (Exception ex)
+                {
+                    author.AverageRating = null;
+                }
                 _context.Entry(author).Property(x => x.AverageRating).IsModified = true;
                 await _context.SaveChangesAsync();
             }

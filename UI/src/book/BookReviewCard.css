@@ -1,0 +1,12 @@
+.book-review-card-container {
+  margin-bottom: 30px;
+}
+
+.book-review-card-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.book-review-button-container {
+  display: flow-root;
+}
