@@ -3,46 +3,56 @@ import { useNavigate } from "react-router-dom";
 import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { BookCategoryMap } from "../utils/EnumMaps";
+import { AuthorStatusMap } from "../utils/EnumMaps";
 import { roundToTwo } from "../utils/roundToTwo";
-import "./BookCard.css";
 
-function BookCard(props) {
-  const book = props.book;
+function AuthorCard(props) {
+  const author = props.author;
 
   const navigate = useNavigate();
+
+  const getHeaderColor = () => {
+    const status = AuthorStatusMap[author.Status];
+    if (status === "Alive") {
+      return "#198754";
+    } else if (status === "Dead") {
+      return "black";
+    } else {
+      return "grey";
+    }
+  };
 
   return (
     <Card
       border="light"
       style={{ width: "19rem" }}
       className="book-card-container"
-      onClick={() => navigate(`/books/${book.Id}`)}>
-      <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
+      onClick={() => navigate(`/authors/${author.Id}`)}>
+      <Card.Header style={{ color: getHeaderColor() }}>
+        {AuthorStatusMap[author.Status]}
+      </Card.Header>
       <Card.Body>
         <Card.Title className="book-card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
-          {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
+          {author.AverageRating ? roundToTwo(author.AverageRating) : "?"}
           /10
         </Card.Title>
       </Card.Body>
       <Card.Img
         as={Image}
         variant="top"
-        src={`/api/image/books/${book.ImageUrl}`}
+        src={`/api/image/authors/${author.ImageUrl}`}
         alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
         fluid="md"
         className="book-card-img"
       />
       <Card.Body>
-        <Card.Title>{book.Title}</Card.Title>
-        <Card.Subtitle>
-          {book.Author.Name}, {book.ReleaseYear}
-        </Card.Subtitle>
-        <Card.Text>{book.Description}</Card.Text>
+        <Card.Title>{author.Name}</Card.Title>
+        <Card.Subtitle>{author.Country}</Card.Subtitle>
+        {/* <Card.Text>{book.Description}</Card.Text> */}
       </Card.Body>
     </Card>
   );
 }
 
-export default BookCard;
+export default AuthorCard;

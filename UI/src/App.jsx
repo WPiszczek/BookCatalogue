@@ -2,7 +2,8 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppRoutes from "./utils/AppRoutes";
 import Layout from "./common/Layout";
-import BookPage from "./book/SingleBookPage";
+import SingleBookPage from "./book/SingleBookPage";
+import SingleAuthorPage from "./author/SingleAuthorPage";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
           const { element, ...rest } = route;
           return <Route key={index} {...rest} element={element} />;
         })}
-        <Route path="/books/:id" element={<BookPage />} />
+        <Route path="/books/:id" element={<SingleBookPage />} />
+        <Route path="/authors/:id" element={<SingleAuthorPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Layout>

@@ -133,12 +133,13 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
-        public async Task<IEnumerable<IAuthor>> GetAuthors(string? name=null)
+        public async Task<IEnumerable<IAuthor>> GetAuthors(string? name=null, AuthorStatus? status=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
                 return await _context.Authors
                     .Where(e =>
-                        name == null || e.Name.ToLower().Contains(name.ToLower())
+                        (name == null || e.Name.ToLower().Contains(name.ToLower()))
+                        && (status == null || e.Status == status)
                     )
                     .Include(e => e.Books)
                     .ToListAsync();

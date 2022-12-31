@@ -1,8 +1,10 @@
-﻿namespace PiszczekSzpotek.BookCatalogue.Interfaces
+﻿using PiszczekSzpotek.BookCatalogue.Core.Enums;
+
+namespace PiszczekSzpotek.BookCatalogue.Interfaces
 {
     public interface IAuthorsRepository
     {
-        public Task<IEnumerable<IAuthor>> GetAuthors(string? name);
+        public Task<IEnumerable<IAuthor>> GetAuthors(string? name, AuthorStatus? status);
         public Task<IAuthor> GetAuthorById(int id);
         public Task<bool> AddAuthor(IAuthor author);
         public Task<bool> UpdateAuthorImageUrl(int authorId, string imageUrl);

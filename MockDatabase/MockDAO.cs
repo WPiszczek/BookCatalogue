@@ -128,7 +128,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IAuthor>> GetAuthors(string? name)
+        public Task<IEnumerable<IAuthor>> GetAuthors(string? name, AuthorStatus? status)
         {
             throw new NotImplementedException();
         }

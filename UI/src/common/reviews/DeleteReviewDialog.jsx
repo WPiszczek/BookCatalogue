@@ -1,14 +1,11 @@
 import { React, useState } from "react";
 import { Button, Modal, Row, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function DeleteReviewDialog(props) {
   const reviewId = props.reviewId;
   const [show, setShow] = useState(props.show);
   const [responseMessage, setResponseMessage] = useState();
-
-  const navigate = useNavigate();
 
   const handleClose = () => {
     setShow(false);
@@ -30,7 +27,6 @@ function DeleteReviewDialog(props) {
           );
           props.hideDeleteReviewDialog();
           props.fetchData();
-          // navigate(`/books/${props.bookId}`);
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(
