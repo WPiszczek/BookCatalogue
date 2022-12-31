@@ -93,7 +93,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             } catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                _logger.LogError(ex.StackTrace);
                 return ResponseHelper.Error("Error while adding author. Try again.");
             }
         }
