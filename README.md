@@ -19,7 +19,7 @@
 
 ### 2.2 AuthorsRepository
 
-- GetAuthors(name)
+- GetAuthors(name, status)
 - GetAuthorById(id)
 - AddAuthor(author)
 - UpdateAuthorImageUrl(authorId, imageUrl)
@@ -28,7 +28,7 @@
 
 ### 2.3 ReviewsRepository
 
-- GetReviews(bookId, rating)
+- GetReviews(bookId)
 - GetReviewById(id)
 - AddReview(review)
 - UpdateReview(review)
@@ -54,7 +54,7 @@
 
 ### 3.2 AuthorsController
 
-- GET /api/authors?name=
+- GET /api/authors?name=&status=
 - GET /api/authors/{id}
 - POST /api/authors
 - PATCH /api/authors/{id}
@@ -63,7 +63,7 @@
 
 ### 3.3 ReviewsController
 
-- GET /api/reviews?book=&rating=
+- GET /api/reviews?book=
 - GET /api/reviews/{id}
 - POST /api/reviews
 - PUT /api/reviews/{id}
