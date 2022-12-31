@@ -3,11 +3,13 @@ import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import AuthorsFilters from "./AuthorsFilters";
 import AuthorsContainer from "./AuthorsContainer";
+import AddAuthorDialog from "./AddAuthorDialog";
 import { sortAuthors } from "../utils/sortAuthors";
 
 function AuthorsPage() {
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAddAuthorDialog, setShowAddAuthorDialog] = useState(false);
 
   useEffect(() => {
     fetchAuthorsData();
@@ -35,7 +37,7 @@ function AuthorsPage() {
 
   function addAuthor() {
     console.log("Add author from authors page");
-    // TODO
+    setShowAddAuthorDialog(true);
   }
 
   return (
@@ -47,13 +49,13 @@ function AuthorsPage() {
         </>
       ) : (
         <>
-          {/* {showAddBookDialog && (
-            <AddBookDialog
+          {showAddAuthorDialog && (
+            <AddAuthorDialog
               show={true}
-              close={() => setShowAddBookDialog(false)}
-              fetchBooksData={fetchBooksData}
+              close={() => setShowAddAuthorDialog(false)}
+              fetchAuthorsData={fetchAuthorsData}
             />
-          )} */}
+          )}
           <AuthorsFilters
             fetchAuthorsData={fetchAuthorsData}
             addAuthor={addAuthor}
