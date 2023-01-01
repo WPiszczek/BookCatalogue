@@ -8,7 +8,7 @@ import {
   Alert
 } from "react-bootstrap";
 import axios from "axios";
-import { BookCategoryMap } from "../utils/EnumMaps";
+import { BookCategoryMap } from "../../utils/EnumMaps";
 
 function AddBookDialog(props) {
   const [show, setShow] = useState(props.show);
@@ -16,7 +16,7 @@ function AddBookDialog(props) {
   const [title, setTitle] = useState("");
   const [releaseYear, setReleaseYear] = useState(2000);
   const [description, setDescription] = useState("");
-  const [authorId, setAuthorId] = useState("");
+  const [authorId, setAuthorId] = useState(props.authorId ?? "");
   const [category, setCategory] = useState("");
   const [image, setImage] = useState();
   const [responseMessage, setResponseMessage] = useState();
@@ -69,7 +69,7 @@ function AddBookDialog(props) {
           setResponseMessage(
             <Alert variant="success">{response.data.Message}</Alert>
           );
-          props.fetchBooksData();
+          props.fetchData();
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(

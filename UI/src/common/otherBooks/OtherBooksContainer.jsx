@@ -19,7 +19,7 @@ function OtherBooksContainer(props) {
 
   return (
     <Container fluid="md">
-      <Row md={3}>
+      <Row md={2}>
         <OverlayTrigger
           placement="top"
           overlay={

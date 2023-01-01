@@ -9,8 +9,8 @@ namespace PiszczekSzpotek.BookCatalogue.Core.Enums
 {
     public enum AuthorStatus
     {
-        [Description("Alive")]
-        Alive = 0,
+        [Description("Active")]
+        Active = 0,
         [Description("Dead")]
         Dead = 1,
         [Description("Retired")]

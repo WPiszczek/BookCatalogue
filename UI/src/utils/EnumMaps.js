@@ -7,16 +7,28 @@ const BookCategoryMap = {
   5: "Kryminał/Sensacja",
   6: "Kultura i sztuka",
   7: "Literatura faktu",
-  8: "Literatura piękna",
+  8: "Literatura piękna"
 };
 
 const AuthorStatusMap = {
-  0: "Alive",
+  0: "Active",
   1: "Dead",
-  2: "Retired",
+  2: "Retired"
 };
+
+function getAuthorHeaderColor(status) {
+  const statusString = AuthorStatusMap[status];
+  if (statusString === "Active") {
+    return "#198754";
+  } else if (statusString === "Dead") {
+    return "black";
+  } else {
+    return "grey";
+  }
+}
 
 module.exports = {
   BookCategoryMap,
   AuthorStatusMap,
+  getAuthorHeaderColor
 };

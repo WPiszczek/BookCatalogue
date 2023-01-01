@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { AuthorStatusMap } from "../utils/EnumMaps";
+import { AuthorStatusMap, getAuthorHeaderColor } from "../utils/EnumMaps";
+// import { getAuthorHeaderColor } from "../utils/getAuthorHeaderColor";
 import { roundToTwo } from "../utils/roundToTwo";
 
 function AuthorCard(props) {
@@ -11,24 +12,13 @@ function AuthorCard(props) {
 
   const navigate = useNavigate();
 
-  const getHeaderColor = () => {
-    const status = AuthorStatusMap[author.Status];
-    if (status === "Alive") {
-      return "#198754";
-    } else if (status === "Dead") {
-      return "black";
-    } else {
-      return "grey";
-    }
-  };
-
   return (
     <Card
       border="light"
       style={{ width: "19rem" }}
       className="book-card-container"
       onClick={() => navigate(`/authors/${author.Id}`)}>
-      <Card.Header style={{ color: getHeaderColor() }}>
+      <Card.Header style={{ color: getAuthorHeaderColor(author.Status) }}>
         {AuthorStatusMap[author.Status]}
       </Card.Header>
       <Card.Body>
@@ -49,7 +39,6 @@ function AuthorCard(props) {
       <Card.Body>
         <Card.Title>{author.Name}</Card.Title>
         <Card.Subtitle>{author.Country}</Card.Subtitle>
-        {/* <Card.Text>{book.Description}</Card.Text> */}
       </Card.Body>
     </Card>
   );

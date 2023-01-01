@@ -2,48 +2,49 @@ import { React } from "react";
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import { BookCategoryMap } from "../utils/EnumMaps";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { AuthorStatusMap, getAuthorHeaderColor } from "../utils/EnumMaps";
 import { roundToTwo } from "../utils/roundToTwo";
-import "./SingleBookCard.css";
 
-function SingleBookCard(props) {
-  const book = props.book;
+function SingleAuthorCard(props) {
+  const author = props.author;
   const navigate = useNavigate();
 
-  const addReview = (event) => {
+  const addBook = (event) => {
     event.preventDefault();
-    console.log("Add review");
-    props.addReview();
+    console.log("Add book");
+    props.addBook();
   };
 
-  const editBook = (event) => {
+  const editAuthor = (event) => {
     event.preventDefault();
-    console.log("Edit book", book.Id);
-    props.editBook();
+    console.log("Edit author", author.Id);
+    props.editAuthor();
   };
 
-  const editBookImage = (event) => {
+  const editAuthorImage = (event) => {
     event.preventDefault();
-    console.log("Edit book image", book.Id);
-    props.editBookImage();
+    console.log("Edit author image", author.Id);
+    props.editAuthorImage();
   };
 
-  const deleteBook = (event) => {
+  const deleteAuthor = (event) => {
     event.preventDefault();
-    console.log("Delete book", book.Id);
-    props.deleteBook();
+    console.log("Delete author", author.Id);
+    props.deleteAuthor();
   };
 
   return (
     <Card border="light" className="single-book-card">
-      <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
+      <Card.Header style={{ color: getAuthorHeaderColor(author.Status) }}>
+        {AuthorStatusMap[author.Status]}
+      </Card.Header>
       <Row>
         <Col md={4}>
           <Card.Img
             as={Image}
             variant="top"
-            src={`/api/image/books/${book.ImageUrl}`}
+            src={`/api/image/authors/${author.ImageUrl}`}
             alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
             fluid="md"
             className="book-card-img"
@@ -53,63 +54,58 @@ function SingleBookCard(props) {
           <Card.Body>
             <Card.Title className="single-book-card-rating single-book-card-header">
               <FontAwesomeIcon icon={faStar} className="icon-star" />
-              {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
+              {author.AverageRating ? roundToTwo(author.AverageRating) : "?"}
               /10
             </Card.Title>
             <Row>
               <Col md={7}>
                 <Card.Title className="single-book-card-title">
-                  {book.Title}
+                  {author.Name}
                 </Card.Title>
                 <Card.Text>
-                  <span className="single-book-card-header"> Author: </span>
-                  {book.Author.Name}{" "}
-                  <FontAwesomeIcon
-                    icon={faUpRightFromSquare}
-                    className="icon-link"
-                    onClick={() => navigate(`/authors/${book.Author.Id}`)}
-                  />
+                  <span className="single-book-card-header">Country: </span>
+                  {author.Country}
                 </Card.Text>
                 <Card.Text>
                   <span className="single-book-card-header">
-                    {" "}
-                    Release year:{" "}
+                    Date of birth:{" "}
                   </span>
-                  {book.ReleaseYear}
+                  {author.BirthDate.slice(0, 10)}
                 </Card.Text>
-                <Card.Text>
-                  <span className="single-book-card-header">
-                    {" "}
-                    Description:{" "}
-                  </span>
-                </Card.Text>
-                <Card.Text>{book.Description}</Card.Text>
+                {author.DeathDate !== null && (
+                  <Card.Text>
+                    <span className="single-book-card-header">
+                      Date of death:{" "}
+                    </span>
+                    {author.DeathDate.slice(0, 10)}
+                  </Card.Text>
+                )}
               </Col>
               <Col md={5} className="single-book-button-container">
                 <Container>
                   <Button
                     variant="primary"
                     className="single-book-button"
-                    onClick={(e) => editBook(e)}>
-                    Edit book
+                    onClick={(e) => editAuthor(e)}>
+                    Edit author
                   </Button>
                   <Button
                     variant="secondary"
                     className="single-book-button"
-                    onClick={(e) => editBookImage(e)}>
-                    Edit book picture
+                    onClick={(e) => editAuthorImage(e)}>
+                    Edit author picture
                   </Button>
                   <Button
                     variant="success"
                     className="single-book-button"
-                    onClick={(e) => addReview(e)}>
-                    Add review
+                    onClick={(e) => addBook(e)}>
+                    Add book
                   </Button>
                   <Button
                     variant="danger"
                     className="single-book-button"
-                    onClick={(e) => deleteBook(e)}>
-                    Delete book
+                    onClick={(e) => deleteAuthor(e)}>
+                    Delete author
                   </Button>
                 </Container>
               </Col>
@@ -121,4 +117,4 @@ function SingleBookCard(props) {
   );
 }
 
-export default SingleBookCard;
+export default SingleAuthorCard;

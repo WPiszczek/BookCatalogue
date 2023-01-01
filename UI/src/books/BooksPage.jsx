@@ -3,7 +3,7 @@ import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import BooksFilters from "./BooksFilters";
 import BooksContainer from "./BooksContainer";
-import AddBookDialog from "./AddBookDialog";
+import AddBookDialog from "../common/books/AddBookDialog";
 import { sortBooks } from "../utils/sortBooks";
 
 function BooksPage() {
@@ -55,7 +55,7 @@ function BooksPage() {
             <AddBookDialog
               show={true}
               close={() => setShowAddBookDialog(false)}
-              fetchBooksData={fetchBooksData}
+              fetchData={fetchBooksData}
             />
           )}
           <BooksFilters
