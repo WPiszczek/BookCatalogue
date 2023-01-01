@@ -226,13 +226,13 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
-        public async Task<IEnumerable<IReview>> GetReviews(int? bookId=null, int? rating=null)
+        public async Task<IEnumerable<IReview>> GetReviews(int? bookId=null, string? search=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
                 return await _context.Reviews
                     .Where(e =>
                         (bookId == null || e.Book.Id == bookId)
-                        && (rating == null || e.Rating == rating)
+                        && (search == null || e.Title.ToLower().Contains(search.ToLower()) || e.Content.ToLower().Contains(search.ToLower()))
                     )
                     .Include(e => e.Book)
                     .Include(e => e.Book.Author)

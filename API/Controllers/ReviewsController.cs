@@ -24,13 +24,13 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
 
         // GET: api/reviews
         [HttpGet]
-        public async Task<string> Get(int? bookId=null, int? rating=null)
+        public async Task<string> Get(int? bookId=null, string? search=null)
         {
             _logger.LogInformation("GET api/reviews");
 
             try
             {
-                var reviews = await _service.GetReviews(bookId, rating);
+                var reviews = await _service.GetReviews(bookId, search);
 
                 return ResponseHelper.Data(reviews);
             }

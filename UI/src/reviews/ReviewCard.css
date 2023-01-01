@@ -1,0 +1,11 @@
+.review-card-container {
+  margin-bottom: 30px;
+}
+
+.review-card-img {
+  padding: 10px;
+}
+
+.margin-right {
+  margin-right: 1px solid rgba(0, 0, 0, 0.175);
+}

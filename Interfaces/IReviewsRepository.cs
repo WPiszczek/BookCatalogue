@@ -2,7 +2,7 @@
 {
     public interface IReviewsRepository
     {
-        public Task<IEnumerable<IReview>> GetReviews(int? bookId, int? rating);
+        public Task<IEnumerable<IReview>> GetReviews(int? bookId, string? search);
         public Task<IReview> GetReviewById(int id);
         public Task<bool> AddReview(IReview review);
         public Task<bool> UpdateReview(IReview review);

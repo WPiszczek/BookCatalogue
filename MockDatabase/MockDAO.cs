@@ -153,7 +153,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IReview>> GetReviews(int? bookId, int? rating)
+        public Task<IEnumerable<IReview>> GetReviews(int? bookId, string? search)
         {
             throw new NotImplementedException();
         }

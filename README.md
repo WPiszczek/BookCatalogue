@@ -28,7 +28,7 @@
 
 ### 2.3 ReviewsRepository
 
-- GetReviews(bookId)
+- GetReviews(bookId, search)
 - GetReviewById(id)
 - AddReview(review)
 - UpdateReview(review)
@@ -63,7 +63,7 @@
 
 ### 3.3 ReviewsController
 
-- GET /api/reviews?book=
+- GET /api/reviews?bookId=&search=
 - GET /api/reviews/{id}
 - POST /api/reviews
 - PUT /api/reviews/{id}
