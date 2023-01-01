@@ -44,8 +44,36 @@ function AddReviewDialog(props) {
     props.close();
   };
 
+  const validateAddReview = () => {
+    if (!bookId) {
+      setResponseMessage(<Alert variant="danger">Book is required.</Alert>);
+      return false;
+    }
+    if (!reviewer) {
+      setResponseMessage(
+        <Alert variant="danger">Your name is required.</Alert>
+      );
+      return false;
+    }
+    if (!rating) {
+      setResponseMessage(<Alert variant="danger">Rating is required.</Alert>);
+      return false;
+    }
+    if (!title) {
+      setResponseMessage(<Alert variant="danger">Title is required.</Alert>);
+      return false;
+    }
+    if (!content) {
+      setResponseMessage(<Alert variant="danger">Content is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
   const addReview = async (event) => {
     event.preventDefault();
+    if (!validateAddReview()) return;
+
     const review = {
       Title: title,
       BookId: parseInt(bookId),

@@ -42,8 +42,36 @@ function AddBookDialog(props) {
     props.close();
   };
 
+  const validateAddBook = () => {
+    if (!title) {
+      setResponseMessage(<Alert variant="danger">Title is required.</Alert>);
+      return false;
+    }
+    if (!releaseYear) {
+      setResponseMessage(
+        <Alert variant="danger">Release year is required.</Alert>
+      );
+      return false;
+    }
+    if (!authorId) {
+      setResponseMessage(<Alert variant="danger">Author is required.</Alert>);
+      return false;
+    }
+    if (!(category.toString())) {
+      setResponseMessage(<Alert variant="danger">Category is required.</Alert>);
+      return false;
+    }
+    if (!image) {
+      setResponseMessage(<Alert variant="danger">Picture is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
   const addBook = async (event) => {
     event.preventDefault();
+    if (!validateAddBook()) return;
+
     const book = {
       Title: title,
       AuthorId: parseInt(authorId),

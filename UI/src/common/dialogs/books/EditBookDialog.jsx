@@ -42,8 +42,32 @@ function EditBookDialog(props) {
     props.close();
   };
 
+  const validateEditBook = () => {
+    if (!title) {
+      setResponseMessage(<Alert variant="danger">Title is required.</Alert>);
+      return false;
+    }
+    if (!releaseYear) {
+      setResponseMessage(
+        <Alert variant="danger">Release year is required.</Alert>
+      );
+      return false;
+    }
+    if (!authorId) {
+      setResponseMessage(<Alert variant="danger">Author is required.</Alert>);
+      return false;
+    }
+    if (!category.toString()) {
+      setResponseMessage(<Alert variant="danger">Category is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
   const editBook = async (event) => {
     event.preventDefault();
+    if (!validateEditBook()) return;
+
     const book = {
       Title: title,
       AuthorId: parseInt(authorId),

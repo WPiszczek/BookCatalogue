@@ -45,8 +45,35 @@ function EditReviewDialog(props) {
     props.close();
   };
 
-  const addReview = async (event) => {
+  const validateEditReview = () => {
+    if (!bookId) {
+      setResponseMessage(<Alert variant="danger">Book is required.</Alert>);
+      return false;
+    }
+    if (!reviewer) {
+      setResponseMessage(
+        <Alert variant="danger">Your name is required.</Alert>
+      );
+      return false;
+    }
+    if (!rating) {
+      setResponseMessage(<Alert variant="danger">Rating is required.</Alert>);
+      return false;
+    }
+    if (!title) {
+      setResponseMessage(<Alert variant="danger">Title is required.</Alert>);
+      return false;
+    }
+    if (!content) {
+      setResponseMessage(<Alert variant="danger">Content is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
+  const editReview = async (event) => {
     event.preventDefault();
+    if (!validateEditReview()) return;
     const review = {
       Title: title,
       BookId: parseInt(bookId),
@@ -168,7 +195,7 @@ function EditReviewDialog(props) {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={addReview}>
+        <Button variant="primary" onClick={editReview}>
           Confirm
         </Button>
       </Modal.Footer>

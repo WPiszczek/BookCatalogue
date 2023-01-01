@@ -20,8 +20,17 @@ function EditBookImageDialog(props) {
     props.close();
   };
 
+  const validateEditBookImage = () => {
+    if (!image) {
+      setResponseMessage(<Alert variant="danger">Picture is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
   const editBookImage = async (event) => {
     event.preventDefault();
+    if (!validateEditBookImage()) return;
     console.log("Image ", image);
 
     const formData = new FormData();
@@ -58,7 +67,7 @@ function EditBookImageDialog(props) {
   return (
     <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Edit book image - {props.bookTitle}</Modal.Title>
+        <Modal.Title>Edit book picture - {props.bookTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row md={1}>{responseMessage ?? <></>}</Row>
@@ -78,7 +87,7 @@ function EditBookImageDialog(props) {
           Close
         </Button>
         <Button variant="primary" onClick={editBookImage}>
-          Update book image
+          Update book picture
         </Button>
       </Modal.Footer>
     </Modal>

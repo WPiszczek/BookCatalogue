@@ -29,8 +29,59 @@ function EditAuthorDialog(props) {
     props.close();
   };
 
+  const validateEditAuthor = () => {
+    if (!name) {
+      setResponseMessage(<Alert variant="danger">Name is required.</Alert>);
+      return false;
+    }
+    if (!country) {
+      setResponseMessage(<Alert variant="danger">Country is required.</Alert>);
+      return false;
+    }
+    if (!birthDate) {
+      setResponseMessage(
+        <Alert variant="danger">Date of birth is required.</Alert>
+      );
+      return false;
+    }
+    if (new Date(birthDate) >= new Date()) {
+      console.log(birthDate, new Date(birthDate), new Date());
+      setResponseMessage(
+        <Alert variant="danger">Date of birth cannot be in the future.</Alert>
+      );
+      return false;
+    }
+    if (!status.toString()) {
+      setResponseMessage(<Alert variant="danger">Status is required.</Alert>);
+      return false;
+    }
+    if (AuthorStatusMap[status] === "Dead") {
+      if (!deathDate) {
+        setResponseMessage(
+          <Alert variant="danger">Date of death is required.</Alert>
+        );
+        return false;
+      }
+      if (new Date(birthDate) >= new Date(deathDate)) {
+        setResponseMessage(
+          <Alert variant="danger">Death cannot happen before birth.</Alert>
+        );
+        return false;
+      }
+      if (new Date(deathDate) >= new Date()) {
+        setResponseMessage(
+          <Alert variant="danger">Date of death cannot be in the future.</Alert>
+        );
+        return false;
+      }
+    }
+    return true;
+  };
+
   const editAuthor = async (event) => {
     event.preventDefault();
+    if (!validateEditAuthor()) return;
+
     const author = {
       Name: name,
       Country: country,

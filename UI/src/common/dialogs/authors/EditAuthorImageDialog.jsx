@@ -20,10 +20,19 @@ function EditAuthorImageDialog(props) {
     props.close();
   };
 
+  const validateEditAuthorImage = () => {
+    if (!image) {
+      setResponseMessage(<Alert variant="danger">Picture is required.</Alert>);
+      return false;
+    }
+    return true;
+  };
+
   const editAuthorImage = async (event) => {
     event.preventDefault();
-    console.log("Image ", image);
+    if (!validateEditAuthorImage()) return;
 
+    console.log("Image ", image);
     const formData = new FormData();
     formData.append("Image", image);
     formData.append("Json", {});
