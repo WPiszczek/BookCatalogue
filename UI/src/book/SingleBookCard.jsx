@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import { roundToTwo } from "../utils/roundToTwo";
-import "./SingleBookCard.css";
+import "../common/css/SingleCard.css";
 
 function SingleBookCard(props) {
   const book = props.book;
@@ -36,7 +36,7 @@ function SingleBookCard(props) {
   };
 
   return (
-    <Card border="light" className="single-book-card">
+    <Card border="light" className="single-card">
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
       <Row>
         <Col md={4}>
@@ -46,23 +46,23 @@ function SingleBookCard(props) {
             src={`/api/image/books/${book.ImageUrl}`}
             alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
             fluid="md"
-            className="book-card-img"
+            className="card-img"
           />
         </Col>
         <Col md={8}>
           <Card.Body>
-            <Card.Title className="single-book-card-rating single-book-card-header">
+            <Card.Title className="single-card-rating single-card-header">
               <FontAwesomeIcon icon={faStar} className="icon-star" />
               {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
               /10
             </Card.Title>
             <Row>
               <Col md={7}>
-                <Card.Title className="single-book-card-title">
+                <Card.Title className="single-card-title">
                   {book.Title}
                 </Card.Title>
                 <Card.Text>
-                  <span className="single-book-card-header"> Author: </span>
+                  <span className="single-card-header"> Author: </span>
                   {book.Author.Name}{" "}
                   <FontAwesomeIcon
                     icon={faUpRightFromSquare}
@@ -71,43 +71,37 @@ function SingleBookCard(props) {
                   />
                 </Card.Text>
                 <Card.Text>
-                  <span className="single-book-card-header">
-                    {" "}
-                    Release year:{" "}
-                  </span>
+                  <span className="single-card-header"> Release year: </span>
                   {book.ReleaseYear}
                 </Card.Text>
                 <Card.Text>
-                  <span className="single-book-card-header">
-                    {" "}
-                    Description:{" "}
-                  </span>
+                  <span className="single-card-header"> Description: </span>
                 </Card.Text>
                 <Card.Text>{book.Description}</Card.Text>
               </Col>
-              <Col md={5} className="single-book-button-container">
+              <Col md={5} className="single-button-container">
                 <Container>
                   <Button
                     variant="primary"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => editBook(e)}>
                     Edit book
                   </Button>
                   <Button
                     variant="secondary"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => editBookImage(e)}>
                     Edit book picture
                   </Button>
                   <Button
                     variant="success"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => addReview(e)}>
                     Add review
                   </Button>
                   <Button
                     variant="danger"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => deleteBook(e)}>
                     Delete book
                   </Button>

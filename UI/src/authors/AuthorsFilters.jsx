@@ -48,7 +48,6 @@ function AuthorsFilters(props) {
             <FloatingLabel label="Name" className="floating-label">
               <Form.Control
                 type="text"
-                placeholder="Enter author name"
                 name="Name"
                 onChange={(e) => setName(e.target.value)}
               />
@@ -69,13 +68,13 @@ function AuthorsFilters(props) {
           <Row>
             <Button
               variant="primary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={filterAuthors}>
               Filter authors
             </Button>
             <Button
               variant="secondary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={addAuthor}>
               Add new author
             </Button>
@@ -84,9 +83,7 @@ function AuthorsFilters(props) {
         <Col md={3}>
           <Row>
             <Dropdown>
-              <Dropdown.Toggle
-                variant="success"
-                className="books-filters-button">
+              <Dropdown.Toggle variant="success" className="filters-button">
                 Sort authors
               </Dropdown.Toggle>
               <Dropdown.Menu>

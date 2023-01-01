@@ -35,7 +35,7 @@ function SingleAuthorCard(props) {
   };
 
   return (
-    <Card border="light" className="single-book-card">
+    <Card border="light" className="single-card">
       <Card.Header style={{ color: getAuthorHeaderColor(author.Status) }}>
         {AuthorStatusMap[author.Status]}
       </Card.Header>
@@ -47,63 +47,59 @@ function SingleAuthorCard(props) {
             src={`/api/image/authors/${author.ImageUrl}`}
             alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
             fluid="md"
-            className="book-card-img"
+            className="card-img"
           />
         </Col>
         <Col md={8}>
           <Card.Body>
-            <Card.Title className="single-book-card-rating single-book-card-header">
+            <Card.Title className="single-card-rating single-card-header">
               <FontAwesomeIcon icon={faStar} className="icon-star" />
               {author.AverageRating ? roundToTwo(author.AverageRating) : "?"}
               /10
             </Card.Title>
             <Row>
               <Col md={7}>
-                <Card.Title className="single-book-card-title">
+                <Card.Title className="single-card-title">
                   {author.Name}
                 </Card.Title>
                 <Card.Text>
-                  <span className="single-book-card-header">Country: </span>
+                  <span className="single-card-header">Country: </span>
                   {author.Country}
                 </Card.Text>
                 <Card.Text>
-                  <span className="single-book-card-header">
-                    Date of birth:{" "}
-                  </span>
+                  <span className="single-card-header">Date of birth: </span>
                   {author.BirthDate.slice(0, 10)}
                 </Card.Text>
                 {author.DeathDate !== null && (
                   <Card.Text>
-                    <span className="single-book-card-header">
-                      Date of death:{" "}
-                    </span>
+                    <span className="single-card-header">Date of death: </span>
                     {author.DeathDate.slice(0, 10)}
                   </Card.Text>
                 )}
               </Col>
-              <Col md={5} className="single-book-button-container">
+              <Col md={5} className="single-button-container">
                 <Container>
                   <Button
                     variant="primary"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => editAuthor(e)}>
                     Edit author
                   </Button>
                   <Button
                     variant="secondary"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => editAuthorImage(e)}>
                     Edit author picture
                   </Button>
                   <Button
                     variant="success"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => addBook(e)}>
                     Add book
                   </Button>
                   <Button
                     variant="danger"
-                    className="single-book-button"
+                    className="single-button"
                     onClick={(e) => deleteAuthor(e)}>
                     Delete author
                   </Button>

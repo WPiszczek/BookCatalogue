@@ -11,7 +11,7 @@ function AddAuthorCard(props) {
     <Card border="light" style={{ width: "19rem" }} className="center">
       <Button
         variant="success"
-        className="center add-book-card-button"
+        className="center card-add-button"
         onClick={addAuthor}>
         Add new author
       </Button>

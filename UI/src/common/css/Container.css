@@ -1,8 +1,8 @@
-.books-container {
+.container {
   margin-top: 20px;
 }
 
-.books-container-row {
+.container-row {
   padding: 10px;
   display: flex;
   align-items: stretch;

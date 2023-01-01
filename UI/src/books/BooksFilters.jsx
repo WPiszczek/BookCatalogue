@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import axios from "axios";
-import "./BooksFilters.css";
+import "../common/css/Filters.css";
 
 function BooksFilters(props) {
   const [authors, setAuthors] = useState([]);
@@ -76,7 +76,6 @@ function BooksFilters(props) {
             <FloatingLabel label="Title" className="floating-label">
               <Form.Control
                 type="text"
-                placeholder="Enter book title"
                 name="Title"
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -105,13 +104,13 @@ function BooksFilters(props) {
           <Row>
             <Button
               variant="primary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={filterBooks}>
               Filter books
             </Button>
             <Button
               variant="secondary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={addBook}>
               Add new book
             </Button>
@@ -120,9 +119,7 @@ function BooksFilters(props) {
         <Col md={3}>
           <Row>
             <Dropdown>
-              <Dropdown.Toggle
-                variant="success"
-                className="books-filters-button">
+              <Dropdown.Toggle variant="success" className="filters-button">
                 Sort books
               </Dropdown.Toggle>
               <Dropdown.Menu>

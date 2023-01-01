@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment/moment";
 import { roundToTwo } from "../utils/roundToTwo";
-import "./ReviewCard.css";
+import "../common/css/Card.css";
 import { useNavigate } from "react-router-dom";
 
 function ReviewCard(props) {
@@ -26,7 +26,7 @@ function ReviewCard(props) {
       <Card.Header>
         <Row>
           <Col md={4}>{review.Reviewer}</Col>
-          <Col className="book-review-card-header">
+          <Col className="review-card-header">
             <span className="italic">
               Added {moment(review.DateAdded).format("YYYY-MM-DD, HH:mm")}
             </span>
@@ -51,14 +51,14 @@ function ReviewCard(props) {
               src={`/api/image/books/${review.Book.ImageUrl}`}
               alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
               fluid="md"
-              className="review-card-img"
+              className="card-img"
             />
           </Container>
         </Col>
         <Col md={10}>
           <Container fluid="md">
             <Card.Body>
-              <Card.Title className="book-card-rating">
+              <Card.Title className="card-rating">
                 <FontAwesomeIcon icon={faStar} className="icon-star" />
                 {review.Rating ? roundToTwo(review.Rating) : "?"}
                 /10
@@ -71,16 +71,16 @@ function ReviewCard(props) {
                   <Card.Text>{review.Content}</Card.Text>
                 </Col>
                 <Col md={3}>
-                  <Container className="book-review-button-container">
+                  <Container className="review-button-container">
                     <Button
                       variant="primary"
-                      className="single-book-button"
+                      className="single-button"
                       onClick={(e) => editReview(e)}>
                       Edit review
                     </Button>
                     <Button
                       variant="danger"
-                      className="single-book-button"
+                      className="single-button"
                       onClick={(e) => deleteReview(e)}>
                       Delete review
                     </Button>

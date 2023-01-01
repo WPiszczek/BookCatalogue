@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { BookCategoryMap } from "../utils/EnumMaps";
 import { roundToTwo } from "../utils/roundToTwo";
-import "./BookCard.css";
+import "../common/css/Card.css";
 
 function BookCard(props) {
   const book = props.book;
@@ -20,7 +20,7 @@ function BookCard(props) {
       onClick={() => navigate(`/books/${book.Id}`)}>
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
       <Card.Body>
-        <Card.Title className="book-card-rating">
+        <Card.Title className="card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
           {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
           /10
@@ -32,7 +32,7 @@ function BookCard(props) {
         src={`/api/image/books/${book.ImageUrl}`}
         alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
         fluid="md"
-        className="book-card-img"
+        className="card-img"
       />
       <Card.Body>
         <Card.Title>{book.Title}</Card.Title>

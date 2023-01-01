@@ -32,7 +32,7 @@ function BookReviewsContainer(props) {
 
   return (
     <Container fluid="md">
-      <Row md={3}>
+      <Row md={1}>
         <OverlayTrigger
           placement="top"
           overlay={

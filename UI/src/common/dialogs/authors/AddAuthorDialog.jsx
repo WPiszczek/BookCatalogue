@@ -143,7 +143,6 @@ function AddAuthorDialog(props) {
             <Form.Control
               required
               type="text"
-              placeholder="Enter author name"
               value={name}
               name="Name"
               onChange={(e) => setName(e.target.value)}
@@ -155,7 +154,6 @@ function AddAuthorDialog(props) {
             <Form.Control
               required
               type="text"
-              placeholder="Enter author country"
               value={country}
               name="Country"
               onChange={(e) => setCountry(e.target.value)}
@@ -178,7 +176,6 @@ function AddAuthorDialog(props) {
               required
               type="date"
               name="BirthDate"
-              placeholder="Enter birth date"
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
             />
@@ -188,7 +185,6 @@ function AddAuthorDialog(props) {
               disabled={AuthorStatusMap[status] !== "Dead" ? "disabled" : ""}
               type="date"
               name="DeathDate"
-              placeholder="Enter death date"
               value={AuthorStatusMap[status] !== "Dead" ? "" : deathDate}
               onChange={(e) => setDeathDate(e.target.value)}
             />

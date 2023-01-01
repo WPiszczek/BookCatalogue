@@ -22,7 +22,7 @@ function AuthorCard(props) {
         {AuthorStatusMap[author.Status]}
       </Card.Header>
       <Card.Body>
-        <Card.Title className="book-card-rating">
+        <Card.Title className="card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
           {author.AverageRating ? roundToTwo(author.AverageRating) : "?"}
           /10
@@ -34,7 +34,7 @@ function AuthorCard(props) {
         src={`/api/image/authors/${author.ImageUrl}`}
         alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
         fluid="md"
-        className="book-card-img"
+        className="card-img"
       />
       <Card.Body>
         <Card.Title>{author.Name}</Card.Title>

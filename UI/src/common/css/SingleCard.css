@@ -1,17 +1,17 @@
-.single-book-card {
+.single-card {
   font-size: larger;
 }
 
-.single-book-card-header {
+.single-card-header {
   font-size: larger;
   font-weight: bold;
 }
 
-.single-book-card-title {
+.single-card-title {
   font-size: xx-large;
 }
 
-.single-book-card-rating {
+.single-card-rating {
   display: flex;
   justify-content: flex-end;
 }
@@ -24,12 +24,12 @@
   cursor: pointer;
 }
 
-.single-book-button {
+.single-button {
   padding: 10px;
   margin: 10px;
   width: 100%;
 }
 
-.single-book-button-container {
+.single-button-container {
   display: flow-root;
 }

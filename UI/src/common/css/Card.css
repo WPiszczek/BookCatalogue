@@ -1,0 +1,41 @@
+.card-add-button {
+  font-size: xx-large;
+  padding: 10px;
+  margin: 10px;
+}
+
+.icon-star {
+  color: gold;
+  margin-right: 5px;
+}
+
+.review-card-container {
+  margin-bottom: 30px;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.review-button-container {
+  display: flow-root;
+}
+
+.book-card-container {
+  padding: 10px;
+  display: flow-root;
+}
+
+.book-card-container:hover {
+  cursor: pointer;
+}
+
+.card-img {
+  padding: 10px;
+}
+
+.card-rating {
+  display: flex;
+  justify-content: flex-end;
+}

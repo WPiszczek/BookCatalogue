@@ -130,7 +130,6 @@ function EditBookDialog(props) {
             <Form.Control
               required
               type="text"
-              placeholder="Enter book title"
               value={title}
               name="Title"
               onChange={(e) => setTitle(e.target.value)}
@@ -143,7 +142,6 @@ function EditBookDialog(props) {
               min={900}
               max={new Date().getFullYear()}
               value={releaseYear}
-              placeholder="Enter release year"
               name="ReleaseYear"
               onChange={(e) => setReleaseYear(e.target.value)}
             />
@@ -177,7 +175,6 @@ function EditBookDialog(props) {
               as="textarea"
               style={{ height: "200px" }}
               value={description}
-              placeholder="Enter book description"
               name="Description"
               onChange={(e) => setDescription(e.target.value)}
             />

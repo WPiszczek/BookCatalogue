@@ -16,7 +16,7 @@ function ReviewsContainer(props) {
   });
 
   return (
-    <Container fluid="md" className="books-container">
+    <Container fluid="md" className="container">
       {reviews}
       <AddReviewCard addReview={props.addReview} />
     </Container>

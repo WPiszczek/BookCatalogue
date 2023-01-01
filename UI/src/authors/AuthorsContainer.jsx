@@ -22,8 +22,8 @@ function AuthorsContainer(props) {
   });
 
   return (
-    <Container fluid="md" className="books-container">
-      <Row md={4} className="center books-container-row">
+    <Container fluid="md" className="container">
+      <Row md={4} className="center container-row">
         {authors}
         <AddAuthorCard addAuthor={props.addAuthor} />
       </Row>

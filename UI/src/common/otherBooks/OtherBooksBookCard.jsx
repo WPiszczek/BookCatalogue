@@ -3,7 +3,7 @@ import { Card, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { BookCategoryMap } from "../../utils/EnumMaps";
-import "./OtherBooksBookCard.css";
+import "../css/Card.css";
 import { useNavigate } from "react-router-dom";
 import { roundToTwo } from "../../utils/roundToTwo";
 
@@ -15,11 +15,11 @@ function OtherBooksBookCard(props) {
     <Card
       border="light"
       style={{ width: "12rem" }}
-      className="other-books-book-card-container"
+      className="book-card-container"
       onClick={() => navigate(`/books/${book.Id}`)}>
       <Card.Header>{BookCategoryMap[book.Category]}</Card.Header>
       <Card.Body>
-        <Card.Title className="book-card-rating">
+        <Card.Title className="card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
           {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
           /10
@@ -31,7 +31,7 @@ function OtherBooksBookCard(props) {
         src={`/api/image/books/${book.ImageUrl}`}
         alt={<FontAwesomeIcon icon="fa-solid fa-image" />}
         fluid="md"
-        className="book-card-img"
+        className="card-img"
       />
       <Card.Body>
         <Card.Title>{book.Title}</Card.Title>

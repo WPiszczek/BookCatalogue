@@ -66,7 +66,6 @@ function ReviewsFilters(props) {
               <Form.Control
                 required
                 type="text"
-                placeholder="Search content or description"
                 value={search}
                 name="Search"
                 onChange={(e) => setSearch(e.target.value)}
@@ -88,13 +87,13 @@ function ReviewsFilters(props) {
           <Row>
             <Button
               variant="primary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={filterReviews}>
               Filter reviews
             </Button>
             <Button
               variant="secondary"
-              className="books-filters-button"
+              className="filters-button"
               onClick={addReview}>
               Add new review
             </Button>
@@ -103,9 +102,7 @@ function ReviewsFilters(props) {
         <Col md={3}>
           <Row>
             <Dropdown>
-              <Dropdown.Toggle
-                variant="success"
-                className="books-filters-button">
+              <Dropdown.Toggle variant="success" className="filters-button">
                 Sort reviews
               </Dropdown.Toggle>
               <Dropdown.Menu>

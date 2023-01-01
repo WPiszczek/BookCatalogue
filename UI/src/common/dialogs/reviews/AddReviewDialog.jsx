@@ -141,7 +141,6 @@ function AddReviewDialog(props) {
               <Form.Control
                 required
                 type="text"
-                placeholder="Enter your name"
                 value={reviewer}
                 name="Reviewer"
                 onChange={(e) => setReviewer(e.target.value)}
@@ -158,7 +157,6 @@ function AddReviewDialog(props) {
                 type="number"
                 min={0}
                 max={10}
-                placeholder="Enter rating"
                 value={rating}
                 name="Rating"
                 onChange={(e) => setRating(e.target.value)}
@@ -172,7 +170,6 @@ function AddReviewDialog(props) {
             <Form.Control
               type="text"
               value={title}
-              placeholder="Enter review title"
               name="Title"
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -184,7 +181,6 @@ function AddReviewDialog(props) {
               as="textarea"
               style={{ height: "200px" }}
               value={content}
-              placeholder="Enter review content"
               name="Content"
               onChange={(e) => setContent(e.target.value)}
             />

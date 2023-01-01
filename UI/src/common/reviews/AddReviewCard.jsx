@@ -1,6 +1,6 @@
 import { React } from "react";
 import { Card, Button } from "react-bootstrap";
-import "./AddReviewCard.css";
+import "../css/Card.css";
 
 function AddReviewCard(props) {
   const addReview = (event) => {
@@ -9,10 +9,10 @@ function AddReviewCard(props) {
   };
 
   return (
-    <Card border="dark" className="center add-review-card-container">
+    <Card border="dark" className="center review-card-container">
       <Button
         variant="success"
-        className="center add-review-card-button"
+        className="center card-add-button"
         onClick={addReview}>
         Add new review
       </Button>

@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
-import BookCard from "./BookCard";
-import "./BooksContainer.css";
-import AddBookCard from "./AddBookCard";
 import { useNavigate } from "react-router-dom";
+import BookCard from "./BookCard";
+import AddBookCard from "./AddBookCard";
+import "../common/css/Container.css";
 
 function BooksContainer(props) {
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ function BooksContainer(props) {
   });
 
   return (
-    <Container fluid="md" className="books-container">
-      <Row md={4} className="center books-container-row">
+    <Container fluid="md" className="container">
+      <Row md={4} className="center container-row">
         {books}
         <AddBookCard addBook={props.addBook} />
       </Row>
