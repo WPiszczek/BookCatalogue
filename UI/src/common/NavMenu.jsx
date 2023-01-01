@@ -16,7 +16,7 @@ function NavMenu() {
   return (
     <Navbar collapseOnSelect expand={expand} bg="dark" variant="dark">
       <Container fluid={expand}>
-        <Navbar.Brand href="/">Book Catalogue</Navbar.Brand>
+        <Navbar.Brand href="/books">Book Catalogue</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">{nav}</Nav>

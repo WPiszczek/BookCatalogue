@@ -5,6 +5,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { BookCategoryMap } from "../../utils/EnumMaps";
 import "./OtherBooksBookCard.css";
 import { useNavigate } from "react-router-dom";
+import { roundToTwo } from "../../utils/roundToTwo";
 
 function OtherBooksBookCard(props) {
   const book = props.book;
@@ -20,7 +21,7 @@ function OtherBooksBookCard(props) {
       <Card.Body>
         <Card.Title className="book-card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
-          {book.AverageRating ?? "?"}
+          {book.AverageRating ? roundToTwo(book.AverageRating) : "?"}
           /10
         </Card.Title>
       </Card.Body>

@@ -3,7 +3,7 @@ import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import AuthorsFilters from "./AuthorsFilters";
 import AuthorsContainer from "./AuthorsContainer";
-import AddAuthorDialog from "./AddAuthorDialog";
+import AddAuthorDialog from "../common/dialogs/authors/AddAuthorDialog";
 import { sortAuthors } from "../utils/sortAuthors";
 
 function AuthorsPage() {

@@ -3,7 +3,7 @@ import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import BooksFilters from "./BooksFilters";
 import BooksContainer from "./BooksContainer";
-import AddBookDialog from "../common/books/AddBookDialog";
+import AddBookDialog from "../common/dialogs/books/AddBookDialog";
 import { sortBooks } from "../utils/sortBooks";
 
 function BooksPage() {

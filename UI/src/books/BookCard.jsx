@@ -39,7 +39,6 @@ function BookCard(props) {
         <Card.Subtitle>
           {book.Author.Name}, {book.ReleaseYear}
         </Card.Subtitle>
-        <Card.Text>{book.Description}</Card.Text>
       </Card.Body>
     </Card>
   );

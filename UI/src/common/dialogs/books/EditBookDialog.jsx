@@ -8,17 +8,17 @@ import {
   Alert
 } from "react-bootstrap";
 import axios from "axios";
-import { BookCategoryMap } from "../../utils/EnumMaps";
+import { BookCategoryMap } from "../../../utils/EnumMaps";
 
-function AddBookDialog(props) {
+function EditBookDialog(props) {
+  const bookId = props.book.Id;
   const [show, setShow] = useState(props.show);
   const [authors, setAuthors] = useState([]);
-  const [title, setTitle] = useState("");
-  const [releaseYear, setReleaseYear] = useState(2000);
-  const [description, setDescription] = useState("");
-  const [authorId, setAuthorId] = useState(props.authorId ?? "");
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState();
+  const [title, setTitle] = useState(props.book.Title);
+  const [releaseYear, setReleaseYear] = useState(props.book.ReleaseYear);
+  const [description, setDescription] = useState(props.book.Description);
+  const [authorId, setAuthorId] = useState(props.book.AuthorId);
+  const [category, setCategory] = useState(props.book.Category);
   const [responseMessage, setResponseMessage] = useState();
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function AddBookDialog(props) {
     props.close();
   };
 
-  const addBook = async (event) => {
+  const editBook = async (event) => {
     event.preventDefault();
     const book = {
       Title: title,
@@ -52,16 +52,9 @@ function AddBookDialog(props) {
       Category: parseInt(category)
     };
     console.log("Book ", book);
-    console.log("Image ", image);
-
-    const formData = new FormData();
-    formData.append("Image", image);
-    formData.append("Json", JSON.stringify(book));
 
     await axios
-      .post("/api/books", formData, {
-        "Content-Type": "multipart/form-data"
-      })
+      .put(`/api/books/${bookId}`, book)
       .then((response) => {
         console.log(response);
         if (response.data.Status === "Success") {
@@ -69,7 +62,7 @@ function AddBookDialog(props) {
           setResponseMessage(
             <Alert variant="success">{response.data.Message}</Alert>
           );
-          props.fetchData();
+          props.fetchSingleBookData();
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(
@@ -104,7 +97,7 @@ function AddBookDialog(props) {
   return (
     <Modal show={show} onHide={handleClose} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Add new book</Modal.Title>
+        <Modal.Title>Edit book</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row md={1}>{responseMessage ?? <></>}</Row>
@@ -158,21 +151,11 @@ function AddBookDialog(props) {
           <FloatingLabel label="Description" className="floating-label">
             <Form.Control
               as="textarea"
-              style={{ height: "100px" }}
+              style={{ height: "200px" }}
               value={description}
               placeholder="Enter book description"
               name="Description"
               onChange={(e) => setDescription(e.target.value)}
-            />
-          </FloatingLabel>
-        </Row>
-        <Row md={1}>
-          <FloatingLabel label="Image" className="floating-label">
-            <Form.Control
-              required
-              type="file"
-              name="Image"
-              onChange={(e) => setImage(e.target.files[0])}
             />
           </FloatingLabel>
         </Row>
@@ -181,12 +164,12 @@ function AddBookDialog(props) {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="success" onClick={addBook}>
-          Add book
+        <Button variant="primary" onClick={editBook}>
+          Confirm
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default AddBookDialog;
+export default EditBookDialog;

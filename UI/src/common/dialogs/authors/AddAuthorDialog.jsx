@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import {
   Button,
   Modal,
@@ -8,7 +8,7 @@ import {
   Alert
 } from "react-bootstrap";
 import axios from "axios";
-import { AuthorStatusMap } from "../utils/EnumMaps";
+import { AuthorStatusMap } from "../../../utils/EnumMaps";
 
 function AddAuthorDialog(props) {
   const [show, setShow] = useState(props.show);

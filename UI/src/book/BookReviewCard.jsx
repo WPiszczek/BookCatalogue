@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment/moment";
 import "./BookReviewCard.css";
+import { roundToTwo } from "../utils/roundToTwo";
 
 function BookReviewCard(props) {
   const review = props.review;
@@ -33,7 +34,7 @@ function BookReviewCard(props) {
       <Card.Body>
         <Card.Title className="book-card-rating">
           <FontAwesomeIcon icon={faStar} className="icon-star" />
-          {review.Rating ?? "?"}
+          {review.Rating ? roundToTwo(review.Rating) : "?"}
           /10
         </Card.Title>
         <Card.Title>{review.Title}</Card.Title>

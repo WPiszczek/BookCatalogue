@@ -4,7 +4,11 @@ import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import SingleAuthorCard from "./SingleAuthorCard";
 import OtherBooksContainer from "../common/otherBooks/OtherBooksContainer";
-import AddBookDialog from "../common/books/AddBookDialog";
+import AddBookDialog from "../common/dialogs/books/AddBookDialog";
+import EditAuthorDialog from "../common/dialogs/authors/EditAuthorDialog";
+import EditAuthorImageDialog from "../common/dialogs/authors/EditAuthorImageDialog";
+import DeleteAuthorDialog from "../common/dialogs/authors/DeleteAuthorDialog";
+import { sortBooks } from "../utils/sortBooks";
 
 function SingleAuthorPage() {
   const { id } = useParams();
@@ -72,12 +76,12 @@ function SingleAuthorPage() {
           fetchData={fetchSingleAuthorData}
         />
       )}
-      {/* {showEditAuthorDialog && (
+      {showEditAuthorDialog && (
         <EditAuthorDialog
           show={true}
           close={() => setShowEditAuthorDialog(false)}
           author={author}
-          fetchSingleAuthorData={fetchSingleAuthorData}
+          fetchData={fetchSingleAuthorData}
         />
       )}
       {showEditAuthorImageDialog && (
@@ -96,7 +100,7 @@ function SingleAuthorPage() {
           authorId={author.Id}
           authorName={author.Name}
         />
-      )} */}
+      )}
       {loading ? (
         <>
           <Spinner animation="border" role="status" />
@@ -111,11 +115,14 @@ function SingleAuthorPage() {
             deleteAuthor={deleteAuthor}
           />
           {author.Books.length > 0 && (
-            <OtherBooksContainer
-              books={author.Books}
-              author={author}
-              headerString={`See also books from ${author.Name}:`}
-            />
+            <>
+              <hr />
+              <OtherBooksContainer
+                books={sortBooks(author.Books, "AverageRating", false)}
+                author={author}
+                headerString={`See books from ${author.Name}:`}
+              />
+            </>
           )}
         </>
       )}

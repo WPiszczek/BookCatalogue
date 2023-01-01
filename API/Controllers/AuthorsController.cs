@@ -93,6 +93,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             } catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 return ResponseHelper.Error("Error while adding author. Try again.");
             }
         }
@@ -142,9 +143,7 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
                 author.BirthDate = Convert.ToDateTime(json.GetProperty("BirthDate").GetString());
                 var jsonDate = json.GetProperty("DeathDate").GetString();
                 author.DeathDate = jsonDate != "" ? Convert.ToDateTime(jsonDate) : null;
-                
-                author.Status = (AuthorStatus)json.GetProperty("Status").GetInt32();
-                author.ImageUrl = json.GetProperty("ImageUrl").GetString();
+                author.Status = (AuthorStatus)json.GetProperty("Status").GetInt32();                
 
                 bool success = await _service.UpdateAuthor(author);
                 if (success) return ResponseHelper.Success("Author updated successfully.");

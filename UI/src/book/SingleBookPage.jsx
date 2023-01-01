@@ -3,14 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Spinner } from "react-bootstrap";
 import axios from "axios";
 import SingleBookCard from "./SingleBookCard";
-import AddReviewDialog from "../common/reviews/AddReviewDialog";
-import EditReviewDialog from "../common/reviews/EditReviewDialog";
-import DeleteReviewDialog from "../common/reviews/DeleteReviewDialog";
-import EditBookDialog from "./EditBookDialog";
-import EditBookImageDialog from "./EditBookImageDialog";
-import DeleteBookDialog from "./DeleteBookDialog";
 import OtherBooksContainer from "../common/otherBooks/OtherBooksContainer";
 import BookReviewsContainer from "./BookReviewsContainer";
+import AddReviewDialog from "../common/dialogs/reviews/AddReviewDialog";
+import EditReviewDialog from "../common/dialogs/reviews/EditReviewDialog";
+import DeleteReviewDialog from "../common/dialogs/reviews/DeleteReviewDialog";
+import EditBookDialog from "../common/dialogs/books/EditBookDialog";
+import EditBookImageDialog from "../common/dialogs/books/EditBookImageDialog";
+import DeleteBookDialog from "../common/dialogs/books/DeleteBookDialog";
+import { sortBooks } from "../utils/sortBooks";
 
 function SingleBookPage() {
   const { id } = useParams();
@@ -153,20 +154,26 @@ function SingleBookPage() {
             deleteBook={deleteBook}
           />
           {book.Author.Books.length > 0 && (
-            <OtherBooksContainer
-              books={book.Author.Books}
-              author={book.Author}
-              headerString={`See also from ${book.Author.Name}:`}
-            />
+            <>
+              <hr />
+              <OtherBooksContainer
+                books={sortBooks(book.Author.Books, "AverageRating", false)}
+                author={book.Author}
+                headerString={`See also from ${book.Author.Name}:`}
+              />
+            </>
           )}
           {book.Reviews.length > 0 && (
-            <BookReviewsContainer
-              reviews={book.Reviews}
-              headerString={`Reviews of "${book.Title}":`}
-              addReview={addReview}
-              editReview={editReview}
-              deleteReview={deleteReview}
-            />
+            <>
+              <hr />
+              <BookReviewsContainer
+                reviews={book.Reviews}
+                headerString={`Reviews of "${book.Title}":`}
+                addReview={addReview}
+                editReview={editReview}
+                deleteReview={deleteReview}
+              />
+            </>
           )}
         </>
       )}
