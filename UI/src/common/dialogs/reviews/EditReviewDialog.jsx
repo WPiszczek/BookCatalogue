@@ -92,7 +92,7 @@ function EditReviewDialog(props) {
           setResponseMessage(
             <Alert variant="success">{response.data.Message}</Alert>
           );
-          props.fetchData();
+          props.fetchData(props.bookId, props.search);
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(

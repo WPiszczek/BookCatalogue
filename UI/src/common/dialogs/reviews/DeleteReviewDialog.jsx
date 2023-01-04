@@ -26,7 +26,7 @@ function DeleteReviewDialog(props) {
             <Alert variant="success">{response.data.Message}</Alert>
           );
           props.hideDeleteReviewDialog();
-          props.fetchData();
+          props.fetchData(props.bookId, props.search);
         } else {
           console.log("Fail ", response.data.Message);
           setResponseMessage(

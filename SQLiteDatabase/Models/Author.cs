@@ -26,10 +26,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase.Models
         IEnumerable<IBook> IAuthor.Books
         {
             get => Books;
-            set
-            {
-                Books = value as IEnumerable<Book>; 
-            }
+            set { Books = value as IEnumerable<Book>; }
         }
     }
 }

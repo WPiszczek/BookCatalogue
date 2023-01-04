@@ -14,6 +14,9 @@ function ReviewsPage() {
   const [review, setReview] = useState("");
   const [reviewId, setReviewId] = useState("");
 
+  const [filterBookId, setFilterBookId] = useState("");
+  const [filterSearch, setFilterSearch] = useState("");
+
   const [showAddReviewDialog, setShowAddReviewDialog] = useState(false);
   const [showEditReviewDialog, setShowEditReviewDialog] = useState(false);
   const [showDeleteReviewDialog, setShowDeleteReviewDialog] = useState(false);
@@ -24,6 +27,8 @@ function ReviewsPage() {
 
   async function fetchReviewsData(bookId = "", search = "") {
     try {
+      setFilterBookId(bookId);
+      setFilterSearch(search);
       await axios
         .get(`/api/reviews?bookId=${bookId}&search=${search}`)
         .then((response) => {
@@ -88,6 +93,8 @@ function ReviewsPage() {
               close={() => setShowEditReviewDialog(false)}
               review={review}
               fetchData={fetchReviewsData}
+              bookId={filterBookId}
+              search={filterSearch}
             />
           )}
           {showDeleteReviewDialog && (
@@ -97,6 +104,8 @@ function ReviewsPage() {
               reviewId={reviewId}
               fetchData={fetchReviewsData}
               hideDeleteReviewDialog={hideDeleteReviewDialog}
+              bookId={filterBookId}
+              search={filterSearch}
             />
           )}
           <ReviewsFilters
