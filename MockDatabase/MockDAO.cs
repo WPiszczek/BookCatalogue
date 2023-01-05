@@ -14,25 +14,31 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
         public MockDAO()
         {
-            _authors = new List<IAuthor>()
+            _authors = new List<Author>()
             {
                 new Author()
                 {
                     Id = 1,
                     Name = "Andrzej Sapkowski",
+                    Country = "Polska",
                     BirthDate = new DateTime(1948, 6, 21),
+                    Status = AuthorStatus.Retired,
+                    ImageUrl = "andrzej-sapkowski.jpg",
                     Books = new List<Book>() {}
                 },
                 new Author()
                 {
                     Id = 2,
                     Name = "Jo Nesbo",
+                    Country = "Norwegia",
                     BirthDate = new DateTime(1960, 3, 29),
+                    Status = AuthorStatus.Active,
+                    ImageUrl = "jo-nesbo.jpg",
                     Books = new List<Book>() {}
                 }
             };
 
-            _books = new List<IBook>()
+            _books = new List<Book>()
             {
                 new Book()
                 {
@@ -41,6 +47,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 1,
                     ReleaseYear = 1993,
                     Category = BookCategory.Fantastyka,
+                    ImageUrl = "ostatnie-zyczenie.jpg",
                     Reviews = new List<Review>()
                 },
                 new Book()
@@ -50,6 +57,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 1,
                     ReleaseYear = 2002,
                     Category = BookCategory.Historia,
+                    ImageUrl = "narrenturm.jpg",
                     Reviews = new List<Review>()
                 },
                 new Book()
@@ -59,6 +67,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     AuthorId = 2,
                     ReleaseYear = 2000,
                     Category= BookCategory.KryminalSensacja,
+                    ImageUrl = "czerwone-gardlo.jpg",
                     Reviews = new List<Review>()
                 }
             };
@@ -88,47 +97,9 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             };
         }
 
-        public Task<bool> AddAuthor(IAuthor author)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<bool> AddBook(IBook book)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> AddReview(IReview review)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAuthor(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteBook(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteImage(string directory, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteReview(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IAuthor> GetAuthorById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IAuthor>> GetAuthors(string? name, AuthorStatus? status)
+        // BooksRepository
+        public Task<IEnumerable<IBook>> GetBooks(string? title, int? authorId, BookCategory? category)
         {
             throw new NotImplementedException();
         }
@@ -138,26 +109,86 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IBook>> GetBooks(string? title, int? authorId, BookCategory? category)
+        public Task<bool> AddBook(IBook book)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> UpdateBook(IBook book)
         {
             throw new NotImplementedException();
         }
 
-        public FileStreamResult GetImage(string name, string directory)
+        public Task<bool> UpdateBookImageUrl(int bookId, string imageUrl)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> DeleteBook(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReview> GetReviewById(int id)
+
+        // AuthorsRepository
+        public Task<IEnumerable<IAuthor>> GetAuthors(string? name, AuthorStatus? status)
         {
             throw new NotImplementedException();
         }
 
+        public Task<IAuthor> GetAuthorById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddAuthor(IAuthor author)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public Task<bool> UpdateAuthor(IAuthor author)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateAuthorImageUrl(int authorId, string imageUrl)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public Task<bool> DeleteAuthor(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // ReviewsRepository
         public Task<IEnumerable<IReview>> GetReviews(int? bookId, string? search)
         {
             throw new NotImplementedException();
         }
+        public Task<IReview> GetReviewById(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> AddReview(IReview review)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<bool> UpdateReview(IReview review)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<bool> DeleteReview(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // ImageRepository
+        public FileStreamResult GetImage(string name, string directory)
+        {
+            throw new NotImplementedException();
+        }
         public Task<string> PostImage(IFormFile file, string directory)
         {
             throw new NotImplementedException();
@@ -168,29 +199,9 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAuthor(IAuthor author)
+        public bool DeleteImage(string directory, string name)
         {
             throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateAuthorImageUrl(int authorId, string imageUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateBook(IBook book)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateBookImageUrl(int bookId, string imageUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateReview(IReview review)
-        {
-            throw new NotImplementedException();
-        }
+        }      
     }
 }

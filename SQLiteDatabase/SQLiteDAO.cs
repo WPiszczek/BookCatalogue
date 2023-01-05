@@ -423,7 +423,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
         private string GetPath(string directory, string name)
         {
             directory = GetImageDirectory(directory);
-            return Path.Combine("..", "Images", directory, name);
+            return Path.Combine("..", "ImagesSQLite", directory, name);
         }
 
         private string GetImageExtension(string name)
