@@ -20,6 +20,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             _contextFactory = new SQLiteDatabaseContextFactory();
         }
 
+        // BooksRepository
         public async Task<IEnumerable<IBook>> GetBooks(
             string? title = null,
             int? authorId = null,
@@ -133,6 +134,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
+        // AuthorsRepository
         public async Task<IEnumerable<IAuthor>> GetAuthors(string? name=null, AuthorStatus? status=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -226,6 +228,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
+        // ReviewsRepository
         public async Task<IEnumerable<IReview>> GetReviews(int? bookId=null, string? search=null)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -312,6 +315,7 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             }
         }
 
+        // ImageRepository
         public FileStreamResult GetImage(string name, string directory)
         {
             string imageExtension = GetImageExtension(name);
@@ -356,6 +360,8 @@ namespace PiszczekSzpotek.BookCatalogue.SQLiteDatabase
             return true;
         }
 
+
+        // Utilities
         private bool BookExists(int id)
         {
             using (var _context = _contextFactory.CreateDbContext())

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PiszczekSzpotek.BookCatalogue.Core.Enums;
+using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using PiszczekSzpotek.BookCatalogue.MockDatabase.Models;
 
@@ -8,9 +9,9 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 {
     public class MockDAO : IDAO
     {
-        private IEnumerable<IBook> _books;
-        private IEnumerable<IAuthor> _authors;
-        private IEnumerable<IReview> _reviews;
+        private IEnumerable<Book> _books;
+        private IEnumerable<Author> _authors;
+        private IEnumerable<Review> _reviews;
 
         public MockDAO()
         {
@@ -45,6 +46,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Id = 1,
                     Title = "Ostatnie Życzenie",
                     AuthorId = 1,
+                    Author = _authors.First(e => e.Id == 1),
                     ReleaseYear = 1993,
                     Category = BookCategory.Fantastyka,
                     ImageUrl = "ostatnie-zyczenie.jpg",
@@ -55,6 +57,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Id = 2,
                     Title = "Narrenturm",
                     AuthorId = 1,
+                    Author = _authors.First(e => e.Id == 1),
                     ReleaseYear = 2002,
                     Category = BookCategory.Historia,
                     ImageUrl = "narrenturm.jpg",
@@ -65,6 +68,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Id = 3,
                     Title = "Czerwone Gardło",
                     AuthorId = 2,
+                    Author = _authors.First(e => e.Id == 2),
                     ReleaseYear = 2000,
                     Category= BookCategory.KryminalSensacja,
                     ImageUrl = "czerwone-gardlo.jpg",
@@ -82,7 +86,8 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Reviewer = "Mariusz",
                     Content = "Najlepsza książka jaką czytałem",
                     DateAdded = new DateTime(2022, 12, 9, 20, 0, 0),
-                    BookId = 1
+                    BookId = 1,
+                    Book = _books.First(e => e.Id == 1)
                 },
                 new Review()
                 {
@@ -92,7 +97,8 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Reviewer = "Mariusz",
                     Content = "Beznadziejna książka",
                     DateAdded = new DateTime(2022, 12, 8, 19, 33, 32),
-                    BookId = 2
+                    BookId = 2,
+                    Book = _books.First(e => e.Id == 2)
                 }
             };
         }
@@ -101,7 +107,17 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
         // BooksRepository
         public Task<IEnumerable<IBook>> GetBooks(string? title, int? authorId, BookCategory? category)
         {
-            throw new NotImplementedException();
+            var books = _books.Where(e =>
+                    (title == null || e.Title.ToLower().Contains(title.ToLower()))
+                    && (authorId == null || e.Author.Id == authorId)
+                    && (category == null || e.Category == category)
+                );
+
+            foreach (var book in books)
+            {
+                UpdateBookAverageRating(book);
+            }
+            return Task.FromResult(books as IEnumerable<IBook>);
         }
 
         public Task<IBook> GetBookById(int id)
@@ -131,7 +147,18 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
         // AuthorsRepository
         public Task<IEnumerable<IAuthor>> GetAuthors(string? name, AuthorStatus? status)
         {
-            throw new NotImplementedException();
+            var authors = _authors.Where(e =>
+                    (name == null || e.Name.ToLower().Contains(name.ToLower()))
+                    && (status == null || e.Status == status)
+                );
+
+            foreach (var author in authors)
+            {
+                UpdateAuthorAverageRating(author);
+            }
+            return Task.FromResult(
+                authors as IEnumerable<IAuthor>
+            );
         }
 
         public Task<IAuthor> GetAuthorById(int id)
@@ -187,21 +214,96 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
         // ImageRepository
         public FileStreamResult GetImage(string name, string directory)
         {
-            throw new NotImplementedException();
-        }
-        public Task<string> PostImage(IFormFile file, string directory)
-        {
-            throw new NotImplementedException();
+            string imageExtension = GetImageExtension(name);
+
+            string path = GetPath(directory, name);
+            var image = File.OpenRead(path);
+
+            return new FileStreamResult(image, imageExtension);
         }
 
-        public Task<string> PutImage(IFormFile file, string directory, string currentName)
+        public async Task<string> PostImage(IFormFile file, string directory)
         {
-            throw new NotImplementedException();
+            string newFilename = DateTime.Now.ToString("yyyyMMddHHmmssffff") + Path.GetFileName(file.FileName);
+
+            string path = GetPath(directory, newFilename);
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return newFilename;
+        }
+
+        public async Task<string> PutImage(IFormFile file, string directory, string currentName)
+        {
+            try
+            {
+                DeleteImage(directory, currentName);
+            }
+            catch (FileNotFoundException) { }
+            return await PostImage(file, directory);
         }
 
         public bool DeleteImage(string directory, string name)
         {
-            throw new NotImplementedException();
-        }      
+            string path = GetPath(directory, name);
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+            File.Delete(path);
+            return true;
+        }
+
+        // Utilities
+        private void UpdateBookAverageRating(Book book)
+        {   
+            book.Reviews = _reviews.Where(e => e.Id == book.Id);
+            try
+            {
+                book.AverageRating = book.Reviews.Average(e => e.Rating);
+            }
+            catch (Exception ex)
+            {
+                book.AverageRating = null;
+            }
+        }
+
+        private void UpdateAuthorAverageRating(Author author)
+        {
+            try
+            {
+                var reviews = _reviews.Where(e => e.Book.AuthorId == author.Id);
+                author.AverageRating = reviews.Average(e => e.Rating);
+            }
+            catch (Exception ex)
+            {
+                author.AverageRating = null;
+            }
+        }
+
+        private string GetPath(string directory, string name)
+        {
+            directory = GetImageDirectory(directory);
+            return Path.Combine("..", "ImagesMock", directory, name);
+        }
+
+        private string GetImageExtension(string name)
+        {
+            if (name.ToLower().EndsWith(".jpg")) return "image/jpg";
+            else if (name.ToLower().EndsWith(".jpeg")) return "image/jpeg";
+            else if (name.ToLower().EndsWith(".png")) return "image/png";
+            else if (name.ToLower().EndsWith(".bmp")) return "image/bmp";
+            else throw new InvalidImageExtensionException();
+        }
+
+        private string GetImageDirectory(string directory)
+        {
+            if (directory.ToLower() == "authors") return "Authors";
+            else if (directory.ToLower() == "books") return "Books";
+            else throw new InvalidImageDirectoryException();
+        }
     }
 }
