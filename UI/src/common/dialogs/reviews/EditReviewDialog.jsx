@@ -60,6 +60,12 @@ function EditReviewDialog(props) {
       setResponseMessage(<Alert variant="danger">Rating is required.</Alert>);
       return false;
     }
+    if (rating > 10 || rating < 0) {
+      setResponseMessage(
+        <Alert variant="danger">Rating must be from interval 0 to 10.</Alert>
+      );
+      return false;
+    }
     if (!title) {
       setResponseMessage(<Alert variant="danger">Title is required.</Alert>);
       return false;

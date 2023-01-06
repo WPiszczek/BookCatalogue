@@ -125,6 +125,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
             foreach (var book in books)
             {
+                UpdateBookReviews(book);
                 UpdateBookAverageRating(book);
                 UpdateAuthorBooks(book.Author);
             }
@@ -138,6 +139,8 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             {
                 throw new ObjectNotFoundException();
             }
+            UpdateBookReviews(book);
+            UpdateBookAverageRating(book);
             return Task.FromResult(book as IBook);
         }
 
@@ -292,25 +295,19 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             }
             return Task.FromResult<IReview>(review);
         }
+
         public Task<bool> AddReview(IReview review)
         {
-            var book = _books.FirstOrDefault(e => e.Id == review.BookId);
-            if (book == null)
-            {
-                throw new ObjectNotFoundException();
-            }
-            review.Id = _reviews.Max(e => e.Id) + 1;
-            review.Book = book;
+            var _review = (Review)review;
+            _review.Book = _books.FirstOrDefault(e => e.Id == _review.BookId);
+            _review.Id = _reviews.Max(e => e.Id) + 1;
             _reviews.Add((Review)review);
-            var author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
-            if (author == null)
-            {
-                throw new ObjectNotFoundException();
-            }
-            UpdateBookAverageRating(book);
-            UpdateAuthorAverageRating(author);
+            UpdateBookAverageRating(_review.Book);
+            UpdateAuthorAverageRating(_review.Book.Author);
+
             return Task.FromResult(true);
         }
+
         public Task<bool> UpdateReview(IReview review)
         {
             var index = _reviews.FindIndex(e => e.Id == review.Id);
@@ -326,6 +323,7 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
             var book = _books.FirstOrDefault(e => e.Id == review.BookId);
             var author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
+            UpdateBookReviews(book);
             UpdateBookAverageRating(book);
             UpdateAuthorAverageRating(author);
 
@@ -398,10 +396,6 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
         // Utilities
 
-        private void DeleteBookReviews(Book book)
-        {
-            _reviews.RemoveAll(e => e.BookId == book.Id);
-        }
         private bool BookExists(int id)
         {
             return _books.Any(e => e.Id == id);
@@ -412,14 +406,24 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
              return _authors.Any(e => e.Id == id);
         }
 
-        private bool ReviewExists(int id)
+        private void UpdateBookReviews(Book book)
         {
-             return _reviews.Any(e => e.Id == id);
+            book.Reviews = _reviews.Where(e => e.BookId == book.Id).ToList();
+        }
+
+        private void DeleteBookReviews(Book book)
+        {
+            _reviews.RemoveAll(e => e.BookId == book.Id);
+        }
+
+        private void UpdateAuthorBooks(Author author)
+        {
+            author.Books = _books.Where(e => e.AuthorId == author.Id);
         }
 
         private void UpdateBookAverageRating(Book book)
         {   
-            book.Reviews = _reviews.Where(e => e.Id == book.Id);
+            book.Reviews = _reviews.Where(e => e.BookId == book.Id).ToList();
             try
             {
                 book.AverageRating = book.Reviews.Average(e => e.Rating);
@@ -430,17 +434,12 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             }
         }
 
-        private void UpdateAuthorBooks(Author author)
-        {
-            author.Books = _books.Where(e => e.AuthorId == author.Id);
-        }
-
         private void UpdateAuthorAverageRating(Author author)
         {
             try
             {
-                var reviews = _reviews.Where(e => e.Book.AuthorId == author.Id);
-                author.AverageRating = reviews.Average(e => e.Rating);
+                var books = _books.Where(e => e.AuthorId == author.Id);
+                author.AverageRating = books.Average(e => e.AverageRating);
             }
             catch (Exception ex)
             {

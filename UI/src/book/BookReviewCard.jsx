@@ -42,7 +42,11 @@ function BookReviewCard(props) {
       <Card.Body>
         <Row>
           <Col md={9}>
-            <Card.Text><pre>{review.Content}</pre></Card.Text>
+            <Card.Text>
+              <pre style={{ whiteSpace: "pre-wrap", font: "inherit" }}>
+                {review.Content}
+              </pre>
+            </Card.Text>
           </Col>
           <Col md={3}>
             <Container className="review-button-container">

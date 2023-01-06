@@ -22,13 +22,13 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase.Models
         public string? ImageUrl { get; set; }
         public BookCategory Category { get; set; }
         public double? AverageRating { get; set; }
-        public virtual IEnumerable<Review> Reviews { get; set; }
+        public virtual List<Review> Reviews { get; set; }
         IEnumerable<IReview> IBook.Reviews
         {
             get => Reviews;
             set
             {
-                Reviews = value as IEnumerable<Review>;
+                Reviews = value as List<Review>;
             }
         }
     }
