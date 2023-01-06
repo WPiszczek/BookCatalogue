@@ -68,7 +68,7 @@ function ReviewCard(props) {
             <Card.Body>
               <Row>
                 <Col md={9}>
-                  <Card.Text>{review.Content}</Card.Text>
+                  <Card.Text><pre>{review.Content}</pre></Card.Text>
                 </Col>
                 <Col md={3}>
                   <Container className="review-button-container">

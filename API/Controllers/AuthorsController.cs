@@ -161,8 +161,6 @@ namespace PiszczekSzpotek.BookCatalogue.API.Controllers
             }
         }
 
-        // TODO
-
         // DELETE api/authors/5
         [HttpDelete("{id}")]
         public async Task<string> Delete(int id)

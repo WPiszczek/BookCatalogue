@@ -4,14 +4,15 @@ using PiszczekSzpotek.BookCatalogue.Core.Enums;
 using PiszczekSzpotek.BookCatalogue.Core.Exceptions;
 using PiszczekSzpotek.BookCatalogue.Interfaces;
 using PiszczekSzpotek.BookCatalogue.MockDatabase.Models;
+using System.Xml.Linq;
 
 namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 {
     public class MockDAO : IDAO
     {
-        private IEnumerable<Book> _books;
-        private IEnumerable<Author> _authors;
-        private IEnumerable<Review> _reviews;
+        private List<Book> _books;
+        private List<Author> _authors;
+        private List<Review> _reviews;
 
         public MockDAO()
         {
@@ -101,6 +102,15 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
                     Book = _books.First(e => e.Id == 2)
                 }
             };
+            foreach(var book in _books)
+            {
+                UpdateBookAverageRating(book);
+            }
+            foreach(var author in _authors)
+            {
+                UpdateAuthorBooks(author);
+                UpdateAuthorAverageRating(author);
+            }
         }
 
 
@@ -116,31 +126,67 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             foreach (var book in books)
             {
                 UpdateBookAverageRating(book);
+                UpdateAuthorBooks(book.Author);
             }
             return Task.FromResult(books as IEnumerable<IBook>);
         }
 
         public Task<IBook> GetBookById(int id)
         {
-            throw new NotImplementedException();
+            var book = _books.FirstOrDefault(e => e.Id == id);
+            if (book == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            return Task.FromResult(book as IBook);
         }
 
         public Task<bool> AddBook(IBook book)
         {
-            throw new NotImplementedException();
+            var _book = (Book)book;
+            _book.Author = _authors.FirstOrDefault(e => e.Id == _book.AuthorId);
+            UpdateAuthorBooks(_book.Author);
+            _book.Id = _books.Max(e => e.Id) + 1;
+            _books.Add((Book)book);
+            return Task.FromResult(true);
         }
         public Task<bool> UpdateBook(IBook book)
         {
-            throw new NotImplementedException();
+            var index = _books.FindIndex(e => e.Id == book.Id);
+            if (index == -1)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _books[index].Author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
+            _books[index].AuthorId = book.AuthorId;
+            _books[index].Title = book.Title;
+            _books[index].ReleaseYear = book.ReleaseYear;
+            _books[index].Description = book.Description;
+            _books[index].Category = book.Category;
+            return Task.FromResult(true);
         }
 
         public Task<bool> UpdateBookImageUrl(int bookId, string imageUrl)
         {
-            throw new NotImplementedException();
+            if (!BookExists(bookId))
+            {
+                throw new ObjectNotFoundException();
+            }
+            var book = _books.FirstOrDefault(e => e.Id == bookId);
+            book.ImageUrl = imageUrl;
+            return Task.FromResult(true);
         }
         public Task<bool> DeleteBook(int id)
         {
-            throw new NotImplementedException();
+            if (!BookExists(id))
+            {
+                throw new ObjectNotFoundException();
+            }
+            var book = _books.FirstOrDefault(e => e.Id == id);
+            _books.Remove(book);
+            UpdateAuthorBooks(book.Author);
+            DeleteBookReviews(book);
+            return Task.FromResult(true);
         }
 
 
@@ -163,51 +209,144 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
 
         public Task<IAuthor> GetAuthorById(int id)
         {
-            throw new NotImplementedException();
+            var author = _authors.FirstOrDefault(e => e.Id == id);
+            if (author == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            return Task.FromResult<IAuthor>(author);
         }
 
         public Task<bool> AddAuthor(IAuthor author)
         {
-            throw new NotImplementedException();
+            author.Id = _authors.Max(e => e.Id) + 1;
+            _authors.Add((Author)author);
+            return Task.FromResult(true);
         }
         
         public Task<bool> UpdateAuthor(IAuthor author)
         {
-            throw new NotImplementedException();
+            var index = _authors.FindIndex(e => e.Id == author.Id);
+            if (index == -1)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _authors[index].BirthDate = author.BirthDate;
+            _authors[index].Name = author.Name;
+            _authors[index].DeathDate = author.DeathDate;
+            _authors[index].Country = author.Country;
+            _authors[index].Status = author.Status;
+
+            foreach(var book in _books.Where(e => e.AuthorId == author.Id))
+            {
+                book.Author = (Author)author;
+            }
+            return Task.FromResult(true);
         }
 
         public Task<bool> UpdateAuthorImageUrl(int authorId, string imageUrl)
         {
-            throw new NotImplementedException();
+            if (!AuthorExists(authorId))
+            {
+                throw new ObjectNotFoundException();
+            }
+            var author = _authors.FirstOrDefault(e => e.Id == authorId);
+            author.ImageUrl = imageUrl;
+            return Task.FromResult(true);
         }
         
         public Task<bool> DeleteAuthor(int id)
         {
-            throw new NotImplementedException();
+            if (!AuthorExists(id))
+            {
+                throw new ObjectNotFoundException();
+            }
+            var author = _authors.FirstOrDefault(e => e.Id == id);
+            _authors.Remove(author);
+            foreach(var book in _books.Where(e => e.AuthorId == id))
+            {
+                DeleteBookReviews(book);
+            }
+            _books.RemoveAll(e => e.AuthorId == id);
+            return Task.FromResult(true);
         }
 
 
         // ReviewsRepository
         public Task<IEnumerable<IReview>> GetReviews(int? bookId, string? search)
         {
-            throw new NotImplementedException();
+            var reviews = _reviews.Where(e =>
+            (bookId == null || e.Book.Id == bookId)
+                        && (search == null || e.Title.ToLower().Contains(search.ToLower()) 
+                        || e.Content.ToLower().Contains(search.ToLower())));
+            return Task.FromResult(
+                reviews as IEnumerable<IReview>
+            );
         }
         public Task<IReview> GetReviewById(int id)
         {
-            throw new NotImplementedException();
+            var review = _reviews.FirstOrDefault(e => e.Id == id);
+            if (review == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            return Task.FromResult<IReview>(review);
         }
         public Task<bool> AddReview(IReview review)
         {
-            throw new NotImplementedException();
+            var book = _books.FirstOrDefault(e => e.Id == review.BookId);
+            if (book == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            review.Id = _reviews.Max(e => e.Id) + 1;
+            review.Book = book;
+            _reviews.Add((Review)review);
+            var author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
+            if (author == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            UpdateBookAverageRating(book);
+            UpdateAuthorAverageRating(author);
+            return Task.FromResult(true);
         }
         public Task<bool> UpdateReview(IReview review)
         {
-            throw new NotImplementedException();
+            var index = _reviews.FindIndex(e => e.Id == review.Id);
+            if (index == -1)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _reviews[index].Reviewer = review.Reviewer;
+            _reviews[index].Title = review.Title;
+            _reviews[index].Content = review.Content;
+            _reviews[index].BookId  = review.BookId;
+            _reviews[index].Rating = review.Rating;
+
+            var book = _books.FirstOrDefault(e => e.Id == review.BookId);
+            var author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
+            UpdateBookAverageRating(book);
+            UpdateAuthorAverageRating(author);
+
+            return Task.FromResult(true);
         }
 
         public Task<bool> DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            var review = _reviews.FirstOrDefault(e => e.Id == id);
+            if (review == null)
+            {
+                throw new ObjectNotFoundException();
+            }
+            _reviews.RemoveAll(e => e.Id == id);
+
+            var book = _books.FirstOrDefault(e => e.Id == review.BookId);
+            var author = _authors.FirstOrDefault(e => e.Id == book.AuthorId);
+            UpdateBookAverageRating(book);
+            UpdateAuthorAverageRating(author);
+
+            return Task.FromResult(true);
         }
 
 
@@ -258,6 +397,26 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
         }
 
         // Utilities
+
+        private void DeleteBookReviews(Book book)
+        {
+            _reviews.RemoveAll(e => e.BookId == book.Id);
+        }
+        private bool BookExists(int id)
+        {
+            return _books.Any(e => e.Id == id);
+        }
+
+        private bool AuthorExists(int id)
+        {
+             return _authors.Any(e => e.Id == id);
+        }
+
+        private bool ReviewExists(int id)
+        {
+             return _reviews.Any(e => e.Id == id);
+        }
+
         private void UpdateBookAverageRating(Book book)
         {   
             book.Reviews = _reviews.Where(e => e.Id == book.Id);
@@ -269,6 +428,11 @@ namespace PiszczekSzpotek.BookCatalogue.MockDatabase
             {
                 book.AverageRating = null;
             }
+        }
+
+        private void UpdateAuthorBooks(Author author)
+        {
+            author.Books = _books.Where(e => e.AuthorId == author.Id);
         }
 
         private void UpdateAuthorAverageRating(Author author)

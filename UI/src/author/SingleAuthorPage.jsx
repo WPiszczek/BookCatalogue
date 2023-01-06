@@ -48,19 +48,16 @@ function SingleAuthorPage() {
   const editAuthor = () => {
     console.log("Edit author from page", author.Id);
     setShowEditAuthorDialog(true);
-    // TODO
   };
 
   const editAuthorImage = () => {
     console.log("Edit author image from page", author.Id);
     setShowEditAuthorImageDialog(true);
-    // TODO
   };
 
   const deleteAuthor = () => {
     console.log("Delete author from page", author.Id);
     setShowDeleteAuthorDialog(true);
-    // TODO
   };
 
   return (
